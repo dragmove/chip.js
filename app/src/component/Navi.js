@@ -7,7 +7,7 @@ class Navi {
 		_.activeClass = options.activeClass || 'active';
 
 		_.activateIndex = 0;
-
+		
 		_.setBtnsEventHandler(true);
 	}
 

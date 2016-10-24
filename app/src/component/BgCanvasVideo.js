@@ -1,3 +1,134 @@
+class BgCanvasVideo {
+	constructor(options) {
+		console.log('options :', options);
+
+		this.options = {
+			parent: null,
+
+			videoClass: 'video',
+
+			autoplay: true,
+			loop: true,
+			muted: true,
+			
+			width: 1024,
+			height: 768,
+
+			posterUrl: '',
+			videoUrl: '',
+
+			canvasClass: 'canvas'
+		};
+		$.extend(true, this.options, options);
+
+		this.$parent = $(this.options.parent);
+
+		this.videoEle = $(this.getVideoTpl());
+		this.$parent.append(this.videoEle);
+
+		this.canvasEle = $(this.getCanvasTpl());
+		this.$parent.append(this.canvasEle);
+
+		this.video = this.videoEle.get(0);
+		this.canvas = this.canvasEle.get(0);
+		this.ctx = this.canvas.getContext('2d');
+
+		this.isPlaying = false;
+
+		this.init();
+	}
+
+	init() {
+		this.setCanvasSize();
+		this.setPosition();
+
+		/*
+		
+		this.position();
+
+		if ( this.isIOS() && this.options.hideVideo )
+			this.videoNode.hide();
+		*/
+	}
+
+	setCanvasSize() {
+		let _ = this;
+
+		let videoWidth = _.options.width,
+			videoHeight = _.options.height;
+
+		let winWidth = window.innerWidth,
+			winHeight = window.innerHeight;
+
+		_.height = Math.ceil(winHeight);
+		_.width = Math.ceil(videoWidth * _.height / videoHeight);
+
+		/*
+		if( this.width < winWidth ){
+			this.height = Math.ceil( winHeight + ( ( winWidth - this.width ) * 9 / 16 ) );
+			this.width = Math.ceil( this.height * movieWidth / movieHeight );
+		}
+
+		if( this.isIOS() ){
+			this.ctx.canvas.width = this.width;
+			this.ctx.canvas.height = this.height;
+
+			this.canvasNode.attr('width', this.width);
+			this.canvasNode.attr('height', this.height);
+		}else{
+			this.videoNode.width( this.width );
+			this.videoNode.height( this.height );
+		}
+		*/
+	}
+
+	setPosition() {
+		let _ = this;
+
+		let videoWidth = _.width,
+			videoHeight = _.height;
+
+		let winWidth = window.innerWidth,
+			winHeight = window.innerHeight;
+
+		/*
+		let left =  -( videoWidth - winWidth ) / 2;
+		let top = -( videoHeight - winHeight )  / 2;
+
+		if( this.options.fixedTop ) {
+			top = 0;
+		}
+
+		if( this.isIOS() ){
+			this.canvasNode.css({position:'absolute', left: left, top: top});
+		}else{
+			this.videoNode.css({position:'absolute', left: left, top: top});
+		}
+		*/
+	}
+
+	getVideoTpl() {
+		let _ = this.options;
+		return `<video class="${_.videoClass}" autoplay="${_.autoplay}" loop="${_.loop}" muted="${_.muted}" poster="${_.posterUrl}">
+			<source src="${_.videoUrl}" type="video/mp4">
+		</video>`;
+	}
+
+	getCanvasTpl() {
+		return `<canvas class="${this.options.canvasClass}"></canvas>`;
+	}
+
+	/*
+	 * utils
+	 */
+	isIOS() {
+		return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+	}
+}
+
+export default BgCanvasVideo;
+
+/*
 class Movie{
 	constructor( $parent, options ) {
 
@@ -213,3 +344,4 @@ class Movie{
 }
 
 module.exports = Movie;
+*/

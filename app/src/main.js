@@ -1,4 +1,5 @@
 import Navi from './component/Navi';
+import BgCanvasVideo from './component/BgCanvasVideo';
 
 (function($) {
   "use strict";
@@ -6,6 +7,11 @@ import Navi from './component/Navi';
   $(document).ready(init);
 
   function init() {
+    testNavi();
+    testBgCanvasVideo();
+  }
+
+  function testNavi() {
     let navi = new Navi({
       btns: $('.navi li a'),
       activateCallback: activateNaviCallback
@@ -23,5 +29,11 @@ import Navi from './component/Navi';
 
     //get activated index
     console.log( 'after call "navi.activate(3)", print "_navi.getActivatedIndex()" :', navi.getActivatedIndex() );
+  }
+
+  function testBgCanvasVideo() {
+    let bgCanvasVideo = new BgCanvasVideo({
+      
+    });
   }
 }(jQuery));
