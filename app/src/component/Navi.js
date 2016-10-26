@@ -3,21 +3,29 @@ class Navi {
 		let _ = this;
 
 		_.btns = options.btns || _.btns;
+		_.mouseoverCallback = options.mouseoverCallback || null;
+		_.mouseoutCallback = options.mouseoutCallback || null;
+		_.clickCallback = options.clickCallback || null;
 		_.activateCallback = options.activateCallback || _.activateCallback;
 		_.activeClass = options.activeClass || 'active';
 
+		_.currentIndex = 0;
 		_.activateIndex = 0;
-		
+
 		_.setBtnsEventHandler(true);
 	}
 
 	setBtnsEventHandler(flag) {
 		if(flag) {
 			for(let btn of this.btns) {
+				$(btn).on('mouseover', $.proxy(this.btnMouseEventHandler, this));
+				$(btn).on('mouseout', $.proxy(this.btnMouseEventHandler, this));
 				$(btn).on('click', $.proxy(this.btnMouseEventHandler, this));
 			}
 		} else {
 			for(let btn of this.btns) {
+				$(btn).off('mouseover', $.proxy(this.btnMouseEventHandler, this));
+				$(btn).off('mouseout', $.proxy(this.btnMouseEventHandler, this));
 				$(btn).off('click', $.proxy(this.btnMouseEventHandler, this));
 			}
 		}
@@ -26,22 +34,75 @@ class Navi {
 	btnMouseEventHandler(evt) {
 		evt.preventDefault();
 
-		let _ = this;
+		let _ = this,
+			btn = null;
+
 		switch(evt.type) {
+			case 'mouseover' :
+				btn = evt.target;
+
+				_.currentIndex = $(_.btns).index(btn) + 1;
+
+				if(_.mouseoverCallback) {
+					_.mouseoverCallback.call(null, {
+						event: evt,
+						btn: btn,
+						index: _.currentIndex
+					});
+				}
+			break;
+
+			case 'mouseout' :
+				btn = evt.target;
+
+				if(_.mouseoutCallback) {
+					_.mouseoutCallback.call(null, {
+						event: evt,
+						btn: btn,
+						index: $(_.btns).index(btn) + 1
+					});
+				}
+			break;
+
 			case 'click' :
-				let btn = evt.target,
-					prevIndex = _.activateIndex;
+				btn = evt.target;
 
-				_.activateNavi(btn);
-				_.activateIndex = $(_.btns).index(btn) + 1;
+				let prevIndex = _.activateIndex;
 
-				_.callActivateCallback({
-					btn: btn,
-					prevIndex: prevIndex,
-					index: _.activateIndex
-				});
+				_.activateBtn(btn);
+				_.currentIndex = _.activateIndex = $(_.btns).index(btn) + 1;
+
+				if(_.clickCallback) {
+					_.clickCallback.call(null, {
+						event: evt,
+						btn: btn,
+						prevIndex: prevIndex,
+						index: _.activateIndex
+					});
+				}
+
+				if(_.activateCallback) {
+					_.activateCallback.call(null, {
+						event: evt,
+						btn: btn,
+						prevIndex: prevIndex,
+						index: _.activateIndex
+					});
+				}
 			break;
 		}
+	}
+
+	activateBtn(btn) {
+		let _ = this;
+		$(_.btns).removeClass(_.activeClass);
+		$(btn).addClass(_.activeClass);
+	}
+
+	activateBtnByIndex(index) {
+		let _ = this;
+		$(_.btns).removeClass(_.activeClass);
+		$(_.getBtn(index)).addClass(_.activeClass);
 	}
 
 	getBtn(index) {
@@ -51,25 +112,6 @@ class Navi {
 		return $(this.btns).get(idx);
 	}
 
-	activateNavi(btn) {
-		let _ = this;
-		$(_.btns).removeClass(_.activeClass);
-		$(btn).addClass(_.activeClass);
-	}
-
-	activateNaviByIndex(index) {
-		let _ = this;
-		$(_.btns).removeClass(_.activeClass);
-		$(_.getBtn(index)).addClass(_.activeClass);
-	}
-
-	callActivateCallback(obj) {
-		if(this.activateCallback) this.activateCallback.apply(null, [obj]);
-	}
-
-	/*
-	 * public
-	 */
 	getActivatedIndex() {
 		return this.activateIndex;
 	}
@@ -78,16 +120,23 @@ class Navi {
 		let prevIndex = this.activateIndex,
 			targetIndex = (index < 0 || index > this.btns.length) ? 0 : index;
 
-		this.activateNaviByIndex(index);
+		this.activateBtnByIndex(index);
 		this.activateIndex = targetIndex;
 	}
 
 	destroy(obj) {
-		this.setBtnsEventHandler(false);
+		let _ = this;
+		
+		_.setBtnsEventHandler(false);
 
-		this.btns = [];
-		this.activateCallback = null;
-		this.activateIndex = 0;
+		_.btns = [];
+		_.mouseoverCallback = null;
+		_.mouseoutCallback = null;
+		_.clickCallback = null;
+		_.activateCallback = null;
+
+		_.currentIndex = 0;
+		_.activateIndex = 0;
 	}
 }
 

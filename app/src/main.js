@@ -1,5 +1,6 @@
-import Navi from './component/Navi';
-import BgCanvasVideo from './component/BgCanvasVideo';
+// import Navi from './component/Navi';
+import NaviHasTimer from './component/NaviHasTimer';
+// import BgCanvasVideo from './component/BgCanvasVideo';
 
 (function($) {
   "use strict";
@@ -7,15 +8,33 @@ import BgCanvasVideo from './component/BgCanvasVideo';
   $(document).ready(init);
 
   function init() {
-    testNavi();
+    // testNavi();
+    testNaviHasTimer();
     testBgCanvasVideo();
   }
 
   function testNavi() {
     let navi = new Navi({
       btns: $('.navi li a'),
+
+      mouseoverCallback: mouseoverCallback,
+      mouseoutCallback: mouseoutCallback,
+      clickCallback: clickCallback,
+
       activateCallback: activateNaviCallback
     });
+
+    function mouseoverCallback(_obj) {
+      console.log('mouseover :', _obj);
+    }
+
+    function mouseoutCallback(_obj) {
+      console.log('mouseout :', _obj);
+    }
+
+    function clickCallback(_obj) {
+      console.log('click :', _obj);
+    }
 
     function activateNaviCallback(_obj) {
       console.log('activateNaviCallback - _obj :', _obj);
@@ -31,9 +50,18 @@ import BgCanvasVideo from './component/BgCanvasVideo';
     console.log( 'after call "navi.activate(3)", print "_navi.getActivatedIndex()" :', navi.getActivatedIndex() );
   }
 
-  function testBgCanvasVideo() {
-    let bgCanvasVideo = new BgCanvasVideo({
-      
+  function testNaviHasTimer() {
+    let navi = new NaviHasTimer({
+      btns: $('.navi li a')
     });
+  }
+
+  function testBgCanvasVideo() {
+
+    /*
+    let bgCanvasVideo = new BgCanvasVideo({
+
+    });
+    */
   }
 }(jQuery));
