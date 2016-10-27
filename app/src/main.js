@@ -10,7 +10,7 @@ import NaviHasTimer from './component/NaviHasTimer';
   function init() {
     // testNavi();
     testNaviHasTimer();
-    testBgCanvasVideo();
+    // testBgCanvasVideo();
   }
 
   function testNavi() {
@@ -19,9 +19,7 @@ import NaviHasTimer from './component/NaviHasTimer';
 
       mouseoverCallback: mouseoverCallback,
       mouseoutCallback: mouseoutCallback,
-      clickCallback: clickCallback,
-
-      activateCallback: activateNaviCallback
+      clickCallback: clickCallback
     });
 
     function mouseoverCallback(_obj) {
@@ -36,10 +34,6 @@ import NaviHasTimer from './component/NaviHasTimer';
       console.log('click :', _obj);
     }
 
-    function activateNaviCallback(_obj) {
-      console.log('activateNaviCallback - _obj :', _obj);
-    }
-
     //activate 3rd btn
     navi.activate(3);
 
@@ -52,8 +46,29 @@ import NaviHasTimer from './component/NaviHasTimer';
 
   function testNaviHasTimer() {
     let navi = new NaviHasTimer({
-      btns: $('.navi li a')
+      btns: $('.navi li a'),
+
+      mouseoverCallback: mouseoverCallback,
+      mouseoutCallback: mouseoutCallback,
+      clickCallback: clickCallback,
     });
+
+    function mouseoverCallback(_obj) {
+      console.log('mouseover :', _obj);
+    }
+
+    function mouseoutCallback(_obj) {
+      console.log('mouseout :', _obj);
+    }
+
+    function clickCallback(_obj) {
+      console.log('click :', _obj);
+    }
+
+    //activate 3rd btn
+    navi.activate(3);
+
+    navi.destroy();
   }
 
   function testBgCanvasVideo() {

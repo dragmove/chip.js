@@ -6,7 +6,7 @@ class Navi {
 		_.mouseoverCallback = options.mouseoverCallback || null;
 		_.mouseoutCallback = options.mouseoutCallback || null;
 		_.clickCallback = options.clickCallback || null;
-		_.activateCallback = options.activateCallback || _.activateCallback;
+		
 		_.activeClass = options.activeClass || 'active';
 
 		_.currentIndex = 0;
@@ -16,95 +16,86 @@ class Navi {
 	}
 
 	setBtnsEventHandler(flag) {
+		let _ = this;
+
 		if(flag) {
-			for(let btn of this.btns) {
-				$(btn).on('mouseover', $.proxy(this.btnMouseEventHandler, this));
-				$(btn).on('mouseout', $.proxy(this.btnMouseEventHandler, this));
-				$(btn).on('click', $.proxy(this.btnMouseEventHandler, this));
+			for(let btn of _.btns) {
+				$(btn).on('mouseover', $.proxy(_.mouseoverBtnEventHandler, _));
+				$(btn).on('mouseout', $.proxy(_.mouseoutBtnEventHandler, _));
+				$(btn).on('click', $.proxy(_.clickBtnEventHandler, _));
 			}
 		} else {
-			for(let btn of this.btns) {
-				$(btn).off('mouseover', $.proxy(this.btnMouseEventHandler, this));
-				$(btn).off('mouseout', $.proxy(this.btnMouseEventHandler, this));
-				$(btn).off('click', $.proxy(this.btnMouseEventHandler, this));
+			for(let btn of _.btns) {
+				$(btn).off('mouseover', $.proxy(_.mouseoverBtnEventHandler, _));
+				$(btn).off('mouseout', $.proxy(_.mouseoutBtnEventHandler, _));
+				$(btn).off('click', $.proxy(_.clickBtnEventHandler, _));
 			}
 		}
 	}
 
-	btnMouseEventHandler(evt) {
+	mouseoverBtnEventHandler(evt) {
 		evt.preventDefault();
 
 		let _ = this,
-			btn = null;
+			btn = evt.target;
 
-		switch(evt.type) {
-			case 'mouseover' :
-				btn = evt.target;
+		_.currentIndex = $(_.btns).index(btn) + 1;
 
-				_.currentIndex = $(_.btns).index(btn) + 1;
-
-				if(_.mouseoverCallback) {
-					_.mouseoverCallback.call(null, {
-						event: evt,
-						btn: btn,
-						index: _.currentIndex
-					});
-				}
-			break;
-
-			case 'mouseout' :
-				btn = evt.target;
-
-				if(_.mouseoutCallback) {
-					_.mouseoutCallback.call(null, {
-						event: evt,
-						btn: btn,
-						index: $(_.btns).index(btn) + 1
-					});
-				}
-			break;
-
-			case 'click' :
-				btn = evt.target;
-
-				let prevIndex = _.activateIndex;
-
-				_.activateBtn(btn);
-				_.currentIndex = _.activateIndex = $(_.btns).index(btn) + 1;
-
-				if(_.clickCallback) {
-					_.clickCallback.call(null, {
-						event: evt,
-						btn: btn,
-						prevIndex: prevIndex,
-						index: _.activateIndex
-					});
-				}
-
-				if(_.activateCallback) {
-					_.activateCallback.call(null, {
-						event: evt,
-						btn: btn,
-						prevIndex: prevIndex,
-						index: _.activateIndex
-					});
-				}
-			break;
+		if(_.mouseoverCallback) {
+			_.mouseoverCallback.call(null, {
+				event: evt,
+				btn: btn,
+				index: _.currentIndex
+			});
 		}
 	}
 
-	activateBtn(btn) {
-		let _ = this;
-		$(_.btns).removeClass(_.activeClass);
-		$(btn).addClass(_.activeClass);
+	mouseoutBtnEventHandler(evt) {
+		evt.preventDefault();
+
+		let _ = this,
+			btn = evt.target;
+
+		if(_.mouseoutCallback) {
+			_.mouseoutCallback.call(null, {
+				event: evt,
+				btn: btn,
+				index: $(_.btns).index(btn) + 1
+			});
+		}
 	}
 
-	activateBtnByIndex(index) {
+	clickBtnEventHandler(evt) {
+		evt.preventDefault();
+
+		let _ = this,
+			btn = evt.target;
+
+		let prevIndex = _.activateIndex,
+			index = $(_.btns).index(btn) + 1;
+
+		_.displayNaviStatus(index);
+		_.currentIndex = _.activateIndex = index;
+
+		if(_.clickCallback) {
+			_.clickCallback.call(null, {
+				event: evt,
+				btn: btn,
+				prevIndex: prevIndex,
+				index: _.activateIndex
+			});
+		}
+	}
+
+	displayNaviStatus(index) {
 		let _ = this;
 		$(_.btns).removeClass(_.activeClass);
 		$(_.getBtn(index)).addClass(_.activeClass);
 	}
 
+	/*
+	 * public methods
+	 */
 	getBtn(index) {
 		let idx = index - 1;
 		if(idx < 0) return null;
@@ -120,20 +111,18 @@ class Navi {
 		let prevIndex = this.activateIndex,
 			targetIndex = (index < 0 || index > this.btns.length) ? 0 : index;
 
-		this.activateBtnByIndex(index);
+		this.displayNaviStatus(index);
 		this.activateIndex = targetIndex;
 	}
 
 	destroy(obj) {
 		let _ = this;
-		
 		_.setBtnsEventHandler(false);
 
 		_.btns = [];
 		_.mouseoverCallback = null;
 		_.mouseoutCallback = null;
 		_.clickCallback = null;
-		_.activateCallback = null;
 
 		_.currentIndex = 0;
 		_.activateIndex = 0;
