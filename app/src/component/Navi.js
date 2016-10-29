@@ -1,5 +1,6 @@
 class Navi {
 	constructor(options) {
+		if(!options) return;
 		let _ = this;
 
 		_.btns = options.btns || [];

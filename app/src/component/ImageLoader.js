@@ -1,84 +1,85 @@
-/*
- * ImageLoader Class
- */
-let ImageLoader = function(_obj) {
-  "use strict";
+class ImageLoader {
+  constructor(options) {
+    if(!options) return;
+    let _ = this;
 
-  /*
-   * variables
-   */
-  var loadCompleteCallback = null,
-    loadPerCompleteCallback = null,
-    loadErrorCallback = null;
+    _.loadCompleteCallback = options.loadCompleteCallback || null;
+    _.loadPerCompleteCallback = options.loadPerCompleteCallback || null;
+    _.loadErrorCallback = options.loadErrorCallback || null;
 
-  var isLoading = false,
-    isFinished = false;
+    _.isLoading = false;
+    _.isFinished = false;
 
-  var loadedImgArr = [],
-    imgArr = [],
-    imgURLArr = [];
+    _.loadedImgArr = [];
+    _.imgArr = [];
+    _.imgURLArr = [];
 
-  var loadingIndex = 0,
-    loadFailNum = 0,
-    loadSuccessNum = 0,
-    loadCompleteNum = 0,
-    percentageLoaded = 0;
-
-  /*
-   * implement
-   */
-  init(_obj);
-
-  /*
-   * functions
-   */
-  function init(_obj) {
-    loadCompleteCallback = _obj.loadCompleteCallback || loadCompleteCallback;
-    loadPerCompleteCallback = _obj.loadPerCompleteCallback || loadPerCompleteCallback;
-    loadErrorCallback = _obj.loadErrorCallback || loadErrorCallback;
+    _.loadingIndex = 0;
+    _.loadFailNum = 0;
+    _.loadSuccessNum = 0;
+    _.loadCompleteNum = 0;
+    _.percentageLoaded = 0;
   }
 
-  function loadNext() {
-    setTimeout( function(){
-      if(loadingIndex >= imgURLArr.length) {
-        isLoading = false;
-        isFinished = true;
-        if(loadCompleteCallback) loadCompleteCallback.apply(null, [ {imgs:loadedImgArr, percentage:percentageLoaded} ]);
-        return;
+  loadNext() {
+    let _ = this;
+
+    if( _.loadingIndex >= _.imgURLArr.length) {
+      _.isLoading = false;
+      _.isFinished = true;
+
+      if( _.loadCompleteCallback ) _.loadCompleteCallback.call(null, {
+        imgs: _.loadedImgArr, 
+        percentage: _.percentageLoaded
+      });
+
+      return;
+    }
+
+    let img = document.createElement('img');
+    img.onload = function(evt) {
+      let img = this;
+      if(img) _.loadedImgArr.push(img);
+
+      _.loadingIndex++;
+      _.loadSuccessNum++;
+      _.loadCompleteNum++;
+      _.percentageLoaded = _.loadCompleteNum / _.imgURLArr.length;
+
+      if(_.loadPerCompleteCallback) {
+        _.loadPerCompleteCallback.call(null, {
+          event: evt,
+          img: img, 
+          percentage: _.percentageLoaded
+        });
       }
 
-      var _img = document.createElement("img");
-      _img.onload = loadCompleteHandler;
-      _img.onerror = loadErrorHandler;
-      _img.src = imgURLArr[loadingIndex];
-      imgArr.push(_img);
-    }, 16);
-  }
+      _.loadNext();
+    };
 
-  function loadCompleteHandler(event) {
-    var _img = this;
-    if(_img) loadedImgArr.push(_img);
+    img.onerror = function(evt) {
+      let img = this;
+      _.loadedImgArr.push(null);
 
-    loadingIndex++;
-    loadSuccessNum++;
-    loadCompleteNum++;
-    percentageLoaded = loadCompleteNum / imgURLArr.length;
-    if(loadPerCompleteCallback) loadPerCompleteCallback.apply(null, [ {img:_img, percentage:percentageLoaded} ]);
+      _.loadingIndex++;
+      _.loadFailNum++;
+      _.loadCompleteNum++;
+      _.percentageLoaded = _.loadCompleteNum / _.imgURLArr.length;
 
-    loadNext();
-  }
+      if(_.loadErrorCallback) {
+        _.loadErrorCallback.call(null, {
+          event: evt,
+          img: img,
+          percentage: _.percentageLoaded
+        });
+      }
 
-  function loadErrorHandler(event) {
-    var _img = this;
-    loadedImgArr.push(null);
+      _.loadNext();
+    };
 
-    loadingIndex++;
-    loadFailNum++;
-    loadCompleteNum++;
-    percentageLoaded = loadCompleteNum / imgURLArr.length;
-    if(loadErrorCallback) loadErrorCallback.apply(null, [ {img:_img, percentage:percentageLoaded} ]);
+    img.src = _.imgURLArr[ _.loadingIndex ];
 
-    loadNext();
+    _.imgArr.push(img);
   }
 
   /*
@@ -91,14 +92,17 @@ let ImageLoader = function(_obj) {
    * @method start
    * @return {Void}
    */
-  function start(_imgUrlArr) {
-    if(!_imgUrlArr || _imgUrlArr.constructor!=Array || _imgUrlArr.length<=0) return;
-    imgURLArr = _imgUrlArr;
+  start(imgURLArr) {
+    let _ = this;
 
-    if(isLoading) return;
-    isLoading = true;
-    isFinished = false;
-    loadNext();
+    if(!imgURLArr || imgURLArr.constructor !== Array || imgURLArr.length <= 0) return;
+    _.imgURLArr = imgURLArr;
+
+    if(_.isLoading) return;
+    _.isLoading = true;
+    _.isFinished = false;
+    
+    _.loadNext();
   }
 
   /**
@@ -107,8 +111,8 @@ let ImageLoader = function(_obj) {
    * @method getFinished
    * @return {Boolean} Returns true or false
    */
-  function getFinished() {
-    return isFinished;
+  getFinished() {
+    return this.isFinished;
   }
 
   /**
@@ -117,8 +121,8 @@ let ImageLoader = function(_obj) {
    * @method getLoadedImageArr
    * @return {Array} Returns Array
    */
-  function getLoadedImgs() {
-    return loadedImgArr;
+  getLoadedImgs() {
+    return this.loadedImgArr;
   }
 
   /**
@@ -127,8 +131,8 @@ let ImageLoader = function(_obj) {
    * @method getPercentageLoaded
    * @return {Number} Returns Number(0 ~ 1)
    */
-  function getPercentageLoaded() {
-    return percentageLoaded;
+  getPercentageLoaded() {
+    return this.percentageLoaded;
   }
 
   /**
@@ -137,46 +141,38 @@ let ImageLoader = function(_obj) {
    * @method destroy
    * @return {Void}
    */
-  function destroy() {
-    if(isLoading) {
-      var img;
-      for(var i=0,max=imgArr.length; i<max; i++) {
-        img = imgArr[i];
+  destroy(obj) {
+    let _ = this;
+
+    if(_.isLoading) {
+      let img;
+      for(let i=0,max=_.imgArr.length; i<max; i++) {
+        img = _.imgArr[i];
         if(img) {
           img.onload = null;
           img.onerror = null;
         }
-        img = null;
       }
     }
-    loadCompleteCallback = null;
-    loadPerCompleteCallback = null;
-    loadErrorCallback = null;
 
-    isLoading = false;
-    isFinished = false;
+    _.loadCompleteCallback = null;
+    _.loadPerCompleteCallback = null;
+    _.loadErrorCallback = null;
 
-    loadedImgArr = null;
-    imgArr = null;
-    imgURLArr = null;
+    _.isLoading = false;
+    _.isFinished = false;
 
-    loadingIndex = 0;
-    loadFailNum = 0;
-    loadSuccessNum = 0;
-    loadCompleteNum = 0;
+    _.loadedImgArr = null;
+    _.imgArr = null;
+    _.imgURLArr = null;
 
-    percentageLoaded = 0;
+    _.loadingIndex = 0;
+    _.loadFailNum = 0;
+    _.loadSuccessNum = 0;
+    _.loadCompleteNum = 0;
+
+    _.percentageLoaded = 0;
   }
+}
 
-  return {
-    getFinished: getFinished,
-    getLoadedImgs: getLoadedImgs,
-    getPercentageLoaded: getPercentageLoaded,
-    start: start,
-    destroy: destroy
-  };
-};
-
-export {
-  ImageLoader
-};
+export default ImageLoader;

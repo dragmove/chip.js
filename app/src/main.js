@@ -1,5 +1,6 @@
 // import Navi from './component/Navi';
-import NaviHasTimer from './component/NaviHasTimer';
+// import NaviHasTimer from './component/NaviHasTimer';
+import ImageLoader from './component/ImageLoader'
 // import BgCanvasVideo from './component/BgCanvasVideo';
 
 (function($) {
@@ -9,7 +10,9 @@ import NaviHasTimer from './component/NaviHasTimer';
 
   function init() {
     // testNavi();
-    testNaviHasTimer();
+    // testNaviHasTimer();
+    testImageLoader();
+
     // testBgCanvasVideo();
   }
 
@@ -97,6 +100,25 @@ import NaviHasTimer from './component/NaviHasTimer';
 
     //get activated index
     console.log( 'after call "navi.activate(3)", print "_navi.getActivatedIndex()" :', navi.getActivatedIndex() );
+  }
+
+  function testImageLoader() {
+    let imgLoader = new ImageLoader({
+      loadCompleteCallback: () => {
+        console.log('loadComplete');
+      },
+      loadPerCompleteCallback: () => {
+        console.log('loadPerComplete');
+      },
+      loadErrorCallback: () => {
+        console.log('loadError')
+      }
+    });
+    imgLoader.start([
+      'https://images.unsplash.com/photo-1431794062232-2a99a5431c6c?dpr=2&auto=compress,format&crop=entropy&fit=crop&w=767&h=511&q=80&cs=tinysrgb',
+      'https://images.unsplash.com/photo-1435783099294-283725c372',
+      'https://images.unsplash.com/photo-1459666644539-a9755287d6b0?dpr=2&auto=compress,format&crop=entropy&fit=crop&w=767&h=463&q=80&cs=tinysrgb'
+    ]);
   }
 
   function testBgCanvasVideo() {

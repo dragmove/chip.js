@@ -2,6 +2,7 @@ import Navi from './Navi';
 
 class NaviHasTimer extends Navi {
 	constructor(options) {
+		if(!options) return;
 		super(options);
 
 		this.timerInterval = (options.timerInterval >= 0 || typeof options.timerInterval !== 'undefined') ? options.timerInterval : 500;
