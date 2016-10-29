@@ -19,26 +19,37 @@ import NaviHasTimer from './component/NaviHasTimer';
 
       mouseoverCallback: mouseoverCallback,
       mouseoutCallback: mouseoutCallback,
-      clickCallback: clickCallback
+      clickCallback: clickCallback,
+      activateCallback: activateCallback
     });
 
-    function mouseoverCallback(_obj) {
-      console.log('mouseover :', _obj);
+    function mouseoverCallback(obj) {
+      console.log('mouseover :', obj);
     }
 
-    function mouseoutCallback(_obj) {
-      console.log('mouseout :', _obj);
+    function mouseoutCallback(obj) {
+      console.log('mouseout :', obj);
     }
 
-    function clickCallback(_obj) {
-      console.log('click :', _obj);
+    function clickCallback(obj) {
+      console.log('click :', obj);
     }
 
-    //activate 3rd btn
-    navi.activate(3);
+    function activateCallback(obj) {
+      console.log('activateCallback :', obj);
+
+      let btns = $(navi.getBtns()),
+        btn = $(navi.getBtn(obj.index));
+
+      btns.removeClass('on');
+      btn.addClass('on');
+    }
 
     //get activated index
     console.log( 'init navi instance. then, print "_navi.getActivatedIndex()" :', navi.getActivatedIndex() );
+
+    //activate 3rd btn
+    navi.activate(3);
 
     //get activated index
     console.log( 'after call "navi.activate(3)", print "_navi.getActivatedIndex()" :', navi.getActivatedIndex() );
@@ -51,24 +62,41 @@ import NaviHasTimer from './component/NaviHasTimer';
       mouseoverCallback: mouseoverCallback,
       mouseoutCallback: mouseoutCallback,
       clickCallback: clickCallback,
+      activateCallback: activateCallback,
+
+      timerInterval: 500
     });
 
-    function mouseoverCallback(_obj) {
-      console.log('mouseover :', _obj);
+    function mouseoverCallback(obj) {
+      console.log('mouseover :', obj);
     }
 
-    function mouseoutCallback(_obj) {
-      console.log('mouseout :', _obj);
+    function mouseoutCallback(obj) {
+      console.log('mouseout :', obj);
     }
 
-    function clickCallback(_obj) {
-      console.log('click :', _obj);
+    function clickCallback(obj) {
+      console.log('click :', obj);
     }
+
+    function activateCallback(obj) {
+      console.log('activateCallback :', obj);
+
+      let btns = $(navi.getBtns()),
+        btn = $(navi.getBtn(obj.index));
+
+      btns.removeClass('on');
+      btn.addClass('on');
+    }
+
+    //get activated index
+    console.log( 'init navi instance. then, print "_navi.getActivatedIndex()" :', navi.getActivatedIndex() );
 
     //activate 3rd btn
     navi.activate(3);
 
-    navi.destroy();
+    //get activated index
+    console.log( 'after call "navi.activate(3)", print "_navi.getActivatedIndex()" :', navi.getActivatedIndex() );
   }
 
   function testBgCanvasVideo() {

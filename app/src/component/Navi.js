@@ -2,12 +2,12 @@ class Navi {
 	constructor(options) {
 		let _ = this;
 
-		_.btns = options.btns || _.btns;
+		_.btns = options.btns || [];
+
 		_.mouseoverCallback = options.mouseoverCallback || null;
 		_.mouseoutCallback = options.mouseoutCallback || null;
 		_.clickCallback = options.clickCallback || null;
-		
-		_.activeClass = options.activeClass || 'active';
+		_.activateCallback = options.activateCallback || null;
 
 		_.currentIndex = 0;
 		_.activateIndex = 0;
@@ -69,13 +69,10 @@ class Navi {
 		evt.preventDefault();
 
 		let _ = this,
-			btn = evt.target;
-
-		let prevIndex = _.activateIndex,
-			index = $(_.btns).index(btn) + 1;
-
-		_.displayNaviStatus(index);
-		_.currentIndex = _.activateIndex = index;
+			btn = evt.target,
+			btns = _.btns,
+			prevIndex = _.activateIndex,
+			idx = $(_.btns).index(btn) + 1;
 
 		if(_.clickCallback) {
 			_.clickCallback.call(null, {
@@ -85,20 +82,27 @@ class Navi {
 				index: _.activateIndex
 			});
 		}
-	}
 
-	displayNaviStatus(index) {
-		let _ = this;
-		$(_.btns).removeClass(_.activeClass);
-		$(_.getBtn(index)).addClass(_.activeClass);
+		if(_.activateCallback) {
+			_.activateCallback.call(null, {
+				prevIndex: prevIndex,
+				index: idx
+			})
+		}
+
+		_.currentIndex = _.activateIndex = idx;
 	}
 
 	/*
 	 * public methods
 	 */
+	getBtns() {
+		return this.btns;
+	}
+
 	getBtn(index) {
 		let idx = index - 1;
-		if(idx < 0) return null;
+		if(idx < 0 || idx >= this.btns.length) return null;
 
 		return $(this.btns).get(idx);
 	}
@@ -108,21 +112,30 @@ class Navi {
 	}
 
 	activate(index) {
-		let prevIndex = this.activateIndex,
-			targetIndex = (index < 0 || index > this.btns.length) ? 0 : index;
+		let _ = this,
+			idx = (index <= 0 || index > _.btns.length) ? 0 : index;
 
-		this.displayNaviStatus(index);
-		this.activateIndex = targetIndex;
+		if(_.activateCallback) {
+			_.activateCallback.call(null, {
+				prevIndex: _.activateIndex,
+				index: idx
+			});	
+		}
+		
+		_.activateIndex = idx;
 	}
 
 	destroy(obj) {
 		let _ = this;
+		
 		_.setBtnsEventHandler(false);
 
 		_.btns = [];
+
 		_.mouseoverCallback = null;
 		_.mouseoutCallback = null;
 		_.clickCallback = null;
+		_.activateCallback = null;
 
 		_.currentIndex = 0;
 		_.activateIndex = 0;

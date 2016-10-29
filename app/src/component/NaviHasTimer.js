@@ -5,7 +5,6 @@ class NaviHasTimer extends Navi {
 		super(options);
 
 		this.timerInterval = (options.timerInterval >= 0 || typeof options.timerInterval !== 'undefined') ? options.timerInterval : 500;
-
 		this.timer = null;
 	}
 
@@ -16,15 +15,16 @@ class NaviHasTimer extends Navi {
 
 	mouseoutBtnEventHandler(evt) {
 		let _ = this;
-		_.timer = setTimeout(() => {
-			_.displayNaviStatusByTimer(_.activateIndex);
-		}, _.timerInterval);
 
 		super.mouseoutBtnEventHandler(evt);
+
+		_.timer = setTimeout(() => {
+			_.activateByTimer(_.activateIndex);
+		}, _.timerInterval);
 	}
 
-	displayNaviStatusByTimer(index) {
-		super.displayNaviStatus(index);
+	activateByTimer(index) {
+		super.activate(index);
 	}
 
 	removeTimer() {
@@ -35,12 +35,13 @@ class NaviHasTimer extends Navi {
 	/*
 	 * public methods
 	 */
+	// getBtns()
 	// getBtn(index)
 	// getActivatedIndex()
 	// activate(index)
 	destroy(obj) {
-		super.destroy(obj);
 		this.removeTimer();
+		super.destroy(obj);
 	}
 }
 
