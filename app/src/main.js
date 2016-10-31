@@ -1,6 +1,7 @@
 // import Navi from './component/Navi';
 // import NaviHasTimer from './component/NaviHasTimer';
-import ImageLoader from './component/ImageLoader'
+// import ImageLoader from './component/ImageLoader';
+import FullSizeBg from './component/FullSizeBg';
 // import BgCanvasVideo from './component/BgCanvasVideo';
 
 (function($) {
@@ -11,8 +12,8 @@ import ImageLoader from './component/ImageLoader'
   function init() {
     // testNavi();
     // testNaviHasTimer();
-    testImageLoader();
-
+    // testImageLoader();
+    testFullSizeBg();
     // testBgCanvasVideo();
   }
 
@@ -104,21 +105,46 @@ import ImageLoader from './component/ImageLoader'
 
   function testImageLoader() {
     let imgLoader = new ImageLoader({
-      loadCompleteCallback: () => {
-        console.log('loadComplete');
+      loadCompleteCallback: (obj) => {
+        console.log('loadComplete :', obj);
+        console.log('imgLoader.isFinished() :', imgLoader.isFinished());
+        console.log('imgLoader.getLoadedImgs() :', imgLoader.getLoadedImgs());
       },
-      loadPerCompleteCallback: () => {
-        console.log('loadPerComplete');
+      loadPerCompleteCallback: (obj) => {
+        console.log('loadPerComplete :', obj);
+        console.log('imgLoader.isFinished() :', imgLoader.isFinished());
+        console.log('imgLoader.getLoadedImgs() :', imgLoader.getLoadedImgs());
       },
-      loadErrorCallback: () => {
-        console.log('loadError')
+      loadErrorCallback: (obj) => {
+        console.log('loadError :', obj)
+        console.log('imgLoader.isFinished() :', imgLoader.isFinished());
+        console.log('imgLoader.getLoadedImgs() :', imgLoader.getLoadedImgs());
       }
     });
+
     imgLoader.start([
       'https://images.unsplash.com/photo-1431794062232-2a99a5431c6c?dpr=2&auto=compress,format&crop=entropy&fit=crop&w=767&h=511&q=80&cs=tinysrgb',
       'https://images.unsplash.com/photo-1435783099294-283725c372',
       'https://images.unsplash.com/photo-1459666644539-a9755287d6b0?dpr=2&auto=compress,format&crop=entropy&fit=crop&w=767&h=463&q=80&cs=tinysrgb'
     ]);
+  }
+
+  function testFullSizeBg() {
+    let fullSizeBg = new FullSizeBg({
+      imgWrap: $('.fullsize-bg'),
+      imgWidth: 4928,
+      imgHeight: 3264,
+
+      alignX: 'right',
+      alignY: 'center'
+    });
+
+    $(window).on('resize', function(evt) {
+      $('#wrapper').css({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    }).trigger('resize');
   }
 
   function testBgCanvasVideo() {

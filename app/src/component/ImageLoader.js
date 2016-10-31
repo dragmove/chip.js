@@ -8,7 +8,7 @@ class ImageLoader {
     _.loadErrorCallback = options.loadErrorCallback || null;
 
     _.isLoading = false;
-    _.isFinished = false;
+    _.isFinish = false;
 
     _.loadedImgArr = [];
     _.imgArr = [];
@@ -26,7 +26,7 @@ class ImageLoader {
 
     if( _.loadingIndex >= _.imgURLArr.length) {
       _.isLoading = false;
-      _.isFinished = true;
+      _.isFinish = true;
 
       if( _.loadCompleteCallback ) _.loadCompleteCallback.call(null, {
         imgs: _.loadedImgArr, 
@@ -100,7 +100,7 @@ class ImageLoader {
 
     if(_.isLoading) return;
     _.isLoading = true;
-    _.isFinished = false;
+    _.isFinish = false;
     
     _.loadNext();
   }
@@ -108,11 +108,11 @@ class ImageLoader {
   /**
    * get load finish all image files
    *
-   * @method getFinished
+   * @method isFinished
    * @return {Boolean} Returns true or false
    */
-  getFinished() {
-    return this.isFinished;
+  isFinished() {
+    return this.isFinish;
   }
 
   /**
@@ -160,7 +160,7 @@ class ImageLoader {
     _.loadErrorCallback = null;
 
     _.isLoading = false;
-    _.isFinished = false;
+    _.isFinish = false;
 
     _.loadedImgArr = null;
     _.imgArr = null;
