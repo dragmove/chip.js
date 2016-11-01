@@ -1,8 +1,8 @@
 // import Navi from './component/Navi';
 // import NaviHasTimer from './component/NaviHasTimer';
 // import ImageLoader from './component/ImageLoader';
-import FullSizeBg from './component/FullSizeBg';
-// import BgCanvasVideo from './component/BgCanvasVideo';
+// import FullSizeBg from './component/FullSizeBg';
+import BgCanvasVideo from './component/BgCanvasVideo';
 
 (function($) {
   "use strict";
@@ -13,8 +13,8 @@ import FullSizeBg from './component/FullSizeBg';
     // testNavi();
     // testNaviHasTimer();
     // testImageLoader();
-    testFullSizeBg();
-    // testBgCanvasVideo();
+    // testFullSizeBg();
+    testBgCanvasVideo();
   }
 
   function testNavi() {
@@ -132,12 +132,12 @@ import FullSizeBg from './component/FullSizeBg';
   function testFullSizeBg() {
     let fullSizeBg = new FullSizeBg({
       imgWrap: $('.fullsize-bg'),
-      imgWidth: 4928,
-      imgHeight: 3264,
-
-      alignX: 'right',
+      imgWidth: 4592,
+      imgHeight: 3064,
+      alignX: 'center',
       alignY: 'center'
     });
+    fullSizeBg.init();
 
     $(window).on('resize', function(evt) {
       $('#wrapper').css({
@@ -148,11 +148,8 @@ import FullSizeBg from './component/FullSizeBg';
   }
 
   function testBgCanvasVideo() {
-
-    /*
     let bgCanvasVideo = new BgCanvasVideo({
 
     });
-    */
   }
 }(jQuery));
