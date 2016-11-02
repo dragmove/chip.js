@@ -2,7 +2,8 @@
 // import NaviHasTimer from './component/NaviHasTimer';
 // import ImageLoader from './component/ImageLoader';
 // import FullSizeBg from './component/FullSizeBg';
-import BgCanvasVideo from './component/BgCanvasVideo';
+import FullSizeVideo from './component/FullSizeVideo';
+// import BgCanvasVideo from './component/BgCanvasVideo';
 
 (function($) {
   "use strict";
@@ -14,7 +15,10 @@ import BgCanvasVideo from './component/BgCanvasVideo';
     // testNaviHasTimer();
     // testImageLoader();
     // testFullSizeBg();
-    testBgCanvasVideo();
+
+    testFullSizeVideo();
+
+    // testBgCanvasVideo();
   }
 
   function testNavi() {
@@ -145,6 +149,12 @@ import BgCanvasVideo from './component/BgCanvasVideo';
         height: window.innerHeight
       });
     }).trigger('resize');
+  }
+
+  function testFullSizeVideo() {
+    let fullSizeVideo = new FullSizeVideo({
+
+    });
   }
 
   function testBgCanvasVideo() {
