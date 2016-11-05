@@ -2,7 +2,8 @@
 // import NaviHasTimer from './component/NaviHasTimer';
 // import ImageLoader from './component/ImageLoader';
 // import FullSizeBg from './component/FullSizeBg';
-import FullSizeVideo from './component/FullSizeVideo';
+import Overlay from './component/Overlay';
+// import FullSizeVideo from './component/FullSizeVideo';
 // import BgCanvasVideo from './component/BgCanvasVideo';
 
 (function($) {
@@ -16,7 +17,9 @@ import FullSizeVideo from './component/FullSizeVideo';
     // testImageLoader();
     // testFullSizeBg();
 
-    testFullSizeVideo();
+    testOverlay();
+
+    // testFullSizeVideo();
 
     // testBgCanvasVideo();
   }
@@ -149,6 +152,28 @@ import FullSizeVideo from './component/FullSizeVideo';
         height: window.innerHeight
       });
     }).trigger('resize');
+  }
+
+  function testOverlay() {
+    let overlay = new Overlay({
+      class: 'overlay',
+      color: '#f00',
+      opacity: 0.5,
+      appendTo: $('body')
+    });
+    overlay.init();
+
+    overlay.show();
+
+    setTimeout(function() {
+      overlay.setCss({
+        'background-color' : '#00f'
+      });
+    }, 1500);
+
+    setTimeout(function() {
+      overlay.hide();
+    }, 3000);
   }
 
   function testFullSizeVideo() {

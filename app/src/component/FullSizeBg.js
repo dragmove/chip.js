@@ -131,6 +131,21 @@ class FullSizeBg {
 		_.img.width(size.width).height(size.height);
 		_.setImageAlign(_.alignX, _.alignY, size);
 	}
+
+	destroy(obj) {
+		let _ = this;
+
+		$(window).off('resize');
+
+		_.imgWrap = null;
+		_.imgWidth = null;
+		_.imgHeight = null;
+
+		_.img = null;
+
+		_.alignX = '';
+		_.alignY = '';
+	}
 }
 
 export default FullSizeBg;
