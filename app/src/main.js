@@ -2,8 +2,8 @@
 // import NaviHasTimer from './component/NaviHasTimer';
 // import ImageLoader from './component/ImageLoader';
 // import FullSizeBg from './component/FullSizeBg';
-import Overlay from './component/Overlay';
-// import FullSizeVideo from './component/FullSizeVideo';
+// import Overlay from './component/Overlay';
+import FullSizeVideo from './component/FullSizeVideo';
 // import BgCanvasVideo from './component/BgCanvasVideo';
 
 (function($) {
@@ -16,10 +16,8 @@ import Overlay from './component/Overlay';
     // testNaviHasTimer();
     // testImageLoader();
     // testFullSizeBg();
-
-    testOverlay();
-
-    // testFullSizeVideo();
+    // testOverlay();
+    testFullSizeVideo();
 
     // testBgCanvasVideo();
   }
@@ -33,6 +31,7 @@ import Overlay from './component/Overlay';
       clickCallback: clickCallback,
       activateCallback: activateCallback
     });
+    navi.init();
 
     function mouseoverCallback(obj) {
       console.log('mouseover :', obj);
@@ -77,6 +76,7 @@ import Overlay from './component/Overlay';
 
       timerInterval: 500
     });
+    navi.init();
 
     function mouseoverCallback(obj) {
       console.log('mouseover :', obj);
@@ -178,8 +178,53 @@ import Overlay from './component/Overlay';
 
   function testFullSizeVideo() {
     let fullSizeVideo = new FullSizeVideo({
+      videoWrap: $('.fullsize-video'),
+      width: 320,
+      height: 176,
+      alignX: 'center',
+      alignY: 'center',
 
+      videoUrls: ['data/video_320x176.mp4'],
+      
+      posterUrl: 'https://images.unsplash.com/photo-1474496517593-015d8b59450d?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&s=49563d997d36faad03833ddab8d15c0a',
+      posterAlt: 'poster alt string',
+
+      autoplay: true,
+      loop: false,
+      muted: true,
+
+      canplayCallback: (obj) => {
+        console.log('canplayCallback obj :', obj);
+      },
+      timeupdateCallback: (obj) => {
+        console.log('timeupdateCallback obj :', obj);
+      },
+      endedCallback: (obj) => {
+        console.log('endedCallback obj :', obj);
+      }
     });
+
+    fullSizeVideo.init();
+
+    setTimeout(function() {
+      fullSizeVideo.play();
+    }, 2000);
+
+    setTimeout(function() {
+      fullSizeVideo.stop();
+    }, 4000);
+
+    setTimeout(function() {
+      fullSizeVideo.seek(5);
+      fullSizeVideo.play();
+    }, 6000);
+
+    $(window).on('resize', function(evt) {
+      $('#wrapper').css({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    }).trigger('resize');
   }
 
   function testBgCanvasVideo() {

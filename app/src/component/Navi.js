@@ -1,55 +1,56 @@
+/*
+@example
+
+// html
+<ul class="navi">
+  <li><a href="#">1</a></li>
+  <li><a href="#">2</a></li>
+  <li><a href="#">3</a></li>
+  <li><a href="#">4</a></li>
+</ul>
+
+// js
+import Navi from './component/Navi';
+
+let navi = new Navi({
+  btns: $('.navi li a'),
+  mouseoverCallback: mouseoverCallback,
+  mouseoutCallback: mouseoutCallback,
+  clickCallback: clickCallback,
+  activateCallback: activateCallback
+});
+navi.init();
+
+function mouseoverCallback(obj) {
+  console.log('mouseover :', obj);
+}
+
+function mouseoutCallback(obj) {
+  console.log('mouseout :', obj);
+}
+
+function clickCallback(obj) {
+  console.log('click :', obj);
+}
+
+function activateCallback(obj) {
+  console.log('activateCallback :', obj);
+
+  let btns = $(navi.getBtns()),
+    btn = $(navi.getBtn(obj.index));
+
+  btns.removeClass('on');
+  btn.addClass('on');
+}
+
+//activate 3rd btn
+navi.activate(3);
+
+//get activated index
+console.log( 'after call "navi.activate(3)", print "_navi.getActivatedIndex()" :', navi.getActivatedIndex() );
+*/
+
 class Navi {
-	/*
-	@example
-
-	// html
-	<ul class="navi">
-      <li><a href="#">1</a></li>
-      <li><a href="#">2</a></li>
-      <li><a href="#">3</a></li>
-      <li><a href="#">4</a></li>
-    </ul>
-	
-	// js
-	import Navi from './component/Navi';
-	
-	let navi = new Navi({
-      btns: $('.navi li a'),
-      mouseoverCallback: mouseoverCallback,
-      mouseoutCallback: mouseoutCallback,
-      clickCallback: clickCallback,
-      activateCallback: activateCallback
-    });
-
-    function mouseoverCallback(obj) {
-      console.log('mouseover :', obj);
-    }
-
-    function mouseoutCallback(obj) {
-      console.log('mouseout :', obj);
-    }
-
-    function clickCallback(obj) {
-      console.log('click :', obj);
-    }
-
-    function activateCallback(obj) {
-      console.log('activateCallback :', obj);
-
-      let btns = $(navi.getBtns()),
-        btn = $(navi.getBtn(obj.index));
-
-      btns.removeClass('on');
-      btn.addClass('on');
-    }
-
-    //activate 3rd btn
-    navi.activate(3);
-
-    //get activated index
-    console.log( 'after call "navi.activate(3)", print "_navi.getActivatedIndex()" :', navi.getActivatedIndex() );
-	*/
-
 	constructor(options) {
 		if(!options) return;
 		let _ = this;
@@ -63,8 +64,10 @@ class Navi {
 
 		_.currentIndex = 0;
 		_.activateIndex = 0;
+	}
 
-		_.setBtnsEventHandler(true);
+	init(obj) {
+		this.setBtnsEventHandler(true);
 	}
 
 	setBtnsEventHandler(flag) {

@@ -14,7 +14,7 @@ class Overlay {
 		_.parentNode = _.option.appendTo;
 	}
 
-	init() {
+	init(obj) {
 		let _ = this;
 
 		_.node = $(document.createElement('div')).addClass(_.option.class);
@@ -50,7 +50,7 @@ class Overlay {
 	hide() {
 		this.node.hide();
 	}
-	
+
 	destroy(obj) {
 		let _ = this;
 
