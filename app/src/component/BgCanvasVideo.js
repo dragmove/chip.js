@@ -1,46 +1,68 @@
 class BgCanvasVideo {
 	constructor(options) {
-		console.log('options :', options);
+		let _ = this;
 
-		this.options = {
+		_.option = {
 			parent: null,
-
 			videoClass: 'video',
+			canvasClass: 'canvas',
 
 			autoplay: true,
-			loop: true,
-			muted: true,
+			loop: false,
+			muted: false,
 			
 			width: 1024,
 			height: 768,
 
 			posterUrl: '',
+			posterAlt: '',
+
 			videoUrl: '',
-
-			canvasClass: 'canvas'
 		};
-		$.extend(true, this.options, options);
+		Object.assign(_.option, options);
 
-		this.$parent = $(this.options.parent);
+		this.parent = $(_.option.parent);
 
-		this.videoEle = $(this.getVideoTpl());
-		this.$parent.append(this.videoEle);
+		this.videoTpl = $(_.getVideoTpl());
+		this.video = null;
 
-		this.canvasEle = $(this.getCanvasTpl());
-		this.$parent.append(this.canvasEle);
+		this.canvasTpl = $(_.getCanvasTpl());
+		this.canvas = null;
 
-		this.video = this.videoEle.get(0);
-		this.canvas = this.canvasEle.get(0);
-		this.ctx = this.canvas.getContext('2d');
+		// this.ctx = this.canvas.getContext('2d');
 
-		this.isPlaying = false;
-
-		this.init();
+		_.$proxyResize = $.proxy(_.resize, _);
 	}
 
-	init() {
-		this.setCanvasSize();
-		this.setPosition();
+	getVideoTpl() {
+		let _ = this,
+			opt = _.option;
+
+		let videoSourceTpl = '',
+			ext = opt.videoUrl.split('.').pop().toLowerCase();
+		videoSourceTpl += `<source src="${opt.videoUrl}" type="video/${ext}"></source>`;
+
+		let tpl = `<video class="${opt.videoClass}" autoplay="${opt.autoplay}" loop="${opt.loop}" muted="${opt.muted}" poster="${opt.posterUrl}">${videoSourceTpl}</video>`;
+		return tpl;
+	}
+
+	getCanvasTpl() {
+		return `<canvas class="${this.option.canvasClass}"></canvas>`;
+	}
+
+	resize(evt) {
+		let _ = this,
+			size = _.getVideoSizeAspectFill();
+		console.log('size :', size);
+
+		_.video.width(size.width).height(size.height);
+
+	}
+
+	init(obj) {
+		let _ = this;
+
+		_.setInstance();
 
 		/*
 		
@@ -51,23 +73,26 @@ class BgCanvasVideo {
 		*/
 	}
 
+	setInstance() {
+		let _ = this;
+
+		this.parent.append(_.videoTpl);
+		this.parent.append(_.canvasTpl);
+
+		this.video = $(`.${_.option.videoClass}`, _.parent);
+		this.canvas = $(`.${_.option.canvasClass}`, _.parent);
+
+		$(window).on('resize', _.$proxyResize);
+
+		/*
+		this.setCanvasSize();
+		this.setPosition();
+		*/
+	}
+
 	setCanvasSize() {
 		let _ = this;
 
-		let videoWidth = _.options.width,
-			videoHeight = _.options.height;
-
-		let winWidth = window.innerWidth,
-			winHeight = window.innerHeight;
-
-		_.height = Math.ceil(winHeight);
-		_.width = Math.ceil(videoWidth * _.height / videoHeight);
-
-		/*
-		if( this.width < winWidth ){
-			this.height = Math.ceil( winHeight + ( ( winWidth - this.width ) * 9 / 16 ) );
-			this.width = Math.ceil( this.height * movieWidth / movieHeight );
-		}
 
 		if( this.isIOS() ){
 			this.ctx.canvas.width = this.width;
@@ -80,6 +105,26 @@ class BgCanvasVideo {
 			this.videoNode.height( this.height );
 		}
 		*/
+	}
+
+	getVideoSizeAspectFill() {
+		let _ = this,
+			opt = _.option;
+
+		let winWidth = window.innerWidth,
+			winHeight = window.innerHeight,
+			modifiedSizeW = winWidth,
+			modifiedSizeH = Math.ceil( (winWidth / opt.width) * opt.height );
+
+		if(modifiedSizeH < winHeight) {
+			modifiedSizeW = Math.ceil( (winHeight / opt.height) * opt.width );
+			modifiedSizeH = winHeight;
+		}
+
+		return {
+			width: modifiedSizeW,
+			height: modifiedSizeH
+		};
 	}
 
 	setPosition() {
@@ -107,16 +152,9 @@ class BgCanvasVideo {
 		*/
 	}
 
-	getVideoTpl() {
-		let _ = this.options;
-		return `<video class="${_.videoClass}" autoplay="${_.autoplay}" loop="${_.loop}" muted="${_.muted}" poster="${_.posterUrl}">
-			<source src="${_.videoUrl}" type="video/mp4">
-		</video>`;
-	}
 
-	getCanvasTpl() {
-		return `<canvas class="${this.options.canvasClass}"></canvas>`;
-	}
+
+
 
 	/*
 	 * utils

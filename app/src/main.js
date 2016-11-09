@@ -3,8 +3,8 @@
 // import ImageLoader from './component/ImageLoader';
 // import FullSizeBg from './component/FullSizeBg';
 // import Overlay from './component/Overlay';
-import FullSizeVideo from './component/FullSizeVideo';
-// import BgCanvasVideo from './component/BgCanvasVideo';
+// import FullSizeVideo from './component/FullSizeVideo';
+ import BgCanvasVideo from './component/BgCanvasVideo';
 
 (function($) {
   "use strict";
@@ -17,9 +17,8 @@ import FullSizeVideo from './component/FullSizeVideo';
     // testImageLoader();
     // testFullSizeBg();
     // testOverlay();
-    testFullSizeVideo();
-
-    // testBgCanvasVideo();
+    // testFullSizeVideo();
+    testBgCanvasVideo();
   }
 
   function testNavi() {
@@ -229,7 +228,31 @@ import FullSizeVideo from './component/FullSizeVideo';
 
   function testBgCanvasVideo() {
     let bgCanvasVideo = new BgCanvasVideo({
+      parent: $('.canvas-video'),
+      videoClass: 'video',
+      canvasClass: 'canvas',
 
+      autoplay: true,
+      loop: true,
+      muted: true,
+
+      width: 1080,
+      height: 1920,
+
+      posterUrl: '',
+      posterAlt: '',
+      videoUrl: 'http://vodfile.ncsoft.co.kr/ncvod/plaync/LE/CBT/motion/hero_all.mp4'
     });
+
+    bgCanvasVideo.init();
+
+    $(window).on('resize', function(evt) {
+      console.log('resize() :', window.innerWidth, window.innerHeight);
+
+      $('#wrapper').css({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    }).trigger('resize');
   }
 }(jQuery));
