@@ -106,8 +106,21 @@
       }
       */
 
+      .canvas-video {
+        position: relative;
+        overflow: hidden;
+      }
+
       .canvas-video video {
         position: absolute;
+      }
+
+      .canvas-video canvas {
+        position: absolute;
+      }
+
+      .fixed-btns {
+        position: fixed;
         top: 0;
         left: 0;
       }
@@ -142,9 +155,17 @@
 
       <div class="canvas-video">
       </div>
+
+      <div class="fixed-btns">
+        <button id="btn-play">play</button>
+        <button id="btn-pause">pause</button>
+        <button id="btn-stop">stop</button>
+        <button id="btn-seek">seek</button>
+      </div>
     </div>
 
     <script type="text/javascript" src="lib/jquery-3.1.1.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="main.js" charset="utf-8"></script>
+    <!--<script type="text/javascript" src="js/main.merge.js" charset="utf-8"></script>-->
   </body>
 </html>

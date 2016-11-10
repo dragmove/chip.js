@@ -5,10 +5,10 @@
 // import Overlay from './component/Overlay';
 // import FullSizeVideo from './component/FullSizeVideo';
  import BgCanvasVideo from './component/BgCanvasVideo';
+import Movie from './component/Movie';
 
 (function($) {
   "use strict";
-
   $(document).ready(init);
 
   function init() {
@@ -18,9 +18,115 @@
     // testFullSizeBg();
     // testOverlay();
     // testFullSizeVideo();
-    testBgCanvasVideo();
+    //testBgCanvasVideo();
+
+     testMovie();
   }
 
+  function testMovie() {
+    let backgroundMovie = new Movie({
+      parent: $('.canvas-video'), //v
+      videoClass: 'video', //v
+      canvasClass: 'canvas', //v
+
+      autoplay: true,
+      loop: true,
+      muted: false,
+
+      width: 1920, //v
+      height: 1080, //v
+      alignX: 'center', //v
+      alignY: 'center', //v
+
+      fps: 30, // TODO
+      videoUrl: 'http://akvod.plaync.com/RK/MOVIES/PREREGISTER3/960x540.mp4',
+
+      posterUrl: '', // TODO
+      posterAlt: '', // TODO
+
+      canplayCallback: null, //v
+      timeupdateCallback: null, //v
+      endedCallback: null //v
+    });
+    backgroundMovie.init();
+
+    $(window).on('resize', function(evt) {
+      console.log('main.js - resize. window.innerWidth, window.innerHeight :', window.innerWidth, window.innerHeight);
+
+      $('.canvas-video').css({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+
+      $('#wrapper').css({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    }).trigger('resize');
+  }
+
+  function testBgCanvasVideo() {
+    let bgCanvasVideo = new BgCanvasVideo({
+      parent: $('.canvas-video'), //v
+      videoClass: 'video', //v
+      canvasClass: 'canvas', //v
+
+      autoplay: true,
+      loop: true,
+      muted: false,
+
+      width: 1920, //v
+      height: 1080, //v
+      alignX: 'center',
+      alignY: 'center',
+
+      fps: 30,
+      videoUrl: 'http://akvod.plaync.com/RK/MOVIES/PREREGISTER3/960x540.mp4', // 'http://vodfile.ncsoft.co.kr/ncvod/plaync/LE/CBT/motion/hero_all.mp4',
+      posterUrl: '',
+      posterAlt: '',
+
+      canplayCallback: null,
+      timeupdateCallback: null,
+      endedCallback: null
+    });
+    bgCanvasVideo.init();
+
+    $(window).on('resize', function(evt) {
+      console.log('main.js - resize. window.innerWidth, window.innerHeight :', window.innerWidth, window.innerHeight);
+
+      $('.canvas-video').css({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+
+      $('#wrapper').css({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    }).trigger('resize');
+
+    // test btns
+    $('#btn-play').on('click', function(evt) {
+      evt.preventDefault();
+      bgCanvasVideo.play();
+    });
+
+    $('#btn-pause').on('click', function(evt) {
+      evt.preventDefault();
+      bgCanvasVideo.pause();
+    });
+
+    $('#btn-stop').on('click', function(evt) {
+      evt.preventDefault();
+      bgCanvasVideo.stop();
+    });
+
+    $('#btn-seek').on('click', function(evt) {
+      evt.preventDefault();
+      bgCanvasVideo.seek(84);
+    });
+
+  /*
   function testNavi() {
     let navi = new Navi({
       btns: $('.navi li a'),
@@ -225,34 +331,6 @@
       });
     }).trigger('resize');
   }
-
-  function testBgCanvasVideo() {
-    let bgCanvasVideo = new BgCanvasVideo({
-      parent: $('.canvas-video'),
-      videoClass: 'video',
-      canvasClass: 'canvas',
-
-      autoplay: true,
-      loop: true,
-      muted: true,
-
-      width: 1080,
-      height: 1920,
-
-      posterUrl: '',
-      posterAlt: '',
-      videoUrl: 'http://vodfile.ncsoft.co.kr/ncvod/plaync/LE/CBT/motion/hero_all.mp4'
-    });
-
-    bgCanvasVideo.init();
-
-    $(window).on('resize', function(evt) {
-      console.log('resize() :', window.innerWidth, window.innerHeight);
-
-      $('#wrapper').css({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
-    }).trigger('resize');
+  */
   }
 }(jQuery));
