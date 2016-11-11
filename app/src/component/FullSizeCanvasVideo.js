@@ -57,8 +57,8 @@ class FullSizeCanvasVideo {
     let _ = this,
       opt = _.option;
 
-    _.$video = $(_.getVideoTpl());
-    _.$canvas = $(_.getCanvasTpl());
+    _.$video = $(_.getVideoTpl()).css({position: 'absolute'});
+    _.$canvas = $(_.getCanvasTpl()).css({position: 'absolute'});
     _.parent.append(_.$video);
     _.parent.append(_.$canvas);
 
@@ -99,7 +99,7 @@ class FullSizeCanvasVideo {
       opt = _.option,
       isVideoHasOnended = _.video.hasOwnProperty('onended');
 
-    if( _.isIOS() ) {
+    if (_.isIOS()) {
       _.$video.on('canplay', (evt) => {
         _.drawVideoToCanvas();
         if (opt.canplayCallback) {
@@ -145,7 +145,7 @@ class FullSizeCanvasVideo {
           }
 
           if (opt.endedCallback && (_.video.currentTime >= _.video.duration)) {
-            if(opt.loop === true) return;
+            if (opt.loop === true) return;
 
             _.isPlaying = false;
 
@@ -174,7 +174,7 @@ class FullSizeCanvasVideo {
       }
     }
 
-    if(opt.visibilitychangeCallback) {
+    if (opt.visibilitychangeCallback) {
       // todo - pc v
       let hidden, visibilityState, visibilityChange;
       if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
