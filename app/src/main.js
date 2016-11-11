@@ -21,7 +21,7 @@ import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
   }
 
   function testFullSizeCanvasVideo() {
-    let bgMovie = new FullSizeCanvasVideo({
+    let canvasVideo = new FullSizeCanvasVideo({
       parent: $('.canvas-video'),
       videoClass: 'video',
       canvasClass: 'canvas',
@@ -55,13 +55,13 @@ import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
         console.log('extenal visibilitychangeCallback() obj :', obj);
 
         if(obj.documentHidden) {
-          bgMovie.pause();
+          canvasVideo.pause();
         } else {
-          bgMovie.play();
+          canvasVideo.play();
         }
       }
     });
-    bgMovie.init();
+    canvasVideo.init();
 
     $(window).on('resize', function(evt) {
       console.log('main.js - resize. window.innerWidth, window.innerHeight :', window.innerWidth, window.innerHeight);
@@ -80,22 +80,22 @@ import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
     // test btns
     $('#btn-play').on('click', function(evt) {
       evt.preventDefault();
-      bgMovie.play();
+      canvasVideo.play();
     });
 
     $('#btn-pause').on('click', function(evt) {
       evt.preventDefault();
-      bgMovie.pause();
+      canvasVideo.pause();
     });
 
     $('#btn-stop').on('click', function(evt) {
       evt.preventDefault();
-      bgMovie.stop();
+      canvasVideo.stop();
     });
 
     $('#btn-seek').on('click', function(evt) {
       evt.preventDefault();
-      bgMovie.seek(30);
+      canvasVideo.seek(30);
     });
   }
 }(jQuery));
