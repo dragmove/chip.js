@@ -75,7 +75,6 @@ class FullSizeCanvasVideo {
     _.setCanvasSize(size.width, size.height);
     _.setWrapAlign(opt.alignX, opt.alignY, size);
 
-    let isVideoHasOnended = _.video.hasOwnProperty('onended');
     if (_.isIOS()) {
       _.$video.hide();
 
