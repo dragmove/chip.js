@@ -30,14 +30,16 @@ import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
       loop: true,
       muted: false,
 
-      width: 1920,
-      height: 1080,
+      width: 960,
+      height: 540,
       alignX: 'center',
       alignY: 'center',
 
       fps: 30, // TODO
       videoUrl: 'http://akvod.plaync.com/RK/MOVIES/PREREGISTER3/960x540.mp4',
       posterUrl: './img/poster.jpg',
+
+      contentMode: FullSizeCanvasVideo.ASPECT_FIT,
 
       canplayCallback: (obj) => { // iOS, Adr v
         console.log('external canplayCallback() obj :', obj);
