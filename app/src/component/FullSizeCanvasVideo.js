@@ -11,13 +11,15 @@ class FullSizeCanvasVideo {
       alignX: 'center',
       alignY: 'center',
 
-      fps: 30, // TODO
+      fps: 30, // TODO - check
       videoUrl: '',
       posterUrl: '',
 
       autoplay: true,
       loop: true,
       muted: false,
+
+      contentMode: FullSizeCanvasVideo.ASPECT_FILL, // TODO - add ASPECT_FIT
 
       canplayCallback: null,
       timeupdateCallback: null,
@@ -45,6 +47,7 @@ class FullSizeCanvasVideo {
     _.lastRenderTime = 0;
     _.animationFrame = null;
 
+    _.getVideoSize = _.getVideoContentModeFunc(_.option.contentMode);
     _.$proxyResize = $.proxy(_.resize, _);
   }
 
@@ -70,7 +73,7 @@ class FullSizeCanvasVideo {
     if (opt.muted === true) _.video.setAttribute('muted', '');
     if (opt.autoplay === true) _.video.setAttribute('autoplay', ''); // iOS video node already has "autoplay" attribute
 
-    let size = _.getVideoSizeAspectFill();
+    let size = _.getVideoSize();
     _.setVideoSize(size.width, size.height);
     _.setCanvasSize(size.width, size.height);
     _.setWrapAlign(opt.alignX, opt.alignY, size);
@@ -174,7 +177,7 @@ class FullSizeCanvasVideo {
     }
 
     if (opt.visibilitychangeCallback) {
-      // todo - pc v
+      // todo - change to vendor prefix util.
       let hidden, visibilityState, visibilityChange;
       if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
         hidden = 'hidden';
@@ -199,7 +202,7 @@ class FullSizeCanvasVideo {
           event: evt,
           video: _.video,
           documentHidden: document[hidden],
-          documentVisibilityState: document[visibilityState]
+          documentVisibilityState: document[visibilityState] // visible, hidden, prerender, unloaded
         });
       });
     }
@@ -283,6 +286,18 @@ class FullSizeCanvasVideo {
       _.lastRenderTime = now;
     }
 
+    // TODO - change to below logic.
+    /*
+    let now = Date.now(),
+      elapsedTime = now - _.lastRenderTime;
+
+    if (elapsedTime >= (1000 / _.option.fps)) {
+      console.log('elapsedTime :', elapsedTime);
+      _.video.currentTime = _.video.currentTime + elapsedTime;
+      _.lastRenderTime = now;
+    }
+    */
+
     if (_.video.currentTime >= _.video.duration) {
       _.isPlaying = false;
 
@@ -313,7 +328,7 @@ class FullSizeCanvasVideo {
 
   resize(evt) {
     let _ = this,
-      size = _.getVideoSizeAspectFill();
+      size = _.getVideoSize();
 
     _.setVideoSize(size.width, size.height);
     _.setCanvasSize(size.width, size.height);
@@ -361,6 +376,52 @@ class FullSizeCanvasVideo {
       width: modifiedSizeW,
       height: modifiedSizeH
     };
+  }
+
+  getVideoSizeAspectFit() {
+    let _ = this,
+      opt = _.option;
+
+    let winWidth = window.innerWidth,
+      winHeight = window.innerHeight,
+      modifiedSizeW = 0,
+      modifiedSizeH = 0;
+
+      console.log('(winWidth / opt.width) :', (winWidth / opt.width));
+      console.log('(winHeight / opt.height) :', (winHeight / opt.height));
+
+    // TODO - CHANGE logic.
+    if( (winWidth / opt.width) < (winHeight / opt.height) ) {
+      modifiedSizeW = winWidth;
+      modifiedSizeH = winHeight * (winWidth / opt.width);
+    } else {
+      modifiedSizeW = winWidth * (winHeight / opt.height);
+      modifiedSizeH = winHeight;
+    }
+
+    console.log('modifiedSizeW :', modifiedSizeW);
+    console.log('modifiedSizeH :', modifiedSizeH);
+
+    return {
+      width: modifiedSizeW,
+      height: modifiedSizeH
+    };
+  }
+
+  getVideoContentModeFunc(contentMode) {
+    let func = null;
+
+    switch(contentMode) {
+      case FullSizeCanvasVideo.ASPECT_FILL : 
+        func = this.getVideoSizeAspectFill;
+      break;
+
+      case FullSizeCanvasVideo.ASPECT_FIT :
+        func = this.getVideoSizeAspectFit;
+      break;
+    }
+
+    return func;
   }
 
   isIOS() {
@@ -417,5 +478,7 @@ class FullSizeCanvasVideo {
     }
   }
 }
+FullSizeCanvasVideo.ASPECT_FILL = 'ASPECT_FILL';
+FullSizeCanvasVideo.ASPECT_FIT = 'ASPECT_FIT';
 
 export default FullSizeCanvasVideo;
