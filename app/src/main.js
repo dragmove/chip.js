@@ -35,7 +35,7 @@ import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
       alignX: 'center',
       alignY: 'center',
 
-      fps: 30, // TODO
+      fps: 30,
       videoUrl: 'http://akvod.plaync.com/RK/MOVIES/PREREGISTER3/960x540.mp4',
       posterUrl: './img/poster.jpg',
 

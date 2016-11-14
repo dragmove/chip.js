@@ -11,7 +11,7 @@ class FullSizeCanvasVideo {
       alignX: 'center',
       alignY: 'center',
 
-      fps: 30, // TODO - check
+      fps: 60,
       videoUrl: '',
       posterUrl: '',
 
@@ -19,7 +19,7 @@ class FullSizeCanvasVideo {
       loop: true,
       muted: false,
 
-      contentMode: FullSizeCanvasVideo.ASPECT_FILL, // TODO - add ASPECT_FIT
+      contentMode: FullSizeCanvasVideo.ASPECT_FILL, // FullSizeCanvasVideo.ASPECT_FILL, FullSizeCanvasVideo.ASPECT_FIT, FullSizeCanvasVideo.WIDTH_FIT
 
       canplayCallback: null,
       timeupdateCallback: null,
@@ -286,18 +286,6 @@ class FullSizeCanvasVideo {
       _.lastRenderTime = now;
     }
 
-    // TODO - change to below logic.
-    /*
-    let now = Date.now(),
-      elapsedTime = now - _.lastRenderTime;
-
-    if (elapsedTime >= (1000 / _.option.fps)) {
-      console.log('elapsedTime :', elapsedTime);
-      _.video.currentTime = _.video.currentTime + elapsedTime;
-      _.lastRenderTime = now;
-    }
-    */
-
     if (_.video.currentTime >= _.video.duration) {
       _.isPlaying = false;
 
@@ -349,7 +337,6 @@ class FullSizeCanvasVideo {
     if (_.isIOS()) {
       tpl = `<video class="${opt.videoClass}" poster="${opt.posterUrl}" autoplay>${videoSourceTpl}</video>`;
     }
-    //let tpl = `<video class="${opt.videoClass}" muted="true" loop="true" autoplay="true" poster="">${videoSourceTpl}</video>`;
 
     return tpl;
   }
@@ -382,30 +369,28 @@ class FullSizeCanvasVideo {
     let _ = this,
       opt = _.option;
 
-    let winWidth = window.innerWidth,
-      winHeight = window.innerHeight,
-      modifiedSizeW = 0,
-      modifiedSizeH = 0;
-
-      console.log('(winWidth / opt.width) :', (winWidth / opt.width));
-      console.log('(winHeight / opt.height) :', (winHeight / opt.height));
-
-    // TODO - CHANGE logic.
-    if( (winWidth / opt.width) < (winHeight / opt.height) ) {
-      modifiedSizeW = winWidth;
-      modifiedSizeH = winHeight * (winWidth / opt.width);
-    } else {
-      modifiedSizeW = winWidth * (winHeight / opt.height);
-      modifiedSizeH = winHeight;
-    }
-
-    console.log('modifiedSizeW :', modifiedSizeW);
-    console.log('modifiedSizeH :', modifiedSizeH);
+    let ratio = Math.min( (window.innerWidth / opt.width), (window.innerHeight / opt.height) );
+    let modifiedSizeW = Math.ceil(opt.width * ratio),
+      modifiedSizeH = Math.ceil(opt.height * ratio);
 
     return {
       width: modifiedSizeW,
       height: modifiedSizeH
     };
+  }
+
+  getVideoSizeWidthFit() {
+    let _ = this,
+      opt = _.option;
+
+    let winWidth = window.innerWidth,
+      modifiedSizeW = winWidth,
+      modifiedSizeH = Math.ceil((winWidth / opt.width) * opt.height);
+
+    return {
+      width: modifiedSizeW,
+      height: modifiedSizeH
+    }
   }
 
   getVideoContentModeFunc(contentMode) {
@@ -414,11 +399,15 @@ class FullSizeCanvasVideo {
     switch(contentMode) {
       case FullSizeCanvasVideo.ASPECT_FILL : 
         func = this.getVideoSizeAspectFill;
-      break;
+        break;
 
       case FullSizeCanvasVideo.ASPECT_FIT :
         func = this.getVideoSizeAspectFit;
-      break;
+        break;
+
+      case FullSizeCanvasVideo.WIDTH_FIT :
+        func = this.getVideoSizeWidthFit;
+        break;
     }
 
     return func;
@@ -480,5 +469,6 @@ class FullSizeCanvasVideo {
 }
 FullSizeCanvasVideo.ASPECT_FILL = 'ASPECT_FILL';
 FullSizeCanvasVideo.ASPECT_FIT = 'ASPECT_FIT';
+FullSizeCanvasVideo.WIDTH_FIT = 'WIDTH_FIT';
 
 export default FullSizeCanvasVideo;
