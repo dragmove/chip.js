@@ -25,7 +25,7 @@ class FullSizeCanvasVideo {
 
       visibilitychangeCallback: null
     };
-    Object.assign(_.option, options);
+    $.extend(_.option, options);
 
     _.parent = _.option.parent;
 
