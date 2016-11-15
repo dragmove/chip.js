@@ -162,7 +162,7 @@ class FullSizeCanvasVideo {
       }
 
       if (isVideoHasOnended && opt.endedCallback) {
-        // TODO - no browser support 'ended' event now.
+        // TODO - no browser support 'ended' event now. 2016.11.15
         $(video).on('ended', (evt) => {
           _.isPlaying = false;
 
@@ -194,10 +194,6 @@ class FullSizeCanvasVideo {
       }
 
       $(document).on(visibilityChange, (evt) => {
-        console.log('visibilitychange :', evt);
-        console.log('hidden', document[hidden]);
-        console.log('visibilityState', document[visibilityState]); // visible, hidden, prerender, unloaded
-
         opt.visibilitychangeCallback.call(null, {
           event: evt,
           video: _.video,
