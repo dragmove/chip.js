@@ -179,29 +179,63 @@ class FullSizeCanvasVideo {
     if (opt.visibilitychangeCallback) {
       // todo - change to vendor prefix util.
       let hidden, visibilityState, visibilityChange;
+
+      /*
       if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
         hidden = 'hidden';
         visibilityState = 'visibilityState';
         visibilityChange = 'visibilitychange';
+
       } else if (typeof document.msHidden !== 'undefined') {
         hidden = 'msHidden';
         visibilityState = 'msVisibilityState';
         visibilityChange = 'msvisibilitychange';
+
+      } else if (typeof document.mozHidden !== 'undefined') {
+        hidden = 'mozHidden';
+        visibilityState = 'mozVisibilityState'
+        visibilityChange = 'mozvisibilitychange';
+
       } else if (typeof document.webkitHidden !== 'undefined') {
         hidden = 'webkitHidden';
         visibilityState = 'webkitVisibilityState';
         visibilityChange = 'webkitvisibilitychange';
       }
+      */
 
-      $(document).on(visibilityChange, (evt) => {
-        opt.visibilitychangeCallback.call(null, {
-          event: evt,
-          video: _.video,
-          documentHidden: document[hidden],
-          documentVisibilityState: document[visibilityState] // visible, hidden, prerender, unloaded
+      let visibilityChange = _.getDocumentPrefixedProperty('visibilitychange', false);
+      if(visibilityChange) {
+        let hidden = _.getDocumentPrefixedProperty('hidden', true),
+          visibilityState = _.getDocumentPrefixedProperty('visibilityState', true),
+
+        $(document).on(visibilityChange, (evt) => {
+          opt.visibilitychangeCallback.call(null, {
+            event: evt,
+            video: _.video,
+            documentHidden: document[hidden],
+            documentVisibilityState: document[visibilityState] // visible, hidden, prerender, unloaded
+          });
         });
-      });
+      }
     }
+  }
+
+  getDocumentPrefixedProperty(propertyName, isPropertyFirstCharToUpperCase) {
+    if (propertyName in document) return propertyName;
+
+    var PREFIXES = ['webkit', 'moz', 'ms', 'o'],
+      isPropFirstCharUppercase = (isPropertyFirstCharToUpperCase === true) ? true : false;
+
+    var prop = '';
+    for (var i = 0, max = PREFIXES.length; i < max; i++) {
+      prop = (isPropFirstCharUppercase) ? propertyName.charAt(0).toUpperCase() + propertyName.slice(1) : propertyName;
+
+      prop = PREFIXES[i] + prop;
+      console.log('prop :', prop);
+      if( prop in document  ) return prop;
+    }
+
+    return '';
   }
 
   setWrapAlign(alignX, alignY, modifiedSize) {
