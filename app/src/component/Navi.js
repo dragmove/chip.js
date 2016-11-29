@@ -134,7 +134,7 @@ class Navi {
 				event: evt,
 				btn: btn,
 				prevIndex: prevIndex,
-				index: _.activateIndex
+				index: idx
 			});
 		}
 
