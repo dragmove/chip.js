@@ -92,7 +92,7 @@ class Navi {
 		evt.preventDefault();
 
 		let _ = this,
-			btn = evt.target;
+			btn = evt.currentTarget;
 
 		_.currentIndex = $(_.btns).index(btn) + 1;
 
@@ -109,7 +109,7 @@ class Navi {
 		evt.preventDefault();
 
 		let _ = this,
-			btn = evt.target;
+			btn = evt.currentTarget;
 
 		if(_.mouseoutCallback) {
 			_.mouseoutCallback.call(null, {
@@ -124,8 +124,7 @@ class Navi {
 		evt.preventDefault();
 
 		let _ = this,
-			btn = evt.target,
-			btns = _.btns,
+			btn = evt.currentTarget,
 			prevIndex = _.activateIndex,
 			idx = $(_.btns).index(btn) + 1;
 
@@ -134,7 +133,7 @@ class Navi {
 				event: evt,
 				btn: btn,
 				prevIndex: prevIndex,
-				index: idx
+				index: _.activateIndex
 			});
 		}
 
