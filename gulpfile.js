@@ -70,9 +70,7 @@ gulp.task('lint', function () {
 /*
  * run server - connect http://localhost:9001/webpack-dev-server/main.html
  */
-gulp.task('server', ['_webpack-dev-server']);
-
-gulp.task('_webpack-dev-server', function () {
+gulp.task('webpack-dev-server', function () {
   var config = require('./webpack.config.js'),
     compiler = webpack(config);
 
