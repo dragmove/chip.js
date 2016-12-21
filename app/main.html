@@ -79,52 +79,53 @@
         background: #333;
       }
 
-      /*
-      .fullsize-bg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-      }
-
-      .fullsize-video {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-      }
-
-      .fullsize-video img {
-      }
-
-      .fullsize-video video {
-        position: absolute;
-        top: 0;
-        left: 0;
-      }
-      */
-
-      .canvas-video {
+      .slidetab {
         position: relative;
+        width: 100%;
+        height: 50px;
         overflow: hidden;
       }
 
-      /*
-      .canvas-video video {
+      .slidetab__handle {
         position: absolute;
-      }
-
-      .canvas-video canvas {
-        position: absolute;
-      }
-      */
-
-      .fixed-btns {
-        position: fixed;
         top: 0;
         left: 0;
+      }
+
+      .slidetab__tab {
+        display: block;
+        position: relative;
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+      }
+
+      .slidetab__tab:after {
+        content: "";
+        display: block;
+        clear: both;
+      }
+
+      .slidetab__tab li {
+        display: inline-block;
+        height: 50px;
+        line-height: 50px;
+        outline: 1px solid #006666;
+      }
+
+      .slidetab__tab li a {
+        display:block;
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 5px;
+        padding-right: 5px;
+        background-color: #555555;
+        color: #222;
+        text-align: center;
+      }
+
+      .slidetab__tab li a.on {
+        color: #f00;
       }
     </style>
   </head>
@@ -166,9 +167,35 @@
         <button id="btn-seek">seek</button>
       </div>
       -->
+
+      <div class="slidetab">
+        <div class="slidetab__handle">
+          <ul class="slidetab__tab">
+            <li><a href="#">마이 리니지</a></li><li><a href="#">커뮤니티</a></li><li><a href="#">시세</a></li><li><a href="#">파워북</a></li><li><a href="#">쿠폰함</a></li><li><a href="#">봉인해제주문서</a></li><li><a href="#">신규 혜택</a></li><li><a href="#">복귀 혜택</a></li><li><a href="#">계정 보안</a></li><li><a href="#">복귀용사지침서</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        contents
+      </div>
+
+      <div class="test-btns">
+        <a href="#">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">4</a>
+        <a href="#">5</a>
+        <a href="#">6</a>
+        <a href="#">7</a>
+        <a href="#">8</a>
+        <a href="#">9</a>
+        <a href="#">10</a>
+      </div>
     </div>
 
     <script type="text/javascript" src="lib/jquery-3.1.1.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/isMobile.min.js"></script>
     <script type="text/javascript" src="http://skidding.github.io/dragdealer/src/dragdealer.js"></script>
     <script type="text/javascript" src="main.js" charset="utf-8"></script>
     <!--<script type="text/javascript" src="js/main.merge.js" charset="utf-8"></script>-->
