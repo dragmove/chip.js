@@ -4,7 +4,8 @@
 // import FullSizeBg from './component/FullSizeBg';
 // import Overlay from './component/Overlay';
 // import FullSizeVideo from './component/FullSizeVideo';
-import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
+// import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
+import HorizontalScrollNavi from './component/HorizontalScrollNavi';
 
 (function($) {
   "use strict";
@@ -17,87 +18,14 @@ import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
     // testFullSizeBg();
     // testOverlay();
     // testFullSizeVideo();
-    testFullSizeCanvasVideo();
+    // testFullSizeCanvasVideo();
+    testHorizontalScrollNavi();
   }
 
-  function testFullSizeCanvasVideo() {
-    let canvasVideo = new FullSizeCanvasVideo({
-      parent: $('.canvas-video'),
-      videoClass: 'video',
-      canvasClass: 'canvas',
-
-      autoplay: true,
-      loop: true,
-      muted: false,
-
-      width: 960,
-      height: 540,
-      alignX: 'center',
-      alignY: 'center',
-
-      fps: 30,
-      videoUrl: 'http://akvod.plaync.com/RK/MOVIES/PREREGISTER3/960x540.mp4',
-      posterUrl: './img/poster.jpg',
-
-      contentMode: FullSizeCanvasVideo.ASPECT_FIT,
-
-      canplayCallback: (obj) => { // iOS, Adr v
-        console.log('external canplayCallback() obj :', obj);
-      },
-
-      timeupdateCallback: (obj) => { // iOS, Adr v
-        //console.log('external timeupdateCallback() obj :', obj);
-      },
-
-      endedCallback: (obj) => { // iOS, Adr v
-        console.log('external endedCallback() obj :', obj);
-      },
-
-      visibilitychangeCallback: (obj) => {
-        console.log('extenal visibilitychangeCallback() obj :', obj);
-
-        if(obj.documentHidden) {
-          canvasVideo.pause();
-        } else {
-          canvasVideo.play();
-        }
-      }
+  function testHorizontalScrollNavi() {
+    let scrollNavi = new HorizontalScrollNavi({
+      // TODO
     });
-    canvasVideo.init();
-
-    $(window).on('resize', function(evt) {
-      console.log('main.js - resize. window.innerWidth, window.innerHeight :', window.innerWidth, window.innerHeight);
-
-      $('.canvas-video').css({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
-
-      $('#wrapper').css({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
-    }).trigger('resize');
-
-    // test btns
-    $('#btn-play').on('click', function(evt) {
-      evt.preventDefault();
-      canvasVideo.play();
-    });
-
-    $('#btn-pause').on('click', function(evt) {
-      evt.preventDefault();
-      canvasVideo.pause();
-    });
-
-    $('#btn-stop').on('click', function(evt) {
-      evt.preventDefault();
-      canvasVideo.stop();
-    });
-
-    $('#btn-seek').on('click', function(evt) {
-      evt.preventDefault();
-      canvasVideo.seek(30);
-    });
+    scrollNavi.init();
   }
 }(jQuery));
