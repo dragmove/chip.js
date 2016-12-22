@@ -1,186 +1,189 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
+<head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="user-scalable=no, maximum-scale=1.0, minimum-scale=1.0, width=device-width, initial-scale=1.0">
-    <meta property="og:title" content="" />
-    <meta property="og:type" content="" />
-    <meta property="og:url" content="" />
-    <meta property="og:image" content="" />
-    <meta property="og:description" content="" />
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
-    <meta name="author" content="" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport"
+          content="user-scalable=no, maximum-scale=1.0, minimum-scale=1.0, width=device-width, initial-scale=1.0">
+    <meta property="og:title" content=""/>
+    <meta property="og:type" content=""/>
+    <meta property="og:url" content=""/>
+    <meta property="og:image" content=""/>
+    <meta property="og:description" content=""/>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="author" content=""/>
     <title>TEST - chip.js sample</title>
     <style type="text/css">
-      /* http://meyerweb.com/eric/tools/css/reset/ 
-        v2.0 | 20110126
-        License: none (public domain)
-      */
+        /* http://meyerweb.com/eric/tools/css/reset/
+          v2.0 | 20110126
+          License: none (public domain)
+        */
 
-      html, body, div, span, applet, object, iframe,
-      h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-      a, abbr, acronym, address, big, cite, code,
-      del, dfn, em, img, ins, kbd, q, s, samp,
-      small, strike, strong, sub, sup, tt, var,
-      b, u, i, center,
-      dl, dt, dd, ol, ul, li,
-      fieldset, form, label, legend,
-      table, caption, tbody, tfoot, thead, tr, th, td,
-      article, aside, canvas, details, embed, 
-      figure, figcaption, footer, header, hgroup, 
-      menu, nav, output, ruby, section, summary,
-      time, mark, audio, video {
-        margin: 0;
-        padding: 0;
-        border: 0;
-        font-size: 100%;
-        font: inherit;
-        vertical-align: baseline;
-      }
-      /* HTML5 display-role reset for older browsers */
-      article, aside, details, figcaption, figure, 
-      footer, header, hgroup, menu, nav, section {
-        display: block;
-      }
-      body {
-        line-height: 1;
-      }
-      ol, ul {
-        list-style: none;
-      }
-      blockquote, q {
-        quotes: none;
-      }
-      blockquote:before, blockquote:after,
-      q:before, q:after {
-        content: '';
-        content: none;
-      }
-      table {
-        border-collapse: collapse;
-        border-spacing: 0;
-      }
+        html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        b, u, i, center,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,
+        table, caption, tbody, tfoot, thead, tr, th, td,
+        article, aside, canvas, details, embed,
+        figure, figcaption, footer, header, hgroup,
+        menu, nav, output, ruby, section, summary,
+        time, mark, audio, video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
 
-      /*
-       * test
-       */
-      /*
-      a { text-decoration:none; }
+        /* HTML5 display-role reset for older browsers */
+        article, aside, details, figcaption, figure,
+        footer, header, hgroup, menu, nav, section {
+            display: block;
+        }
 
-      a.on {
-        color: #f00;
-      }
-      */
+        body {
+            line-height: 1;
+        }
 
-      #wrapper {
-        position: relative;
-        background: #333;
-      }
+        ol, ul {
+            list-style: none;
+        }
 
-      .slidetab {
-        position: relative;
-        width: 100%;
-        height: 50px;
-        overflow: hidden;
-      }
+        blockquote, q {
+            quotes: none;
+        }
 
-      .slidetab__handle {
-        position: absolute;
-        top: 0;
-        left: 0;
-      }
+        blockquote:before, blockquote:after,
+        q:before, q:after {
+            content: '';
+            content: none;
+        }
 
-      .slidetab__tab {
-        display: block;
-        position: relative;
-        margin: 0;
-        padding: 0;
-        white-space: nowrap;
-      }
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
 
-      .slidetab__tab:after {
-        content: "";
-        display: block;
-        clear: both;
-      }
+        /*
+         * test
+         */
+        /*
+        a { text-decoration:none; }
 
-      .slidetab__tab li {
-        display: inline-block;
-        height: 50px;
-        line-height: 50px;
-        outline: 1px solid #006666;
-      }
+        a.on {
+          color: #f00;
+        }
+        */
 
-      .slidetab__tab li a {
-        display:block;
-        margin-left: 0;
-        margin-right: 0;
-        padding-left: 5px;
-        padding-right: 5px;
-        background-color: #555555;
-        color: #222;
-        text-align: center;
-      }
+        #wrapper {
+            position: relative;
+            background: #333;
+        }
 
-      .slidetab__tab li a.on {
-        color: #f00;
-      }
+        .slide-navi {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            overflow: hidden;
+        }
+
+        .slide-navi .handle {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .slide-navi .btns {
+            display: block;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            white-space: nowrap;
+        }
+
+        .slide-navi .btns:after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .slide-navi .btns li {
+            display: inline-block;
+            height: 50px;
+            line-height: 50px;
+            outline: 1px solid #006666;
+        }
+
+        .slide-navi .btns li a {
+            display: block;
+            margin-left: 0;
+            margin-right: 0;
+            padding-left: 5px;
+            padding-right: 5px;
+            background-color: #555555;
+            color: #222;
+            text-align: center;
+        }
+
+        .slide-navi .btns li a.on {
+            color: #f00;
+        }
     </style>
-  </head>
+</head>
 
-  <body>
-    <div id="wrapper">
-      <!--
-      <div class="test-navi-wrap">
-        <ul class="navi">
-          <li><a href="#">1</a></li>
-          <li><a href="#">2</a></li>
-          <li><a href="#">3</a></li>
-          <li><a href="#">4</a></li>
-        </ul>
-      </div>
+<body>
+<div id="wrapper">
+    <!--
+    <div class="test-navi-wrap">
+      <ul class="navi">
+        <li><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+      </ul>
+    </div>
 
-      <div class="fullsize-bg">
-        <img src="https://images.unsplash.com/photo-1474496517593-015d8b59450d?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&s=49563d997d36faad03833ddab8d15c0a" alt="">
-      </div>
-      -->
+    <div class="fullsize-bg">
+      <img src="https://images.unsplash.com/photo-1474496517593-015d8b59450d?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&s=49563d997d36faad03833ddab8d15c0a" alt="">
+    </div>
+    -->
 
-      <!--
-      <div class="fullsize-video">
-        <img src="https://images.unsplash.com/photo-1474496517593-015d8b59450d?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&s=49563d997d36faad03833ddab8d15c0a" alt="">
-        <video> 
-          <source src="data/video_1920x1080.mp4"></source> preload="auto" controls autoplay loop muted 
-        </video>
-      </div>
-      -->
+    <!--
+    <div class="fullsize-video">
+      <img src="https://images.unsplash.com/photo-1474496517593-015d8b59450d?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&s=49563d997d36faad03833ddab8d15c0a" alt="">
+      <video>
+        <source src="data/video_1920x1080.mp4"></source> preload="auto" controls autoplay loop muted
+      </video>
+    </div>
+    -->
 
-      <!--
-      <div class="canvas-video">
-      </div>
+    <!--
+    <div class="canvas-video">
+    </div>
 
-      <div class="fixed-btns">
-        <button id="btn-play">play</button>
-        <button id="btn-pause">pause</button>
-        <button id="btn-stop">stop</button>
-        <button id="btn-seek">seek</button>
-      </div>
-      -->
+    <div class="fixed-btns">
+      <button id="btn-play">play</button>
+      <button id="btn-pause">pause</button>
+      <button id="btn-stop">stop</button>
+      <button id="btn-seek">seek</button>
+    </div>
+    -->
 
-      <div class="slidetab">
-        <div class="slidetab__handle">
-          <ul class="slidetab__tab">
-            <li><a href="#">마이 리니지</a></li><li><a href="#">커뮤니티</a></li><li><a href="#">시세</a></li><li><a href="#">파워북</a></li><li><a href="#">쿠폰함</a></li><li><a href="#">봉인해제주문서</a></li><li><a href="#">신규 혜택</a></li><li><a href="#">복귀 혜택</a></li><li><a href="#">계정 보안</a></li><li><a href="#">복귀용사지침서</a></li>
-          </ul>
+    <div class="slide-navi">
+        <div class="handle">
+            <ul class="btns">
+                <li><a href="#">btn 1</a></li><li><a href="#">btn 2</a></li><li><a href="#">btn 3</a></li><li><a href="#">btn 4</a></li><li><a href="#">btn 5</a></li><li><a href="#">btn 6</a></li><li><a href="#">btn 7</a></li><li><a href="#">btn 8</a></li><li><a href="#">btn 9</a></li><li><a href="#">btn 10</a></li>
+            </ul>
         </div>
-      </div>
+    </div>
 
-      <div>
-        contents
-      </div>
-
-      <div class="test-btns">
+    <div class="test-btns">
         <a href="#">1</a>
         <a href="#">2</a>
         <a href="#">3</a>
@@ -191,13 +194,12 @@
         <a href="#">8</a>
         <a href="#">9</a>
         <a href="#">10</a>
-      </div>
     </div>
+</div>
 
-    <script type="text/javascript" src="lib/jquery-3.1.1.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="lib/isMobile.min.js"></script>
-    <script type="text/javascript" src="http://skidding.github.io/dragdealer/src/dragdealer.js"></script>
-    <script type="text/javascript" src="main.js" charset="utf-8"></script>
-    <!--<script type="text/javascript" src="js/main.merge.js" charset="utf-8"></script>-->
-  </body>
+<script type="text/javascript" src="lib/jquery-3.1.1.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="http://skidding.github.io/dragdealer/src/dragdealer.js"></script>
+<script type="text/javascript" src="main.js" charset="utf-8"></script>
+<!--<script type="text/javascript" src="js/main.merge.js" charset="utf-8"></script>-->
+</body>
 </html>
