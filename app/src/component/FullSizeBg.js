@@ -35,13 +35,14 @@
  });
  fullSizeBg.init();
 
- $(window).on('resize', function(evt) {
+ $(window).on('resize.ui.fullsizebg', function(evt) {
  $('#wrapper').css({
  width: window.innerWidth,
  height: window.innerHeight
  });
  }).trigger('resize');
  */
+
 
 class FullSizeBg {
   constructor(options) {
@@ -64,7 +65,7 @@ class FullSizeBg {
   }
 
   init(obj) {
-    $(window).on('resize', _.$proxyResize);
+    $(window).on('resize.ui.fullsizebg', _.$proxyResize);
   }
 
   getImageSizeAspectFill() {
@@ -137,7 +138,7 @@ class FullSizeBg {
   destroy(obj) {
     let _ = this;
 
-    $(window).off('resize', _.$proxyResize);
+    $(window).off('resize.ui.fullsizebg', _.$proxyResize);
 
     _.imgWrap = null;
     _.imgWidth = null;

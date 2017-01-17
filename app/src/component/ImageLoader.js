@@ -1,36 +1,36 @@
 /*
-@example
+ @example
 
-import ImageLoader from './component/ImageLoader';
+ import ImageLoader from './component/ImageLoader';
 
-let imgLoader = new ImageLoader({
-  loadCompleteCallback: (obj) => {
-    console.log('loadComplete :', obj);
-    console.log('imgLoader.isFinished() :', imgLoader.isFinished());
-    console.log('imgLoader.getLoadedImgs() :', imgLoader.getLoadedImgs());
-  },
-  loadPerCompleteCallback: (obj) => {
-    console.log('loadPerComplete :', obj);
-    console.log('imgLoader.isFinished() :', imgLoader.isFinished());
-    console.log('imgLoader.getLoadedImgs() :', imgLoader.getLoadedImgs());
-  },
-  loadErrorCallback: (obj) => {
-    console.log('loadError :', obj)
-    console.log('imgLoader.isFinished() :', imgLoader.isFinished());
-    console.log('imgLoader.getLoadedImgs() :', imgLoader.getLoadedImgs());
-  }
-});
+ let imgLoader = new ImageLoader({
+ loadCompleteCallback: (obj) => {
+ console.log('loadComplete :', obj);
+ console.log('imgLoader.isFinished() :', imgLoader.isFinished());
+ console.log('imgLoader.getLoadedImgs() :', imgLoader.getLoadedImgs());
+ },
+ loadPerCompleteCallback: (obj) => {
+ console.log('loadPerComplete :', obj);
+ console.log('imgLoader.isFinished() :', imgLoader.isFinished());
+ console.log('imgLoader.getLoadedImgs() :', imgLoader.getLoadedImgs());
+ },
+ loadErrorCallback: (obj) => {
+ console.log('loadError :', obj)
+ console.log('imgLoader.isFinished() :', imgLoader.isFinished());
+ console.log('imgLoader.getLoadedImgs() :', imgLoader.getLoadedImgs());
+ }
+ });
 
-imgLoader.start([
-  'https://images.unsplash.com/photo-1431794062232-2a99a5431c6c?dpr=2&auto=compress,format&crop=entropy&fit=crop&w=767&h=511&q=80&cs=tinysrgb',
-  'https://images.unsplash.com/error-dummy-url.png',
-  'https://images.unsplash.com/photo-1459666644539-a9755287d6b0?dpr=2&auto=compress,format&crop=entropy&fit=crop&w=767&h=463&q=80&cs=tinysrgb'
-]);
-*/
+ imgLoader.start([
+ 'https://images.unsplash.com/photo-1431794062232-2a99a5431c6c?dpr=2&auto=compress,format&crop=entropy&fit=crop&w=767&h=511&q=80&cs=tinysrgb',
+ 'https://images.unsplash.com/error-dummy-url.png',
+ 'https://images.unsplash.com/photo-1459666644539-a9755287d6b0?dpr=2&auto=compress,format&crop=entropy&fit=crop&w=767&h=463&q=80&cs=tinysrgb'
+ ]);
+ */
 
 class ImageLoader {
   constructor(options) {
-    if(!options) return;
+    if (!options) return;
     let _ = this;
 
     _.loadCompleteCallback = options.loadCompleteCallback || null;
@@ -54,12 +54,12 @@ class ImageLoader {
   loadNext() {
     let _ = this;
 
-    if( _.loadingIndex >= _.imgURLArr.length) {
+    if (_.loadingIndex >= _.imgURLArr.length) {
       _.isLoading = false;
       _.isFinish = true;
 
-      if( _.loadCompleteCallback ) _.loadCompleteCallback.call(null, {
-        imgs: _.loadedImgArr, 
+      if (_.loadCompleteCallback) _.loadCompleteCallback.call(null, {
+        imgs: _.loadedImgArr,
         percentage: _.percentageLoaded
       });
 
@@ -67,19 +67,19 @@ class ImageLoader {
     }
 
     let img = document.createElement('img');
-    img.onload = function(evt) {
+    img.onload = function (evt) {
       let img = this;
-      if(img) _.loadedImgArr.push(img);
+      if (img) _.loadedImgArr.push(img);
 
       _.loadingIndex++;
       _.loadSuccessNum++;
       _.loadCompleteNum++;
       _.percentageLoaded = _.loadCompleteNum / _.imgURLArr.length;
 
-      if(_.loadPerCompleteCallback) {
+      if (_.loadPerCompleteCallback) {
         _.loadPerCompleteCallback.call(null, {
           event: evt,
-          img: img, 
+          img: img,
           percentage: _.percentageLoaded
         });
       }
@@ -87,7 +87,7 @@ class ImageLoader {
       _.loadNext();
     };
 
-    img.onerror = function(evt) {
+    img.onerror = function (evt) {
       let img = this;
       _.loadedImgArr.push(null);
 
@@ -96,7 +96,7 @@ class ImageLoader {
       _.loadCompleteNum++;
       _.percentageLoaded = _.loadCompleteNum / _.imgURLArr.length;
 
-      if(_.loadErrorCallback) {
+      if (_.loadErrorCallback) {
         _.loadErrorCallback.call(null, {
           event: evt,
           img: img,
@@ -107,7 +107,7 @@ class ImageLoader {
       _.loadNext();
     };
 
-    img.src = _.imgURLArr[ _.loadingIndex ];
+    img.src = _.imgURLArr[_.loadingIndex];
 
     _.imgArr.push(img);
   }
@@ -125,13 +125,13 @@ class ImageLoader {
   start(imgURLArr) {
     let _ = this;
 
-    if(!imgURLArr || imgURLArr.constructor !== Array || imgURLArr.length <= 0) return;
+    if (!imgURLArr || imgURLArr.constructor !== Array || imgURLArr.length <= 0) return;
     _.imgURLArr = imgURLArr;
 
-    if(_.isLoading) return;
+    if (_.isLoading) return;
     _.isLoading = true;
     _.isFinish = false;
-    
+
     _.loadNext();
   }
 
@@ -174,11 +174,11 @@ class ImageLoader {
   destroy(obj) {
     let _ = this;
 
-    if(_.isLoading) {
+    if (_.isLoading) {
       let img;
-      for(let i=0,max=_.imgArr.length; i<max; i++) {
+      for (let i = 0, max = _.imgArr.length; i < max; i++) {
         img = _.imgArr[i];
-        if(img) {
+        if (img) {
           img.onload = null;
           img.onerror = null;
         }

@@ -202,12 +202,12 @@ class FullSizeCanvasVideo {
     } else {
       this.$canvas.hide();
 
-      _.$video.on('click', (evt) => {
+      _.$video.on('click.ui.video.fullsizecanvasvideo', (evt) => {
         _.play();
       });
     }
 
-    $(window).on('resize', _.$proxyResize);
+    $(window).on('resize.ui.fullsizecanvasvideo', _.$proxyResize);
     _.resize();
   }
 
@@ -217,7 +217,7 @@ class FullSizeCanvasVideo {
       isVideoHasOnended = _.video.hasOwnProperty('onended');
 
     if (_.isIOS()) {
-      _.$video.on('canplay', (evt) => {
+      _.$video.on('canplay.ui.video.fullsizecanvasvideo', (evt) => {
         _.drawVideoToCanvas();
         if (opt.canplayCallback) {
           opt.canplayCallback.call(null, {
@@ -227,7 +227,7 @@ class FullSizeCanvasVideo {
         }
       });
 
-      _.$video.on('timeupdate', (evt) => {
+      _.$video.on('timeupdate.ui.video.fullsizecanvasvideo', (evt) => {
         _.drawVideoToCanvas();
 
         if (opt.timeupdateCallback) {
@@ -241,7 +241,7 @@ class FullSizeCanvasVideo {
       });
 
     } else {
-      _.$video.on('canplay', (evt) => {
+      _.$video.on('canplay.ui.video.fullsizecanvasvideo', (evt) => {
         if (opt.canplayCallback) {
           opt.canplayCallback.call(null, {
             event: evt,
@@ -251,7 +251,7 @@ class FullSizeCanvasVideo {
       });
 
       if (opt.timeupdateCallback || (!isVideoHasOnended && opt.endedCallback)) {
-        _.$video.on('timeupdate', (evt) => {
+        _.$video.on('timeupdate.ui.video.fullsizecanvasvideo', (evt) => {
           if (opt.timeupdateCallback) {
             opt.timeupdateCallback.call(null, {
               event: evt,
@@ -278,7 +278,7 @@ class FullSizeCanvasVideo {
 
       if (isVideoHasOnended && opt.endedCallback) {
         // TODO - no browser support 'ended' event now. 2016.11.15
-        $(video).on('ended', (evt) => {
+        _.$video.on('ended.ui.video.fullsizecanvasvideo', (evt) => {
           _.isPlaying = false;
 
           opt.endedCallback.call(null, {
@@ -588,6 +588,12 @@ class FullSizeCanvasVideo {
     } else {
       _.video.currentTime = second;
     }
+  }
+
+  destroy(obj) {
+    let _ = this;
+
+    // TODO - destroy
   }
 }
 FullSizeCanvasVideo.ASPECT_FILL = 'ASPECT_FILL';

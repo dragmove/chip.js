@@ -236,7 +236,7 @@ class HorizontalSlideNavi extends Navi {
       callback: opt.slideEndCallback
     });
 
-    $(window).on('resize', _.$proxyResize);
+    $(window).on('resize.ui.horizontalslidenavi', _.$proxyResize);
     _.resize();
   }
 
@@ -246,15 +246,13 @@ class HorizontalSlideNavi extends Navi {
     if (!_.dragDealer) return;
 
     if (_.option.btnsWrap.width() > window.innerWidth) {
-      console.log('can scroll');
-
+      // console.log('can scroll');
       _.dragDealer.enable();
 
       _.isDraggable = true;
 
     } else {
-      console.log('can not scroll');
-
+      // console.log('can not scroll');
       _.dragDealer.disable();
 
       _.setRatioX(0);
@@ -300,7 +298,7 @@ class HorizontalSlideNavi extends Navi {
   destroy(obj) {
     let _ = this;
 
-    $(window).off('resize', _.$proxyResize);
+    $(window).off('resize.ui.horizontalslidenavi', _.$proxyResize);
     _.$proxyResize = null;
 
     _.isDraggable = false;

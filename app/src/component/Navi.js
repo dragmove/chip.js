@@ -77,19 +77,19 @@ class Navi {
 
     if (flag) {
       for (let btn of _.btns) {
-        $(btn).on('mouseover', $.proxy(_.mouseoverBtnEventHandler, _));
-        $(btn).on('mouseout', $.proxy(_.mouseoutBtnEventHandler, _));
-        $(btn).on('mousedown', $.proxy(_.mousedownBtnEventHandler, _));
-        $(btn).on('mouseup', $.proxy(_.mouseupBtnEventHandler, _));
-        $(btn).on('click', $.proxy(_.clickBtnEventHandler, _));
+        $(btn).on('mouseover.ui.navi', $.proxy(_.mouseoverBtnEventHandler, _));
+        $(btn).on('mouseout.ui.navi', $.proxy(_.mouseoutBtnEventHandler, _));
+        $(btn).on('mousedown.ui.navi', $.proxy(_.mousedownBtnEventHandler, _));
+        $(btn).on('mouseup.ui.navi', $.proxy(_.mouseupBtnEventHandler, _));
+        $(btn).on('click.ui.navi', $.proxy(_.clickBtnEventHandler, _));
       }
     } else {
       for (let btn of _.btns) {
-        $(btn).off('mouseover', $.proxy(_.mouseoverBtnEventHandler, _));
-        $(btn).off('mouseout', $.proxy(_.mouseoutBtnEventHandler, _));
-        $(btn).off('mousedown', $.proxy(_.mousedownBtnEventHandler, _));
-        $(btn).off('mouseup', $.proxy(_.mouseupBtnEventHandler, _));
-        $(btn).off('click', $.proxy(_.clickBtnEventHandler, _));
+        $(btn).off('mouseover.ui.navi', $.proxy(_.mouseoverBtnEventHandler, _));
+        $(btn).off('mouseout.ui.navi', $.proxy(_.mouseoutBtnEventHandler, _));
+        $(btn).off('mousedown.ui.navi', $.proxy(_.mousedownBtnEventHandler, _));
+        $(btn).off('mouseup.ui.navi', $.proxy(_.mouseupBtnEventHandler, _));
+        $(btn).off('click.ui.navi', $.proxy(_.clickBtnEventHandler, _));
       }
     }
   }

@@ -146,7 +146,7 @@ class FullSizeVideo {
     if (opt.muted === true) video.setAttribute('muted', '');
     if (opt.autoplay === true) video.setAttribute('autoplay', '');
 
-    $(window).on('resize', _.$proxyResize);
+    $(window).on('resize.ui.fullsizevideo', _.$proxyResize);
   }
 
   setCallbacks() {
@@ -156,7 +156,7 @@ class FullSizeVideo {
       isVideoHasOnended = video.hasOwnProperty('onended');
 
     if (opt.canplayCallback) {
-      $(video).on('canplay', (evt) => {
+      $(video).on('canplay.ui.video.fullsizevideo', (evt) => {
         opt.canplayCallback.call(null, {
           event: evt
         });
@@ -164,7 +164,7 @@ class FullSizeVideo {
     }
 
     if (opt.timeupdateCallback || (!isVideoHasOnended && opt.endedCallback)) {
-      $(video).on('timeupdate', (evt) => {
+      $(video).on('timeupdate.ui.video.fullsizevideo', (evt) => {
         if (opt.timeupdateCallback) {
           opt.timeupdateCallback.call(null, {
             event: evt,
@@ -184,7 +184,7 @@ class FullSizeVideo {
     }
 
     if (isVideoHasOnended && opt.endedCallback) {
-      $(video).on('ended', (evt) => {
+      $(video).on('ended.ui.video.fullsizevideo', (evt) => {
         opt.endedCallback.call(null, {
           event: evt,
           currentTime: video.currentTime,
@@ -314,14 +314,14 @@ class FullSizeVideo {
 
     _.pause();
 
-    $(video).off('canplay');
-    $(video).off('timeupdate');
-    $(video).off('ended');
+    $(video).off('canplay.ui.video.fullsizevideo');
+    $(video).off('timeupdate.ui.video.fullsizevideo');
+    $(video).off('ended.ui.video.fullsizevideo');
 
     _.video = null;
     _.poster = null;
 
-    $(window).off('resize', _.$proxyResize);
+    $(window).off('resize.ui.fullsizevideo', _.$proxyResize);
   }
 }
 
