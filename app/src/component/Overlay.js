@@ -52,13 +52,6 @@ class Overlay {
     _.setNodeEventHandler(true);
   }
 
-  setCss(obj) {
-    let _ = this;
-
-    if (!_.node.length) return;
-    _.node.css(obj);
-  }
-
   setNodeEventHandler(flag) {
     let _ = this;
 
@@ -71,6 +64,20 @@ class Overlay {
 
   getNode() {
     return this.node;
+  }
+
+  setCss(obj) {
+    let _ = this;
+
+    if (!_.node.length) return;
+    _.node.css(obj);
+  }
+
+  appendTo(element) {
+    let _ = this;
+
+    _.parentNode = _.option.appendTo = $(element);
+    _.parentNode.append(_.node);
   }
 
   show() {

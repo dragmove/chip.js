@@ -1,6 +1,25 @@
 /*
  @example
 
+ // js
+ let abstractModal = new AbstractModal({
+ class: 'modal',
+ contents: '<div class="contents">this is contents</div><a href="#" class="btn-close">close</a>',
+ appendTo: $('body'),
+ closeBtnSelector: '.btn-close',
+
+ showCallback: function() {
+ console.log('showCallback :', this);
+ },
+ hideCallback: function() {
+ console.log('hideCallback :', this);
+ }
+ });
+ abstractModal.init();
+
+ abstractModal.show();
+
+ console.log('abstractModal.getNode() :', abstractModal.getNode());
  */
 
 class AbstractModal {
@@ -10,21 +29,18 @@ class AbstractModal {
     _.option = {
       class: 'modal',
       contents: '',
-
       appendTo: $('body'),
-      openCallback: null,
-
       closeBtnSelector: '',
-      closeCallback: null
+      showCallback: null,
+      hideCallback: null
     };
     $.extend(_.option, options);
 
-    _.isOpen = false;
-
     _.node = null;
     _.parentNode = _.option.appendTo;
-
     _.closeBtn = null;
+
+    _.isShow = false;
   }
 
   /*
@@ -58,37 +74,48 @@ class AbstractModal {
   closeBtnEventHandler(evt) {
     evt.preventDefault();
 
-    this.close();
+    this.hide();
   }
 
   getNode() {
     return this.node;
   }
 
-  open() {
+  appendTo(element) {
     let _ = this;
 
-    if (_.isOpen) return;
-    _.isOpen = true;
+    _.parentNode = _.option.appendTo = $(element);
+    _.parentNode.append(_.node);
+  }
 
-    if (_.option.openCallback) _.option.openCallback.call(_, null);
+  show() {
+    let _ = this;
+
+    if (_.isShow) return;
+    _.isShow = true;
+
+    if (_.option.showCallback) _.option.showCallback.call(_, null);
     _.node.show();
   }
 
-  close() {
+  hide() {
     let _ = this;
 
-    if (!_.isOpen) return;
-    _.isOpen = false;
+    if (!_.isShow) return;
+    _.isShow = false;
 
-    if (_.option.closeCallback) _.option.closeCallback.call(_, null);
+    if (_.option.hideCallback) _.option.hideCallback.call(_, null);
     _.node.hide();
   }
 
   destroy(obj) {
     let _ = this;
 
-    // TODO
+    _.setCloseBtnEventHandler(false);
+
+    _.node = null;
+    _.parentNode = null;
+    _.closeBtn = null;
   }
 }
 

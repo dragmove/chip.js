@@ -2,11 +2,12 @@
 // import NaviHasTimer from './component/NaviHasTimer';
 // import ImageLoader from './component/ImageLoader';
 // import FullSizeBg from './component/FullSizeBg';
-// import Overlay from './component/Overlay';
+import Overlay from './component/Overlay';
 // import FullSizeVideo from './component/FullSizeVideo';
 // import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
 // import HorizontalSlideNavi from './component/HorizontalSlideNavi';
-import AbstractModal from './component/AbstractModal';
+// import AbstractModal from './component/AbstractModal';
+// import Modal from './component/Modal';
 
 (function ($) {
   "use strict";
@@ -21,33 +22,33 @@ import AbstractModal from './component/AbstractModal';
     // testFullSizeVideo();
     // testFullSizeCanvasVideo();
     // testHorizontalSlideNavi();
-    testAbstractModal();
+    // testAbstractModal();
   }
 
+  /*
   function testAbstractModal() {
     let abstractModal = new AbstractModal({
       class: 'modal',
       contents: '<div class="contents">this is contents</div><a href="#" class="btn-close">close</a>',
-
       appendTo: $('body'),
-      openCallback: function() {
-        console.log('openCallback :', this);
-      },
-
       closeBtnSelector: '.btn-close',
-      closeCallback: function() {
-        console.log('closeCallback :', this);
+
+      showCallback: function () {
+        console.log('showCallback :', this);
+      },
+      hideCallback: function () {
+        console.log('hideCallback :', this);
       }
     });
     abstractModal.init();
 
-    abstractModal.open();
+    abstractModal.show();
 
     console.log('abstractModal.getNode() :', abstractModal.getNode());
 
     window.setTimeout(function() {
-        abstractModal.open();
+        abstractModal.appendTo( $('#wrapper') );
     }, 3000);
   }
-
+  */
 }(jQuery));
