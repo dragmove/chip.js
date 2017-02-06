@@ -6,8 +6,9 @@ import Overlay from './component/Overlay';
 // import FullSizeVideo from './component/FullSizeVideo';
 // import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
 // import HorizontalSlideNavi from './component/HorizontalSlideNavi';
-// import AbstractModal from './component/AbstractModal';
-// import Modal from './component/Modal';
+//import AbstractModal from './component/AbstractModal';
+//import Modal from './component/Modal';
+import YoutubeModal from './component/YoutubeModal';
 
 (function ($) {
   "use strict";
@@ -23,32 +24,50 @@ import Overlay from './component/Overlay';
     // testFullSizeCanvasVideo();
     // testHorizontalSlideNavi();
     // testAbstractModal();
+    // testModal();
+    testYoutubeModal();
   }
 
-  /*
-  function testAbstractModal() {
-    let abstractModal = new AbstractModal({
-      class: 'modal',
-      contents: '<div class="contents">this is contents</div><a href="#" class="btn-close">close</a>',
+  function testYoutubeModal() {
+    let overlay = new Overlay();
+    overlay.init();
+
+    let youtubeModal = new YoutubeModal({
+      wrapClass: 'modal-wrap',
+      contents: `<div class="modal">
+        <div class="embed-responsive-video">
+          <div class="iframe-wrap">
+          </div>
+        </div>
+        <a href="#" class="btn-close">close</a>
+      </div>`,
       appendTo: $('body'),
       closeBtnSelector: '.btn-close',
 
+      isCloseByClickOutside: true,
+      isCloseByEscKey: true,
+
       showCallback: function () {
-        console.log('showCallback :', this);
+        // console.log('showCallback :', this);
       },
       hideCallback: function () {
-        console.log('hideCallback :', this);
+        // console.log('hideCallback :', this);
+      },
+
+      overlay: overlay,
+
+      iframeWrapSelector: '.iframe-wrap',
+      youtube: {
+        id: 'YzKLbB5B0tg',
+        width: '',
+        height: ''
       }
     });
-    abstractModal.init();
+    youtubeModal.init();
 
-    abstractModal.show();
+    youtubeModal.show();
 
-    console.log('abstractModal.getNode() :', abstractModal.getNode());
-
-    window.setTimeout(function() {
-        abstractModal.appendTo( $('#wrapper') );
-    }, 3000);
+    console.log(youtubeModal.getYoutubeIFrame());
   }
-  */
+
 }(jQuery));
