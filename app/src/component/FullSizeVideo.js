@@ -124,7 +124,7 @@ class FullSizeVideo {
   }
 
   setInstance() {
-    let _ = this,
+    const _ = this,
       opt = _.option;
 
     let videoSourceTpl = '', ext = '';
@@ -215,6 +215,8 @@ class FullSizeVideo {
   }
 
   setWrapAlign(alignX, alignY, modifiedSize) {
+    const _ = this;
+
     let winWidth = window.innerWidth,
       winHeight = window.innerHeight,
       left = 0,
@@ -248,10 +250,12 @@ class FullSizeVideo {
         break;
     }
 
-    this.option.videoWrap.css({
+    _.option.videoWrap.css({
       left: left,
       top: top
     });
+
+    return _;
   }
 
   resize(evt) {
@@ -269,6 +273,8 @@ class FullSizeVideo {
     });
     */
     _.setWrapAlign(_.option.alignX, _.option.alignY, size);
+
+    return _;
   }
 
   play() {
@@ -277,6 +283,8 @@ class FullSizeVideo {
 
     let video = _.video.get(0);
     video.play();
+
+    return _;
   }
 
   pause() {
@@ -285,6 +293,8 @@ class FullSizeVideo {
 
     let video = _.video.get(0);
     video.pause();
+
+    return _;
   }
 
   stop() {
@@ -294,6 +304,8 @@ class FullSizeVideo {
     let video = _.video.get(0);
     video.pause();
     video.currentTime = 0;
+
+    return _;
   }
 
   seek(second) {
@@ -302,6 +314,8 @@ class FullSizeVideo {
 
     let video = _.video.get(0);
     video.currentTime = second;
+
+    return _;
   }
 
   getVideoNode() {
@@ -322,6 +336,8 @@ class FullSizeVideo {
     _.poster = null;
 
     $(window).off('resize.ui.fullsizevideo', _.$proxyResize);
+
+    return _;
   }
 }
 

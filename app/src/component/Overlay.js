@@ -33,7 +33,7 @@ class Overlay {
    * public methods
    */
   init(obj) {
-    let _ = this;
+    const _ = this;
 
     _.node = $(document.createElement('div')).addClass(_.option.class);
     _.node.css({
@@ -53,13 +53,15 @@ class Overlay {
   }
 
   setNodeEventHandler(flag) {
-    let _ = this;
+    const _ = this;
 
     if (flag) {
       if (_.option.clickCallback) _.node.on('click.ui.overlay', $.proxy(_.option.clickCallback, _));
     } else {
       if (_.option.clickCallback) _.node.off('click.ui.overlay', $.proxy(_.option.clickCallback, _));
     }
+
+    return _;
   }
 
   getNode() {
@@ -71,6 +73,8 @@ class Overlay {
 
     if (!_.node.length) return;
     _.node.css(obj);
+
+    return _;
   }
 
   appendTo(element) {
@@ -78,6 +82,8 @@ class Overlay {
 
     _.parentNode = _.option.appendTo = $(element);
     _.parentNode.append(_.node);
+
+    return _;
   }
 
   show() {
@@ -96,6 +102,8 @@ class Overlay {
     _.option = null;
     _.node = null;
     _.parentNode = null;
+
+    return _;
   }
 }
 

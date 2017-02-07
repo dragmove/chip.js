@@ -217,7 +217,7 @@ class HorizontalSlideNavi extends Navi {
   }
 
   setInstance() {
-    let _ = this;
+    const _ = this;
 
     let opt = _.option;
 
@@ -241,7 +241,7 @@ class HorizontalSlideNavi extends Navi {
   }
 
   resize(evt) {
-    let _ = this;
+    const _ = this;
 
     if (!_.dragDealer) return;
 
@@ -259,6 +259,8 @@ class HorizontalSlideNavi extends Navi {
 
       _.isDraggable = false;
     }
+
+    return _;
   }
 
   /*
@@ -281,18 +283,23 @@ class HorizontalSlideNavi extends Navi {
   setX(x) {
     let offset = this.getOffsetRatioByPosition(x);
     this.dragDealer.setValue(offset[0], offset[1]);
+
+    return this;
   }
 
   setRatioX(ratioX) {
     this.dragDealer.setValue(ratioX, 0);
+    return this;
   }
 
   enable() {
     this.dragDealer.enable();
+    return this;
   }
 
   disable() {
     this.dragDealer.disable();
+    return this;
   }
 
   destroy(obj) {
@@ -307,6 +314,8 @@ class HorizontalSlideNavi extends Navi {
     _.dragDealer = null;
 
     super.destroy(obj);
+
+    return _;
   }
 }
 

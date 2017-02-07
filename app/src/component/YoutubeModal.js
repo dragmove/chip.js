@@ -82,9 +82,7 @@
  height: ''
  }
  });
- youtubeModal.init();
-
- youtubeModal.show();
+ youtubeModal.init().show();
 
  console.log(youtubeModal.getYoutubeIFrame());
  */
@@ -129,6 +127,8 @@ class YoutubeModal extends Modal {
 
     _.iframeWrap = $(_.option.iframeWrapSelector, _.wrap);
     _.iframeWrap.append(_.youtubeIFrame);
+
+    return _;
   }
 
   show() {
@@ -138,6 +138,8 @@ class YoutubeModal extends Modal {
 
     if (!_.youtubeIFrame || !_.youtubeIFrame.length) return;
     _.youtubeIFrame.attr('src', _.youtubeSrc);
+
+    return _;
   }
 
   hide() {
@@ -145,19 +147,21 @@ class YoutubeModal extends Modal {
 
     const _ = this;
     _.youtubeIFrame.attr('src', '');
+
+    return _;
   }
 
   destroy(obj) {
-    super.destroy(obj);
-
     const _ = this;
 
     _.iframeWrap = null;
-
     _.youtubeIFrame.attr('src', '');
     _.youtubeIFrame = null;
-
     _.youtubeSrc = '';
+
+    super.destroy(obj);
+
+    return _;
   }
 
   /*

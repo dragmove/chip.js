@@ -50,9 +50,7 @@
  console.log('hideCallback :', this);
  }
  });
- abstractModal.init();
-
- abstractModal.show();
+ abstractModal.init().show();
 
  console.log('abstractModal.getNode() :', abstractModal.getNode());
  */
@@ -87,8 +85,6 @@ class AbstractModal {
   init(obj) {
     const _ = this;
 
-    console.log('abstract modal init');
-
     _.wrap = $(document.createElement('div')).addClass(_.option.wrapClass);
     _.wrap.hide();
 
@@ -102,6 +98,8 @@ class AbstractModal {
 
     if (_.option.isCloseByClickOutside) _.setWrapEventHandler(true);
     if (_.option.isCloseByEscKey) _.setEscKeyEventHandler(true);
+
+    return _;
   }
 
   setCloseBtnEventHandler(flag) {
@@ -112,6 +110,8 @@ class AbstractModal {
     } else {
       _.closeBtn.off('click.ui.modal', $.proxy(_.closeBtnEventHandler, _));
     }
+
+    return _;
   }
 
   setWrapEventHandler(flag) {
@@ -122,6 +122,8 @@ class AbstractModal {
     } else {
       _.wrap.off('click.ui.modal', $.proxy(_.wrapEventHandler, _));
     }
+
+    return _;
   }
 
   setEscKeyEventHandler(flag) {
@@ -132,6 +134,8 @@ class AbstractModal {
     } else {
       $(document).off('keydown.ui.modal', $.proxy(_.escKeyEventHandler, _));
     }
+
+    return _;
   }
 
   closeBtnEventHandler(evt) {
@@ -167,7 +171,7 @@ class AbstractModal {
   }
 
   getNode() {
-    return this.wrap;
+    return this.wrap.get(0);
   }
 
   appendTo(element) {
@@ -175,6 +179,8 @@ class AbstractModal {
 
     _.parentNode = _.option.appendTo = $(element);
     _.parentNode.append(_.wrap);
+
+    return _;
   }
 
   show() {
@@ -185,6 +191,8 @@ class AbstractModal {
 
     if (_.option.showCallback) _.option.showCallback.call(_, null);
     _.wrap.show();
+
+    return _;
   }
 
   hide() {
@@ -195,6 +203,8 @@ class AbstractModal {
 
     if (_.option.hideCallback) _.option.hideCallback.call(_, null);
     _.wrap.hide();
+
+    return _;
   }
 
   destroy(obj) {
@@ -207,6 +217,8 @@ class AbstractModal {
     _.wrap = null;
     _.parentNode = null;
     _.closeBtn = null;
+
+    return _;
   }
 }
 

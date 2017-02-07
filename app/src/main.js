@@ -63,9 +63,9 @@ import YoutubeModal from './component/YoutubeModal';
         height: ''
       }
     });
-    youtubeModal.init();
+    youtubeModal.init().show();
 
-    youtubeModal.show();
+    console.log('youtubeModal.getNode() :', youtubeModal.getNode());
 
     console.log(youtubeModal.getYoutubeIFrame());
   }

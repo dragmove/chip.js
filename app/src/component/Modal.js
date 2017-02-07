@@ -55,9 +55,7 @@
 
  overlay: overlay
  });
- modal.init();
-
- modal.show();
+ modal.init().show();
 
  console.log('modal.getNode() :', modal.getNode());
  */
@@ -69,40 +67,37 @@ class Modal extends AbstractModal {
     super(options);
 
     const _ = this;
-
     _.overlay = (_.option.overlay) ? _.option.overlay : null;
   }
 
   /*
    * protected methods
    */
-  init(obj) {
-    super.init(obj);
-
-    console.log('modal init');
-  }
-
   show() {
     super.show();
-
     if (this.overlay) this.overlay.show();
+
+    return this;
   }
 
   hide() {
     super.hide();
-
     if (this.overlay) this.overlay.hide();
+
+    return this;
   }
 
   destroy(obj) {
-    super.destroy(obj);
-
     const _ = this;
 
     if (_.overlay) {
       _.overlay.destroy(obj);
       _.overlay = null;
     }
+
+    super.destroy(obj);
+
+    return _;
   }
 
   /*

@@ -123,7 +123,7 @@ class ImageLoader {
    * @return {Void}
    */
   start(imgURLArr) {
-    let _ = this;
+    const _ = this;
 
     if (!imgURLArr || imgURLArr.constructor !== Array || imgURLArr.length <= 0) return;
     _.imgURLArr = imgURLArr;
@@ -133,6 +133,8 @@ class ImageLoader {
     _.isFinish = false;
 
     _.loadNext();
+
+    return _;
   }
 
   /**
@@ -202,6 +204,8 @@ class ImageLoader {
     _.loadCompleteNum = 0;
 
     _.percentageLoaded = 0;
+
+    return _;
   }
 }
 

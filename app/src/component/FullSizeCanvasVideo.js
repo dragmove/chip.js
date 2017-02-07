@@ -115,7 +115,7 @@
 
 class FullSizeCanvasVideo {
   constructor(options) {
-    let _ = this;
+    const _ = this;
 
     _.option = {
       parent: null,
@@ -366,35 +366,50 @@ class FullSizeCanvasVideo {
     }
 
     this.setVideoPosition({left: left, top: top});
-    this.setCanvasPosition({left: left, top: top})
+    this.setCanvasPosition({left: left, top: top});
+
+    return this;
   }
 
   setVideoPosition(cssObj) {
     this.$video.css(cssObj);
+
+    return this;
   }
 
   setCanvasPosition(cssObj) {
     this.$canvas.css(cssObj);
+
+    return this;
   }
 
   setVideoSize(width, height) {
-    this.$video.width(width);
-    this.$video.height(height);
+    const _ = this;
+
+    _.$video.width(width);
+    _.$video.height(height);
+
+    return _;
   }
 
   setCanvasSize(width, height) {
-    let _ = this;
+    const _ = this;
 
     if (_.isIOS()) {
       _.ctx.canvas.width = width;
       _.ctx.canvas.height = height;
       _.$canvas.attr({width: width, height: height});
     }
+
+    return _;
   }
 
   drawVideoToCanvas() {
     let _ = this;
+
     _.ctx.drawImage(_.video, 0, 0, _.$video.width(), _.$video.height());
+
+    return _;
   }
 
   loopAnimationFrameIOS() {
@@ -438,7 +453,7 @@ class FullSizeCanvasVideo {
   }
 
   resize(evt) {
-    let _ = this,
+    const _ = this,
       size = _.getVideoSize();
 
     _.setVideoSize(size.width, size.height);
@@ -446,6 +461,8 @@ class FullSizeCanvasVideo {
     _.setWrapAlign(_.option.alignX, _.option.alignY, size);
 
     if (_.isIOS()) _.drawVideoToCanvas();
+
+    return _;
   }
 
   getVideoTpl() {
@@ -469,7 +486,7 @@ class FullSizeCanvasVideo {
   }
 
   getVideoSizeAspectFill() {
-    let _ = this,
+    const _ = this,
       opt = _.option;
 
     let winWidth = window.innerWidth,
@@ -489,7 +506,7 @@ class FullSizeCanvasVideo {
   }
 
   getVideoSizeAspectFit() {
-    let _ = this,
+    const _ = this,
       opt = _.option;
 
     let ratio = Math.min((window.innerWidth / opt.width), (window.innerHeight / opt.height));
@@ -503,7 +520,7 @@ class FullSizeCanvasVideo {
   }
 
   getVideoSizeWidthFit() {
-    let _ = this,
+    const _ = this,
       opt = _.option;
 
     let winWidth = window.innerWidth,
@@ -541,7 +558,7 @@ class FullSizeCanvasVideo {
   }
 
   play() {
-    let _ = this;
+    const _ = this;
     if (!_.video) return;
 
     if (_.isIOS()) {
@@ -552,10 +569,12 @@ class FullSizeCanvasVideo {
       _.isPlaying = true;
       _.video.play();
     }
+
+    return _;
   }
 
   pause() {
-    let _ = this;
+    const _ = this;
     if (!_.video) return;
 
     if (_.isIOS()) {
@@ -564,10 +583,12 @@ class FullSizeCanvasVideo {
       _.isPlaying = false;
       _.video.pause();
     }
+
+    return _;
   }
 
   stop() {
-    let _ = this;
+    const _ = this;
     if (!_.video) return;
 
     if (_.isIOS()) {
@@ -577,10 +598,12 @@ class FullSizeCanvasVideo {
       _.video.pause();
       _.video.currentTime = 0;
     }
+
+    return _;
   }
 
   seek(second) {
-    let _ = this;
+    const _ = this;
     if (!_.video) return;
 
     if (_.isIOS()) {
@@ -588,12 +611,44 @@ class FullSizeCanvasVideo {
     } else {
       _.video.currentTime = second;
     }
+
+    return _;
   }
 
   destroy(obj) {
-    let _ = this;
+    const _ = this;
+    _.stop();
 
-    // TODO - destroy
+    if (_.isIOS()) {
+      _.$video.off('canplay.ui.video.fullsizecanvasvideo');
+      _.$video.off('timeupdate.ui.video.fullsizecanvasvideo');
+
+    } else {
+      _.$video.off('click.ui.video.fullsizecanvasvideo');
+      _.$video.off('canplay.ui.video.fullsizecanvasvideo');
+      _.$video.off('timeupdate.ui.video.fullsizecanvasvideo');
+      _.$video.off('ended.ui.video.fullsizecanvasvideo'); // TODO - no browser support 'ended' event now. 2016.11.15
+    }
+
+    $(window).off('resize.ui.fullsizecanvasvideo');
+
+    _.parent = null;
+
+    _.$video = null;
+    _.$canvas = null;
+
+    _.video = null;
+    _.canvas = null;
+    _.ctx = null;
+
+    _.isPlaying = false;
+    _.lastRenderTime = 0;
+    _.animationFrame = null;
+
+    _.getVideoSize = null;
+    _.$proxyResize = null;
+
+    return _;
   }
 }
 FullSizeCanvasVideo.ASPECT_FILL = 'ASPECT_FILL';

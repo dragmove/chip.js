@@ -53,7 +53,7 @@
 class Navi {
   constructor(options) {
     if (!options) return;
-    let _ = this;
+    const _ = this;
 
     _.btns = options.btns || [];
 
@@ -73,7 +73,7 @@ class Navi {
   }
 
   setBtnsEventHandler(flag) {
-    let _ = this;
+    const _ = this;
 
     if (flag) {
       for (let btn of _.btns) {
@@ -92,12 +92,14 @@ class Navi {
         $(btn).off('click.ui.navi', $.proxy(_.clickBtnEventHandler, _));
       }
     }
+
+    return _;
   }
 
   mouseoverBtnEventHandler(evt) {
     evt.preventDefault();
 
-    let _ = this,
+    const _ = this,
       btn = evt.currentTarget;
 
     _.currentIndex = $(_.btns).index(btn) + 1;
@@ -114,7 +116,7 @@ class Navi {
   mouseoutBtnEventHandler(evt) {
     evt.preventDefault();
 
-    let _ = this,
+    const _ = this,
       btn = evt.currentTarget;
 
     if (_.mouseoutCallback) {
@@ -129,7 +131,7 @@ class Navi {
   mousedownBtnEventHandler(evt) {
     evt.preventDefault();
 
-    let _ = this,
+    const _ = this,
       btn = evt.currentTarget;
 
     if (_.mousedownCallback) {
@@ -144,7 +146,7 @@ class Navi {
   mouseupBtnEventHandler(evt) {
     evt.preventDefault();
 
-    let _ = this,
+    const _ = this,
       btn = evt.currentTarget;
 
     if (_.mouseupCallback) {
@@ -159,7 +161,7 @@ class Navi {
   clickBtnEventHandler(evt) {
     evt.preventDefault();
 
-    let _ = this,
+    const _ = this,
       btn = evt.currentTarget,
       prevIndex = _.activateIndex,
       idx = $(_.btns).index(btn) + 1;
@@ -202,7 +204,7 @@ class Navi {
   }
 
   activate(index) {
-    let _ = this,
+    const _ = this,
       idx = (index <= 0 || index > _.btns.length) ? 0 : index;
 
     if (_.activateCallback) {
@@ -213,10 +215,12 @@ class Navi {
     }
 
     _.activateIndex = idx;
+
+    return _;
   }
 
   destroy(obj) {
-    let _ = this;
+    const _ = this;
 
     _.setBtnsEventHandler(false);
 
@@ -229,6 +233,8 @@ class Navi {
 
     _.currentIndex = 0;
     _.activateIndex = 0;
+
+    return _;
   }
 }
 

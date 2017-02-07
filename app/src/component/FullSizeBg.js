@@ -46,7 +46,7 @@
 
 class FullSizeBg {
   constructor(options) {
-    let _ = this;
+    const _ = this;
 
     _.imgWrap = options.imgWrap;
     _.imgWidth = options.imgWidth;
@@ -66,10 +66,12 @@ class FullSizeBg {
 
   init(obj) {
     $(window).on('resize.ui.fullsizebg', _.$proxyResize);
+
+    return this;
   }
 
   getImageSizeAspectFill() {
-    let _ = this;
+    const _ = this;
 
     let winWidth = window.innerWidth,
       winHeight = window.innerHeight,
@@ -88,6 +90,8 @@ class FullSizeBg {
   }
 
   setWrapAlign(alignX, alignY, modifiedSize) {
+    const _ = this;
+
     let winWidth = window.innerWidth,
       winHeight = window.innerHeight,
       left = 0,
@@ -121,22 +125,26 @@ class FullSizeBg {
         break;
     }
 
-    this.imgWrap.css({
+    _.imgWrap.css({
       left: left,
       top: top
     });
+
+    return _;
   }
 
   resize(evt) {
-    let _ = this,
+    const _ = this,
       size = _.getImageSizeAspectFill();
 
     _.img.width(size.width).height(size.height);
     _.setWrapAlign(_.alignX, _.alignY, size);
+
+    return _;
   }
 
   destroy(obj) {
-    let _ = this;
+    const _ = this;
 
     $(window).off('resize.ui.fullsizebg', _.$proxyResize);
 
@@ -150,6 +158,8 @@ class FullSizeBg {
     _.alignY = '';
 
     _.$proxyResize = null;
+
+    return _;
   }
 }
 

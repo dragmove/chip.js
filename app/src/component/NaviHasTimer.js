@@ -15,7 +15,7 @@ class NaviHasTimer extends Navi {
   }
 
   mouseoutBtnEventHandler(evt) {
-    let _ = this;
+    const _ = this;
 
     super.mouseoutBtnEventHandler(evt);
 
@@ -26,11 +26,16 @@ class NaviHasTimer extends Navi {
 
   activateByTimer(index) {
     super.activate(index);
+    return this;
   }
 
   removeTimer() {
-    if (this.timer) clearTimeout(this.timer);
-    this.timer = null;
+    const _ = null;
+
+    if (_.timer) clearTimeout(_.timer);
+    _.timer = null;
+
+    return _;
   }
 
   /*
@@ -43,6 +48,8 @@ class NaviHasTimer extends Navi {
   destroy(obj) {
     this.removeTimer();
     super.destroy(obj);
+
+    return this;
   }
 }
 
