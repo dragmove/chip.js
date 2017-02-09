@@ -163,10 +163,6 @@ import Navi from './Navi';
 
 class HorizontalSlideNavi extends Navi {
   constructor(options) {
-    if (!window.Dragdealer) {
-      // https://github.com/skidding/dragdealer
-      throw new Error('HorizontalSlideNavi.js require Dragdealer.js Library.');
-    }
     if (!options) return;
 
     let opt = {
@@ -180,6 +176,7 @@ class HorizontalSlideNavi extends Navi {
        clickCallback,
        activateCallback,
        */
+      Dragdealer: null,
 
       wrap: null,
       handleClass: '',
@@ -196,6 +193,12 @@ class HorizontalSlideNavi extends Navi {
       slideEndCallback: null
     };
     $.extend(opt, options);
+
+    opt.Dragdealer = (opt.Dragdealer) ? opt.Dragdealer : window.Dragdealer;
+    if(!opt.Dragdealer) {
+      // https://github.com/skidding/dragdealer
+      throw new Error('HorizontalSlideNavi.js require Dragdealer.js Library.');
+    }
 
     super(opt);
 
@@ -221,7 +224,7 @@ class HorizontalSlideNavi extends Navi {
 
     let opt = _.option;
 
-    _.dragDealer = new window.Dragdealer($(opt.wrap).get(0), {
+    _.dragDealer = new opt.Dragdealer($(opt.wrap).get(0), {
       handleClass: opt.handleClass,
       disabled: opt.disabled,
       horizontal: true,

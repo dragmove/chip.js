@@ -76,7 +76,8 @@ class Navi {
     const _ = this;
 
     if (flag) {
-      for (let btn of _.btns) {
+      for (let i = 0, max = _.btns.length; i < max; i++) {
+        let btn = _.btns.get(i);
         $(btn).on('mouseover.ui.navi', $.proxy(_.mouseoverBtnEventHandler, _));
         $(btn).on('mouseout.ui.navi', $.proxy(_.mouseoutBtnEventHandler, _));
         $(btn).on('mousedown.ui.navi', $.proxy(_.mousedownBtnEventHandler, _));
@@ -84,7 +85,8 @@ class Navi {
         $(btn).on('click.ui.navi', $.proxy(_.clickBtnEventHandler, _));
       }
     } else {
-      for (let btn of _.btns) {
+      for (let i = 0, max = _.btns.length; i < max; i++) {
+        let btn = _.btns.get(i);
         $(btn).off('mouseover.ui.navi', $.proxy(_.mouseoverBtnEventHandler, _));
         $(btn).off('mouseout.ui.navi', $.proxy(_.mouseoutBtnEventHandler, _));
         $(btn).off('mousedown.ui.navi', $.proxy(_.mousedownBtnEventHandler, _));
