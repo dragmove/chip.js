@@ -295,6 +295,10 @@ class HorizontalSlideNavi extends Navi {
     return this;
   }
 
+  isSlidable() {
+    return this.isDraggable;
+  }
+
   enable() {
     this.dragDealer.enable();
     return this;
