@@ -256,7 +256,7 @@ class HorizontalSlideNavi extends Navi {
 
     } else {
       // console.log('can not scroll');
-      _.dragDealer.disable();
+      if(!_.dragDealer.disabled) _.dragDealer.disable();
 
       _.setRatioX(0);
 
