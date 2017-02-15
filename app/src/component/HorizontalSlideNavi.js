@@ -283,6 +283,10 @@ class HorizontalSlideNavi extends Navi {
     return this.dragDealer.getRatiosByOffsets([x, 0]); // return [0, 0];
   }
 
+  getHandle() {
+    return this.dragDealer.handle;
+  }
+
   setX(x) {
     let offset = this.getOffsetRatioByPosition(x);
     this.dragDealer.setValue(offset[0], offset[1]);
