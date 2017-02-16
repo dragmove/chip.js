@@ -195,7 +195,7 @@ class HorizontalSlideNavi extends Navi {
     $.extend(opt, options);
 
     opt.Dragdealer = (opt.Dragdealer) ? opt.Dragdealer : window.Dragdealer;
-    if(!opt.Dragdealer) {
+    if (!opt.Dragdealer) {
       // https://github.com/skidding/dragdealer
       throw new Error('HorizontalSlideNavi.js require Dragdealer.js Library.');
     }
@@ -248,7 +248,7 @@ class HorizontalSlideNavi extends Navi {
 
     if (!_.dragDealer) return;
 
-    if (_.option.btnsWrap.width() > window.innerWidth) {
+    if ($(_.getHandle()).outerWidth() > $(opt.wrap).width()) {
       // console.log('can scroll');
       _.dragDealer.enable();
 
@@ -256,7 +256,7 @@ class HorizontalSlideNavi extends Navi {
 
     } else {
       // console.log('can not scroll');
-      if(!_.dragDealer.disabled) _.dragDealer.disable();
+      if (!_.dragDealer.disabled) _.dragDealer.disable();
 
       _.setRatioX(0);
 
