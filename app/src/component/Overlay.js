@@ -49,6 +49,8 @@ class Overlay {
 
     _.parentNode.append(_.node);
 
+    _.hide();
+
     _.setNodeEventHandler(true);
   }
 
