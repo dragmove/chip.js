@@ -63,7 +63,7 @@ class AbstractModal {
       wrapClass: 'modal-wrap',
       contents: '',
       appendTo: $('body'),
-      closeBtnSelector: '',
+      closeBtnSelector: '.btn-close',
       isCloseByClickOutside: true,
       isCloseByEscKey: true,
       showCallback: null,
