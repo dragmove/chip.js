@@ -1,54 +1,59 @@
-
 var webpack = require('webpack'),
-    path = require('path');
+  path = require('path');
 
 module.exports = {
-    // https://webpack.github.io/docs/build-performance.html#sourcemaps
-    devtool: 'eval-source-map', // when build production app, set 'source-map'.
+  devServer: {
+    contentBase: './app',
+    noInfo: true, //  --no-info option
+    // host: '',
+    port: 9001,
+    hot: true,
+    inline: true
+  },
 
-    devServer: {
-        contentBase: './app',
-        colors: true,
-        noInfo: true, //  --no-info option
-        // host: '',
-        port: 9001,
-        hot: true,
-        inline: true
-    },
+  context: __dirname,
 
-	context: __dirname,
+  entry: {
+    main: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/main.js']
+  },
 
-    entry: {
-    	// main: ['webpack/hot/dev-server'/*, 'babel-polyfill'*/, './app/src/main.js']
-        main: ['babel-polyfill', './app/src/main.js']
-    },
+  output: {
+    filename: "[name].js",
+    path: path.resolve(__dirname, 'app/build')
+  },
 
-    output: {
-        path: __dirname +'/app/build',
-        filename: "[name].js"
-    },
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'babel-loader'
+      }
+    ]
 
-    module: {
-        loaders: [
-            { test: /\.css$/, loader: "style!css" },
-            { test: /\.jsx?$/, loaders: ['babel'], exclude: /(node_modules|bower_components)/ }
-        ]
-    },
+    /*
+     loaders: [
+     {test: /\.css$/, loader: "style!css"},
+     {test: /\.jsx?$/, loaders: ['babel'], exclude: /(node_modules|bower_components)/}
+     ]
+     */
+  },
 
-    plugins: [
-		// new webpack.HotModuleReplacementPlugin(),
-		new webpack.optimize.UglifyJsPlugin({
-			compress: {
-                drop_console: true,
-				warnings: false
-			},
-			sourceMap: false,
-			mangle: true
-		})
-	],
+  // https://webpack.js.org/configuration/devtool/
+  devtool: 'source-map',
 
-    resolve: {
-    	// you can now require('file') instead of require('file.coffee')
-		extension: ['', '.js', '.json', '.coffee']
-    },
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        drop_console: false,
+        warnings: false
+      },
+      sourceMap: true
+    }),
+
+    new webpack.BannerPlugin({
+      banner: '',
+      raw: true
+    })
+  ]
 };

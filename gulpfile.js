@@ -1,24 +1,12 @@
 var pkg = require('./package.json'),
   extend = require('extend'),
-  dateFormat = require('dateFormat'),
   gulp = require('gulp'),
   webpack = require('webpack'),
   WebpackDevServer = require('webpack-dev-server'),
   webpackStream = require('webpack-stream'),
-  concat = require('gulp-concat'),
-  jshint = require('gulp-jshint'),
-  rename = require('gulp-rename'),
-  header = require('gulp-header'),
-  sequence = require('gulp-sequence');
+  jshint = require('gulp-jshint');
 
-//var banner = ['/**',
-//  ' * @name : <%= pkg.name %>',
-//  ' * @version : v<%= pkg.version %>',
-//  ' * @author : <%= pkg.author %>',
-//  ' */',
-//  ''].join('\n');
-
-function banner(distName) {
+function banner() {
   var date = new Date();
   return [
     '/**',
@@ -27,7 +15,41 @@ function banner(distName) {
     ''].join('\n');
 }
 
-function buildMergeJS(name, options) {
+function buildMinJs(name, options) {
+  var entry = {};
+  entry[name] = ['./app/src/' + name + '.js'];
+
+  var dist = 'build';
+
+  if (options) {
+    if (options.requireBabelPolyfill === true) entry[name].unshift('babel-polyfill');
+    if (options.distPath) dist = options.distPath;
+  }
+
+  var config = extend({}, require('./webpack.config.js'), {
+    entry: entry,
+
+    plugins: [
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          drop_console: true,
+          warnings: false
+        },
+        sourceMap: true
+      }),
+
+      new webpack.BannerPlugin({
+        banner: banner(),
+        raw: true
+      })
+    ]
+  });
+
+  return gulp.src('')
+    .pipe(webpackStream(config, webpack))
+    .pipe(gulp.dest(dist));
+
+  /*
   var entry = {};
 
   if (options) {
@@ -57,8 +79,8 @@ function buildMergeJS(name, options) {
   return gulp.src('')
     .pipe(webpackStream(config))
     .pipe(concat(name + '.merge.js'))
-    .pipe(header(banner('dev')))
     .pipe(gulp.dest(dist));
+    */
 };
 
 gulp.task('lint', function () {
@@ -80,4 +102,7 @@ gulp.task('webpack-dev-server', function () {
   });
 });
 
-gulp.task('devMain', () => { buildMergeJS('main', {hasNoBabelPolyfill: true, distPath: './app/js/'}) });
+// build js
+gulp.task('buildMain', () => {
+  buildMinJs('main', {requireBabelPolyfill: true, distPath: './app/js/'})
+});
