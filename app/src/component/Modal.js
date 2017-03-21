@@ -90,12 +90,21 @@ class Modal extends AbstractModal {
   destroy(obj) {
     const _ = this;
 
+    obj = $.extend({
+      isRemoveNode: true,
+      isRemoveOverlay: true
+    }, obj);
+
+    const node = _.getNode();
+
+    super.destroy(obj);
+
     if (_.overlay) {
-      _.overlay.destroy(obj);
+      _.overlay.destroy({isRemoveNode: obj.isRemoveOverlay});
       _.overlay = null;
     }
 
-    super.destroy(obj);
+    if (obj.isRemoveNode) $(node).remove();
 
     return _;
   }

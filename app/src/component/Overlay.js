@@ -57,6 +57,8 @@ class Overlay {
   setNodeEventHandler(flag) {
     const _ = this;
 
+    if (!_.option || !_.option.clickCallback) return;
+
     if (flag) {
       if (_.option.clickCallback) _.node.on('click.ui.overlay', $.proxy(_.option.clickCallback, _));
     } else {
@@ -99,7 +101,13 @@ class Overlay {
   destroy(obj) {
     let _ = this;
 
+    obj = $.extend({
+      isRemoveNode: true
+    }, obj);
+
     _.setNodeEventHandler(false);
+
+    if (obj.isRemoveNode) $(_.node).remove();
 
     _.option = null;
     _.node = null;

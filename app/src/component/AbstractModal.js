@@ -105,6 +105,8 @@ class AbstractModal {
   setCloseBtnEventHandler(flag) {
     const _ = this;
 
+    if (!_.closeBtn) return;
+
     if (flag) {
       _.closeBtn.on('click.ui.modal', $.proxy(_.closeBtnEventHandler, _));
     } else {
@@ -116,6 +118,8 @@ class AbstractModal {
 
   setWrapEventHandler(flag) {
     const _ = this;
+
+    if (!_.wrap) return;
 
     if (flag) {
       _.wrap.on('click.ui.modal', $.proxy(_.wrapEventHandler, _));
@@ -171,6 +175,7 @@ class AbstractModal {
   }
 
   getNode() {
+    if (!this.wrap) return null;
     return this.wrap.get(0);
   }
 
