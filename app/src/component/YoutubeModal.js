@@ -96,12 +96,12 @@ class YoutubeModal extends Modal {
     const _ = this;
 
     if (!_.option.iframeWrapSelector) {
-      throw new Error('YoutubeModal require options have iframeWrapSelector');
+      throw new Error('YoutubeModal requires options have iframeWrapSelector');
       return;
     }
 
     if (!_.option.youtube || !_.option.youtube.id) {
-      throw new Error('YoutubeModal require options have youtube info object');
+      throw new Error('YoutubeModal requires options have youtube info object');
       return;
     }
 
@@ -119,13 +119,15 @@ class YoutubeModal extends Modal {
 
     const _ = this;
 
-    let width = (_.option.youtube.width) ? _.option.youtube.width : '100%',
-      height = (_.option.youtube.height) ? _.option.youtube.height : '100%';
+    let opt = _.option;
 
-    _.youtubeIFrame = $(`<iframe width="${width}" height="${height}" src="https://www.youtube.com/embed/${_.option.youtube.id}" frameborder="0" allowfullscreen></iframe>`);
+    const width = (opt.youtube.width) ? opt.youtube.width : '100%',
+      height = (opt.youtube.height) ? opt.youtube.height : '100%';
+
+    _.youtubeIFrame = $(`<iframe width="${width}" height="${height}" src="https://www.youtube.com/embed/${opt.youtube.id}" frameborder="0" allowfullscreen></iframe>`);
     _.youtubeSrc = _.youtubeIFrame.attr('src');
 
-    _.iframeWrap = $(_.option.iframeWrapSelector, _.wrap);
+    _.iframeWrap = $(opt.iframeWrapSelector, _.wrap);
     _.iframeWrap.append(_.youtubeIFrame);
 
     return _;
@@ -146,6 +148,8 @@ class YoutubeModal extends Modal {
     super.hide();
 
     const _ = this;
+
+    if (!_.youtubeIFrame || !_.youtubeIFrame.length) return;
     _.youtubeIFrame.attr('src', '');
 
     return _;
