@@ -58,7 +58,7 @@ import YoutubeModal from './component/YoutubeModal';
 
       overlay: overlay,
 
-      iframeWrapSelector: '.iframe-wrap',
+      iFrameWrapSelector: '.iframe-wrap',
       youtube: {
         id: 'YzKLbB5B0tg',
         width: '',

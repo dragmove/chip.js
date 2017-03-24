@@ -75,7 +75,7 @@
 
  overlay: overlay,
 
- iframeWrapSelector: '.iframe-wrap',
+ iFrameWrapSelector: '.iframe-wrap',
  youtube: {
  id: 'YzKLbB5B0tg',
  width: '',
@@ -95,8 +95,8 @@ class YoutubeModal extends Modal {
 
     const _ = this;
 
-    if (!_.option.iframeWrapSelector) {
-      throw new Error('YoutubeModal requires options have iframeWrapSelector');
+    if (!_.option.iFrameWrapSelector) {
+      throw new Error('YoutubeModal requires options have iFrameWrapSelector');
       return;
     }
 
@@ -105,7 +105,7 @@ class YoutubeModal extends Modal {
       return;
     }
 
-    _.iframeWrap = null;
+    _.iFrameWrap = null;
 
     _.youtubeIFrame = null;
     _.youtubeSrc = '';
@@ -127,8 +127,8 @@ class YoutubeModal extends Modal {
     _.youtubeIFrame = $(`<iframe width="${width}" height="${height}" src="https://www.youtube.com/embed/${opt.youtube.id}" frameborder="0" allowfullscreen></iframe>`);
     _.youtubeSrc = _.youtubeIFrame.attr('src');
 
-    _.iframeWrap = $(opt.iframeWrapSelector, _.wrap);
-    _.iframeWrap.append(_.youtubeIFrame);
+    _.iFrameWrap = $(opt.iFrameWrapSelector, _.wrap);
+    _.iFrameWrap.append(_.youtubeIFrame);
 
     return _;
   }
@@ -158,7 +158,7 @@ class YoutubeModal extends Modal {
   destroy(obj) {
     const _ = this;
 
-    _.iframeWrap = null;
+    _.iFrameWrap = null;
     _.youtubeIFrame.attr('src', '');
     _.youtubeIFrame = null;
     _.youtubeSrc = '';
