@@ -10,6 +10,8 @@
  }
  });
  overlay.init();
+
+ overlay.show();
  */
 
 class Overlay {
@@ -52,6 +54,8 @@ class Overlay {
     _.hide();
 
     _.setNodeEventHandler(true);
+
+    return _;
   }
 
   setNodeEventHandler(flag) {
@@ -92,10 +96,14 @@ class Overlay {
 
   show() {
     this.node.show();
+
+    return this;
   }
 
   hide() {
     this.node.hide();
+
+    return this;
   }
 
   destroy(obj) {
