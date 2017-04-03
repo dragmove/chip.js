@@ -176,7 +176,7 @@ class AbstractModal {
 
   getNode() {
     if (!this.wrap) return null;
-    return this.wrap.get(0);
+    return this.wrap;
   }
 
   appendTo(element) {

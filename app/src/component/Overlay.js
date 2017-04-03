@@ -16,7 +16,7 @@
 
 class Overlay {
   constructor(options) {
-    let _ = this;
+    const _ = this;
 
     _.option = {
       class: 'overlay',
@@ -77,7 +77,7 @@ class Overlay {
   }
 
   setCss(obj) {
-    let _ = this;
+    const _ = this;
 
     if (!_.node.length) return;
     _.node.css(obj);
@@ -86,7 +86,7 @@ class Overlay {
   }
 
   appendTo(element) {
-    let _ = this;
+    const _ = this;
 
     _.parentNode = _.option.appendTo = $(element);
     _.parentNode.append(_.node);
@@ -107,7 +107,7 @@ class Overlay {
   }
 
   destroy(obj) {
-    let _ = this;
+    const _ = this;
 
     obj = $.extend({
       isRemoveNode: true
