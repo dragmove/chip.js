@@ -195,7 +195,7 @@ class AbstractModal {
     _.isShow = true;
 
     if (_.option.showCallback) _.option.showCallback.call(_, null);
-    _.wrap.show();
+    if(_.wrap) _.wrap.show();
 
     return _;
   }
@@ -207,7 +207,7 @@ class AbstractModal {
     _.isShow = false;
 
     if (_.option.hideCallback) _.option.hideCallback.call(_, null);
-    _.wrap.hide();
+    if(_.wrap) _.wrap.hide();
 
     return _;
   }

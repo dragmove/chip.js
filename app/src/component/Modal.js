@@ -75,16 +75,20 @@ class Modal extends AbstractModal {
    */
   show() {
     super.show();
-    if (this.overlay) this.overlay.show();
 
-    return this;
+    const _ = this;
+    if (_.overlay) _.overlay.show();
+
+    return _;
   }
 
   hide() {
     super.hide();
-    if (this.overlay) this.overlay.hide();
 
-    return this;
+    const _ = this;
+    if (_.overlay) _.overlay.hide();
+
+    return _;
   }
 
   destroy(obj) {
