@@ -3,13 +3,13 @@
 // import ImageLoader from './component/ImageLoader';
 // import FullSizeBg from './component/FullSizeBg';
 import Overlay from './component/Overlay';
+import Dropdown from './component/Dropdown';
 // import FullSizeVideo from './component/FullSizeVideo';
 // import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
 // import HorizontalSlideNavi from './component/HorizontalSlideNavi';
 // import AbstractModal from './component/AbstractModal';
 // import Modal from './component/Modal';
 // import YoutubeModal from './component/YoutubeModal';
-// import Dropdown from './component/Dropdown';
 
 (function ($) {
   "use strict";
@@ -17,6 +17,7 @@ import Overlay from './component/Overlay';
 
   function init() {
     window.createOverlay = createOverlay;
+    window.createDropdown = createDropdown;
 
     // testNavi();
     // testNaviHasTimer();
@@ -37,10 +38,34 @@ import Overlay from './component/Overlay';
       clickCallback: function (evt) {
         console.log('evt :', evt);
       }
-    });
-    overlay.init();
+    }).init();
 
     return overlay;
+  }
+
+  function createDropdown() {
+    let dropdown = new Dropdown({
+      wrap: $('.dropdown'),
+      activateCallback: function (obj) {
+        console.log('activateCallback - obj :', obj); // { btns, btn, title, index, prevIndex }
+      },
+      activateIndex: 0, // default is 0.
+      titleBtnClass: 'select', // default is 'select'
+      optionWrapClass: 'option', // default is 'option'
+      activateOptionClass: 'selected', // default is 'selected'
+
+      openCallback: function (obj) {
+        console.log('openCallback - obj :', obj); // { title, index }
+      },
+      closeCallback: function (obj) {
+        console.log('closeCallback - obj :', obj); // { title, index }
+      },
+
+      isCloseByClickOutside: true, // default is true
+      isDisableClass: 'disabled' // default is 'disabled'
+    }).init();
+
+    return dropdown;
   }
 
   /*

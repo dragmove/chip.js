@@ -2,28 +2,24 @@
  @ example
 
  // css
- .dropdown .menu li.on {
+ .dropdown .option li.selected {
  color: #000;
  }
- .dropdown .menu li.on {
+ .dropdown .option li.selected {
  color: #f00;
  }
 
  // js
- let activateIndex = 3;
-
- var dropdown = new Dropdown({
+ let dropdown = new Dropdown({
  wrap: $('.dropdown'),
- activateIndex: activateIndex,
-
- titleBtnClass: 'btn-title',
- titleClass: 'title',
- menuClass: 'menu',
- activateMenuClass: 'on',
-
  activateCallback: function (obj) {
  console.log('activateCallback - obj :', obj); // { btns, btn, title, index, prevIndex }
  },
+ activateIndex: 0, // default is 0.
+ titleBtnClass: 'select', // default is 'select'
+ optionWrapClass: 'option', // default is 'option'
+ activateOptionClass: 'selected', // default is 'selected'
+
  openCallback: function (obj) {
  console.log('openCallback - obj :', obj); // { title, index }
  },
@@ -31,18 +27,30 @@
  console.log('closeCallback - obj :', obj); // { title, index }
  },
 
- isCloseByClickOutside: true
- });
- dropdown.init();
+ isCloseByClickOutside: true, // default is true
+ isDisableClass: 'disabled' // default is 'disabled'
+ }).init();
 
  // dropdown public methods
  // get title.
  // console.log('dropdown.getTitle() :', dropdown.getTitle());
 
- // get activated index.
- // console.log( 'dropdown.getActivatedIndex() :', dropdown.getActivatedIndex() );
+ // set title.
+ // dropdown.setTitle('temp title');
 
- // activate dropdown menu.
+ // get titleBtn node
+ // console.log('dropdown.getTitleBtn() :', dropdown.getTitleBtn());
+
+ // get option wrap node
+ // console.log('dropdown.getOptionWrap() :', dropdown.getOptionWrap());
+
+ // get activated option index.
+ // console.log( 'dropdown.getActivatedOptionIndex() :', dropdown.getActivatedOptionIndex() );
+
+ // get activated option's data-value
+ // console.log( 'dropdown.getActivatedOptionValue() :', dropdown.getActivatedOptionValue() );
+
+ // activate dropdown option.
  // dropdown.activate(3);
 
  // open dropdown. and, call openCallback
@@ -51,11 +59,22 @@
  // close dropdown. and, call closeCallback
  // dropdown.close();
 
+ // disable dropdown
+ // dropdown.disable(true);
+
+ // enable dropdown
+ // dropdown.disable(false);
+
+ // change dropdown menu options. and, reset title
+ // dropdown.changeOptions([{text: 'new-option-1', value: '91'}, {text: 'new-option-2', value: '92'}, {text: 'new-option-3', value: '93'}, {text: 'new-option-4', value: '94'}, {text: 'new-option-5', value: '95'}]);
+ // dropdown.setTitle('new-title');
+
  // destroy
  // dropdown.destroy();
  */
 
 import Navi from './Navi';
+import aid from 'aid.js';
 
 class Dropdown {
   constructor(options) {
@@ -64,11 +83,10 @@ class Dropdown {
 
     _.option = $.extend({
       wrap: null,
-      titleBtnClass: 'btn-title',
-      titleClass: 'title',
-      menuClass: 'menu',
+      titleBtnClass: 'select',
+      optionWrapClass: 'option',
 
-      activateMenuClass: 'on',
+      activateOptionClass: 'selected',
       activateIndex: 0,
 
       activateCallback: null,
@@ -76,6 +94,7 @@ class Dropdown {
       closeCallback: null,
 
       isCloseByClickOutside: true,
+      isDisableClass: 'disabled',
 
       global: global
     }, options);
@@ -85,10 +104,11 @@ class Dropdown {
     _.wrap = null;
     _.titleBtn = null;
     _.title = null;
-    _.menuWrap = null;
-    _.menu = null;
+    _.optionWrap = null;
+    _.optionMenu = null;
 
-    _.isShowMenu = false;
+    _.isShowOptionWrap = false;
+    _.isDisable = false;
   }
 
   init(obj) {
@@ -101,15 +121,77 @@ class Dropdown {
 
     _.wrap = $(opt.wrap);
     _.titleBtn = $(`.${opt.titleBtnClass}`, _.wrap);
-    _.title = $(`.${opt.titleClass}`, _.titleBtn);
-    _.menuWrap = $(`.${opt.menuClass}`, _.wrap);
+    _.title = $('> span', _.titleBtn);
+    _.optionWrap = $(`.${opt.optionWrapClass}`, _.wrap);
 
-    if (!_.titleBtn.length || !_.menuWrap.length) return;
+    if (!_.titleBtn.length || !_.optionWrap.length) return;
 
     _.setTitleBtn();
-    _.setMenu();
-    _.showMenu(_.isShowMenu, opt.isCloseByClickOutside);
+    _.setOptionMenu();
+    _.showOptionMenu(_.isShowOptionWrap, opt.isCloseByClickOutside);
     _.activate(opt.activateIndex);
+  }
+
+  setTitleBtn() {
+    const _ = this;
+
+    _.titleBtn.on('click.ui.dropdown', evt => {
+      if (_.isDisable) return;
+
+      (_.isShowOptionWrap) ? _.close() : _.open();
+    });
+  }
+
+  setOptionMenu() {
+    const _ = this,
+      opt = _.option;
+
+    if (_.optionMenu) _.optionMenu.destroy();
+
+    _.optionMenu = new Navi({
+      btns: $('li', _.optionWrap),
+
+      clickCallback: function (obj) {
+        const btn = $(_.optionMenu.getBtn(obj.index));
+
+        _.showOptionMenu(false, opt.isCloseByClickOutside);
+        _.isShowOptionWrap = false;
+
+        if (_.option.closeCallback) {
+          _.option.closeCallback.call(_, {
+            title: btn.text(),
+            index: obj.index,
+            value: btn.attr('data-value') || null
+          });
+        }
+      },
+
+      activateCallback: function (obj) {
+        const btns = $(_.optionMenu.getBtns());
+        if (obj.index <= 0 || obj.index > btns.length) return;
+
+        const btn = $(_.optionMenu.getBtn(obj.index)),
+          text = btn.text();
+
+        btns.removeClass(opt.activateOptionClass);
+        btn.addClass(opt.activateOptionClass);
+
+        _.setTitle(text);
+
+        if (opt.activateCallback) {
+          const data = {
+            btns: btns,
+            btn: btn,
+            title: text,
+            index: obj.index,
+            prevIndex: obj.prevIndex,
+            value: btn.attr('data-value') || null
+          };
+          opt.activateCallback.call(this, data);
+        }
+      }
+    });
+    _.optionMenu.init();
   }
 
   setDocumentEventHandler(flag) {
@@ -136,72 +218,12 @@ class Dropdown {
     }
   }
 
-  setTitleBtn() {
+  showOptionMenu(flag, isCloseByClickOutside) {
     const _ = this;
 
-    _.titleBtn.on('click.ui.dropdown', evt => {
-      (_.isShowMenu) ? _.close() : _.open();
-    });
-  }
-
-  setMenu() {
-    const _ = this,
-      opt = _.option;
-
-    _.menu = new Navi({
-      btns: $('li', _.menuWrap),
-
-      clickCallback: function (obj) {
-        const btn = $(_.menu.getBtn(obj.index)),
-          text = btn.text();
-
-        _.showMenu(false, opt.isCloseByClickOutside);
-        _.isShowMenu = false;
-
-        if (_.option.closeCallback) {
-          _.option.closeCallback.call(_, {
-            title: text,
-            index: obj.index
-          });
-        }
-      },
-
-      activateCallback: function (obj) {
-        const btns = $(_.menu.getBtns());
-        if (obj.index <= 0 || obj.index > btns.length) return;
-
-        const btn = $(_.menu.getBtn(obj.index)),
-          text = btn.text();
-
-        btns.removeClass(opt.activateMenuClass);
-        btn.addClass(opt.activateMenuClass);
-
-        _.setTitle(text);
-
-        if (opt.activateCallback) {
-          const data = {
-            btns: btns,
-            btn: btn,
-            title: text,
-            index: obj.index,
-            prevIndex: obj.prevIndex
-          };
-          opt.activateCallback.call(this, data);
-        }
-      }
-    });
-    _.menu.init();
-  }
-
-  showMenu(flag, isCloseByClickOutside) {
-    const _ = this;
-    (flag) ? this.menuWrap.show() : this.menuWrap.hide();
+    (flag) ? _.optionWrap.show() : _.optionWrap.hide();
 
     if (isCloseByClickOutside) _.setDocumentEventHandler(flag);
-  }
-
-  setTitle(str) {
-    this.title.text(str);
   }
 
   /*
@@ -211,33 +233,45 @@ class Dropdown {
     return this.title.text() || '';
   }
 
-  getActivatedIndex() {
-    return this.menu.getActivatedIndex() || 0;
+  setTitle(str) {
+    this.title.text(str);
   }
 
   getTitleBtn() {
     return this.titleBtn;
   }
 
-  getMenu() {
-    return this.menuWrap;
+  getOptionWrap() {
+    return this.optionWrap;
+  }
+
+  getActivatedOptionIndex() {
+    return this.optionMenu.getActivatedIndex() || 0;
+  }
+
+  getActivatedOptionValue() {
+    const selectedOption = $(this.optionMenu.getBtn(this.getActivatedOptionIndex())),
+      value = (selectedOption) ? (selectedOption.attr('data-value') || null) : null;
+
+    return value;
   }
 
   activate(index) {
-    if (this.menu) this.menu.activate(index);
+    if (this.optionMenu) this.optionMenu.activate(index);
   }
 
   open() {
     const _ = this,
       opt = _.option;
 
-    _.showMenu(true, opt.isCloseByClickOutside);
-    _.isShowMenu = true;
+    _.showOptionMenu(true, opt.isCloseByClickOutside);
+    _.isShowOptionWrap = true;
 
     if (opt.openCallback) {
       opt.openCallback.call(_, {
         title: _.getTitle(),
-        index: _.getActivatedIndex()
+        index: _.getActivatedOptionIndex(),
+        value: _.getActivatedOptionValue()
       });
     }
   }
@@ -246,15 +280,59 @@ class Dropdown {
     const _ = this,
       opt = _.option;
 
-    _.showMenu(false, opt.isCloseByClickOutside);
-    _.isShowMenu = false;
+    _.showOptionMenu(false, opt.isCloseByClickOutside);
+    _.isShowOptionWrap = false;
 
     if (opt.closeCallback) {
       opt.closeCallback.call(_, {
         title: _.getTitle(),
-        index: _.getActivatedIndex()
+        index: _.getActivatedOptionIndex(),
+        value: _.getActivatedOptionValue()
       });
     }
+  }
+
+  disable(flag) {
+    const _ = this;
+
+    flag = (aid.isDefined(flag)) ? flag : true;
+
+    if (flag === true) {
+      if (_.isShowOptionWrap) _.close();
+      _.wrap.addClass(_.option.isDisableClass);
+
+    } else {
+      _.wrap.removeClass(_.option.isDisableClass);
+    }
+
+    _.isDisable = flag;
+  }
+
+  changeOptions(optionObjs) {
+    // [{text: '', value: ''}, {text: '', value: ''}, ...]
+
+    const _ = this,
+      opt = _.option;
+
+    if (!aid.isArray(optionObjs) || optionObjs.length <= 0) {
+      throw Error('changeOptions(optionListObjs) method requires array parameter has {text: "", value: ""} objects.');
+    }
+
+    if (_.isShowOptionWrap) _.close();
+
+    _.setDocumentEventHandler(false);
+
+    let html = '', obj, text, value;
+    for (let i = 0, max = optionObjs.length; i < max; i++) {
+      obj = optionObjs[i];
+      text = obj.text || '';
+      value = obj.value || '';
+
+      html += `<li data-value="${value}">${text}</li>`;
+    }
+    _.optionWrap.empty().html(html);
+
+    _.setOptionMenu();
   }
 
   destroy(obj) {
@@ -267,14 +345,16 @@ class Dropdown {
 
     _.title = null;
 
-    _.menuWrap = null;
+    _.optionWrap = null;
 
-    _.menu.destroy();
-    _.menu = null;
+    _.optionMenu.destroy();
+    _.optionMenu = null;
 
     _.setDocumentEventHandler(false);
 
-    _.isShowMenu = false;
+    _.isShowOptionWrap = false;
+
+    _.isDisable = false;
   }
 }
 

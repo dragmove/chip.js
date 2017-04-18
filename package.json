@@ -6,12 +6,13 @@
   "scripts": {
     "test": "jest"
   },
-  "jest": { 
-    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest" 
+  "jest": {
+    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest"
   },
   "author": "dragmove",
   "license": "MIT",
   "devDependencies": {
+    "aid.js": "^0.1.27",
     "babel-core": "^6.23.1",
     "babel-loader": "^6.3.2",
     "babel-polyfill": "^6.23.0",

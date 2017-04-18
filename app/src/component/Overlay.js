@@ -8,8 +8,7 @@
  clickCallback: function(evt) {
  console.log('evt :', evt);
  }
- });
- overlay.init();
+ }).init();
 
  overlay.show();
  */
