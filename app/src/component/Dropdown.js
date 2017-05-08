@@ -113,6 +113,8 @@ class Dropdown {
 
   init(obj) {
     this.setInstance();
+
+    return this;
   }
 
   setInstance() {
@@ -130,6 +132,8 @@ class Dropdown {
     _.setOptionMenu();
     _.showOptionMenu(_.isShowOptionWrap, opt.isCloseByClickOutside);
     _.activate(opt.activateIndex);
+
+    return _;
   }
 
   setTitleBtn() {
@@ -140,6 +144,8 @@ class Dropdown {
 
       (_.isShowOptionWrap) ? _.close() : _.open();
     });
+
+    return _;
   }
 
   setOptionMenu() {
@@ -192,6 +198,8 @@ class Dropdown {
       }
     });
     _.optionMenu.init();
+
+    return _;
   }
 
   setDocumentEventHandler(flag) {
@@ -202,6 +210,8 @@ class Dropdown {
     } else {
       $(document).off('click.ui.dropdown', $.proxy(_.clickDocumentEventHandler, _));
     }
+
+    return _;
   }
 
   clickDocumentEventHandler(evt) {
@@ -216,6 +226,8 @@ class Dropdown {
 
         break;
     }
+
+    return _;
   }
 
   showOptionMenu(flag, isCloseByClickOutside) {
@@ -224,6 +236,8 @@ class Dropdown {
     (flag) ? _.optionWrap.show() : _.optionWrap.hide();
 
     if (isCloseByClickOutside) _.setDocumentEventHandler(flag);
+
+    return _;
   }
 
   /*
@@ -235,6 +249,8 @@ class Dropdown {
 
   setTitle(str) {
     this.title.text(str);
+
+    return this;
   }
 
   getTitleBtn() {
@@ -257,7 +273,11 @@ class Dropdown {
   }
 
   activate(index) {
-    if (this.optionMenu) this.optionMenu.activate(index);
+    const _ = this;
+
+    if (_.optionMenu) _.optionMenu.activate(index);
+
+    return _;
   }
 
   open() {
@@ -274,6 +294,8 @@ class Dropdown {
         value: _.getActivatedOptionValue()
       });
     }
+
+    return _;
   }
 
   close() {
@@ -290,6 +312,8 @@ class Dropdown {
         value: _.getActivatedOptionValue()
       });
     }
+
+    return _;
   }
 
   disable(flag) {
@@ -306,6 +330,8 @@ class Dropdown {
     }
 
     _.isDisable = flag;
+
+    return _;
   }
 
   changeOptions(optionObjs) {
@@ -333,6 +359,8 @@ class Dropdown {
     _.optionWrap.empty().html(html);
 
     _.setOptionMenu();
+
+    return _;
   }
 
   destroy(obj) {
@@ -355,6 +383,8 @@ class Dropdown {
     _.isShowOptionWrap = false;
 
     _.isDisable = false;
+
+    return _;
   }
 }
 
