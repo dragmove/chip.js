@@ -141,7 +141,7 @@ class ImageLoader {
    * get load finish all image files
    *
    * @method isFinished
-   * @return {Boolean} Returns true or false
+   * @return {Boolean} Returns boolean
    */
   isFinished() {
     return this.isFinish;
@@ -151,7 +151,7 @@ class ImageLoader {
    * get Array have loaded images
    *
    * @method getLoadedImageArr
-   * @return {Array} Returns Array
+   * @return {Array} Returns array
    */
   getLoadedImgs() {
     return this.loadedImgArr;
@@ -161,7 +161,7 @@ class ImageLoader {
    * get percentage Number(0 ~ 1)
    *
    * @method getPercentageLoaded
-   * @return {Number} Returns Number(0 ~ 1)
+   * @return {Number} Returns number(0 ~ 1)
    */
   getPercentageLoaded() {
     return this.percentageLoaded;
