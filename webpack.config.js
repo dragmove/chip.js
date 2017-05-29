@@ -14,7 +14,8 @@ module.exports = {
   context: __dirname,
 
   entry: {
-    main: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/main.js']
+    main: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/main.js'],
+    imageLoader: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/imageLoader.js']
   },
 
   output: {

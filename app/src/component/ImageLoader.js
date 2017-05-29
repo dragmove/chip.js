@@ -120,7 +120,7 @@ class ImageLoader {
    * start load images
    *
    * @method start
-   * @return {Void}
+   * @return {Object} Returns context
    */
   start(imgURLArr) {
     const _ = this;
@@ -171,12 +171,12 @@ class ImageLoader {
    * destroy ImageLoader instance
    *
    * @method destroy
-   * @return {Void}
+   * @return {Object} Returns context
    */
   destroy(obj) {
     let _ = this;
 
-    if (_.isLoading) {
+    if (_.isLoading === true) {
       let img;
       for (let i = 0, max = _.imgArr.length; i < max; i++) {
         img = _.imgArr[i];

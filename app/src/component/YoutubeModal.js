@@ -87,7 +87,7 @@
  console.log(youtubeModal.getYoutubeIFrame());
  */
 
-import Modal from './Modal';
+import Modal from './ModalHasOverlay';
 
 class YoutubeModal extends Modal {
   constructor(options) {

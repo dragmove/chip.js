@@ -66,6 +66,14 @@ class Navi {
 
     _.currentIndex = 0;
     _.activateIndex = 0;
+
+    _.proxy = {
+      mouseoverBtnEventHandler: $.proxy(_.mouseoverBtnEventHandler, _),
+      mouseoutBtnEventHandler: $.proxy(_.mouseoutBtnEventHandler, _),
+      mousedownBtnEventHandler: $.proxy(_.mousedownBtnEventHandler, _),
+      mouseupBtnEventHandler: $.proxy(_.mouseupBtnEventHandler, _),
+      clickBtnEventHandler: $.proxy(_.clickBtnEventHandler, _)
+    };
   }
 
   init(obj) {
@@ -77,21 +85,21 @@ class Navi {
 
     if (flag) {
       for (let i = 0, max = _.btns.length; i < max; i++) {
-        let btn = _.btns.get(i);
-        $(btn).on('mouseover.ui.navi', $.proxy(_.mouseoverBtnEventHandler, _));
-        $(btn).on('mouseout.ui.navi', $.proxy(_.mouseoutBtnEventHandler, _));
-        $(btn).on('mousedown.ui.navi', $.proxy(_.mousedownBtnEventHandler, _));
-        $(btn).on('mouseup.ui.navi', $.proxy(_.mouseupBtnEventHandler, _));
-        $(btn).on('click.ui.navi', $.proxy(_.clickBtnEventHandler, _));
+        $(_.btns.get(i))
+          .on('mouseover.ui.navi', _.proxy.mouseoverBtnEventHandler)
+          .on('mouseout.ui.navi', _.proxy.mouseoutBtnEventHandler)
+          .on('mousedown.ui.navi', _.proxy.mousedownBtnEventHandler)
+          .on('mouseup.ui.navi', _.proxy.mouseupBtnEventHandler)
+          .on('click.ui.navi', _.proxy.clickBtnEventHandler);
       }
     } else {
       for (let i = 0, max = _.btns.length; i < max; i++) {
-        let btn = _.btns.get(i);
-        $(btn).off('mouseover.ui.navi', $.proxy(_.mouseoverBtnEventHandler, _));
-        $(btn).off('mouseout.ui.navi', $.proxy(_.mouseoutBtnEventHandler, _));
-        $(btn).off('mousedown.ui.navi', $.proxy(_.mousedownBtnEventHandler, _));
-        $(btn).off('mouseup.ui.navi', $.proxy(_.mouseupBtnEventHandler, _));
-        $(btn).off('click.ui.navi', $.proxy(_.clickBtnEventHandler, _));
+        $(_.btns.get(i))
+          .off('mouseover.ui.navi', _.proxy.mouseoverBtnEventHandler)
+          .off('mouseout.ui.navi', _.proxy.mouseoutBtnEventHandler)
+          .off('mousedown.ui.navi', _.proxy.mousedownBtnEventHandler)
+          .off('mouseup.ui.navi', _.proxy.mouseupBtnEventHandler)
+          .off('click.ui.navi', _.proxy.clickBtnEventHandler);
       }
     }
 
