@@ -34,6 +34,8 @@
  // overlay.destroy();
  */
 
+import { isFunction } from '../utils/util';
+
 class Overlay {
   constructor(options) {
     const _ = this;
@@ -49,6 +51,10 @@ class Overlay {
 
     _.node = null;
     _.parentNode = _.option.appendTo;
+
+    _.proxy = {
+      clickOverlayEventHandler: null
+    };
   }
 
   /*
@@ -71,6 +77,8 @@ class Overlay {
 
     _.parentNode.append(_.node);
 
+    _.proxy.clickOverlayEventHandler = $.proxy(_.option.clickCallback, _);
+
     _.hide();
 
     _.setNodeEventHandler(true);
@@ -81,12 +89,12 @@ class Overlay {
   setNodeEventHandler(flag) {
     const _ = this;
 
-    if (!_.option || !_.option.clickCallback) return;
+    if (!_.option || !isFunction(_.option.clickCallback)) return _;
 
-    if (flag) {
-      if (_.option.clickCallback) _.node.on('click.ui.overlay', $.proxy(_.option.clickCallback, _));
+    if (flag === true) {
+      _.node.on('click.ui.overlay', _.proxy.clickOverlayEventHandler);
     } else {
-      if (_.option.clickCallback) _.node.off('click.ui.overlay', $.proxy(_.option.clickCallback, _));
+      _.node.off('click.ui.overlay', _.proxy.clickOverlayEventHandler);
     }
 
     return _;
@@ -99,8 +107,7 @@ class Overlay {
   setCss(obj) {
     const _ = this;
 
-    if (!_.node.length) return;
-    _.node.css(obj);
+    if (_.node.length > 0) _.node.css(obj);
 
     return _;
   }
@@ -115,15 +122,19 @@ class Overlay {
   }
 
   show() {
-    this.node.show();
+    const _ = this;
 
-    return this;
+    if (_.node.length > 0) _.node.show();
+
+    return _;
   }
 
   hide() {
-    this.node.hide();
+    const _ = this;
 
-    return this;
+    if (_.node.length > 0) _.node.hide();
+
+    return _;
   }
 
   destroy(obj) {
