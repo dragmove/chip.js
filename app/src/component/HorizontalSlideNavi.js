@@ -207,7 +207,7 @@ class HorizontalSlideNavi extends Navi {
 
     super(opt);
 
-    let _ = this;
+    const _ = this;
 
     _.option = opt;
 
@@ -215,9 +215,9 @@ class HorizontalSlideNavi extends Navi {
 
     _.dragDealer = null;
 
-    _.proxy = {
+    $.extend(true, _.proxy, {
       resizeEventHandler: null
-    };
+    });
   }
 
   init(obj) {
@@ -261,7 +261,7 @@ class HorizontalSlideNavi extends Navi {
     const _ = this,
       global = $(_.option.global);
 
-    if (flag) {
+    if (flag === true) {
       global.on('resize.ui.horizontalslidenavi', _.proxy.resizeEventHandler);
     } else {
       global.off('resize.ui.horizontalslidenavi', _.proxy.resizeEventHandler);
@@ -298,7 +298,6 @@ class HorizontalSlideNavi extends Navi {
    * public methods
    */
   // getBtns(), getBtn(index), getActivatedIndex(), activate(index) method from Navi.js
-
   getRatioX() {
     let offset = this.dragDealer.getValue();
     return offset[0];
@@ -313,7 +312,7 @@ class HorizontalSlideNavi extends Navi {
   }
 
   setX(x) {
-    let offset = this.getOffsetRatioByPosition(x);
+    const offset = this.getOffsetRatioByPosition(x);
     this.dragDealer.setValue(offset[0], offset[1]);
 
     return this;
@@ -339,7 +338,7 @@ class HorizontalSlideNavi extends Navi {
   }
 
   destroy(obj) {
-    let _ = this;
+    const _ = this;
 
     _.setResizeEventHandler(false);
 

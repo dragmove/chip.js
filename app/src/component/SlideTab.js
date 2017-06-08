@@ -1,13 +1,15 @@
-import HorizontalSlideNavi from '../navi/HorizontalSlideNavi';
-import { isDefined } from '../../utils/util';
-import { BREAKPOINTS } from '../../model/model';
+import HorizontalSlideNavi from './HorizontalSlideNavi';
+import {isDefined} from '../utils/util';
 
 class SlideTab {
   constructor(options) {
     const _ = this;
+
     if (!options) return;
 
-    _.option = $.extend(true, {
+    let opt = {
+      Dragdealer: null,
+
       wrap: null,
 
       activateIndex: 0,
@@ -17,13 +19,24 @@ class SlideTab {
         classWhenPercentageTab: 'percentage'
       },
 
-      breakpoint: BREAKPOINTS,
+      breakpoint: {
+        tablet: 640,
+        pc: 960,
+        max: 1260
+      },
 
       global: window
-    }, options);
+    };
+    $.extend(true, opt, options);
 
     // import Dragdealer
-    _.Dragdealer = require('../../vendor/dragdealer-v0.9.8/dragdealer');
+    opt.Dragdealer = (opt.Dragdealer) ? opt.Dragdealer : opt.global.Dragdealer;
+    if (!opt.Dragdealer) {
+      // https://github.com/skidding/dragdealer
+      throw new Error('SlideTab.js require Dragdealer.js Library.');
+    }
+
+    _.option = opt;
 
     _.global = _.option.global || window;
 
@@ -64,6 +77,7 @@ class SlideTab {
       throw new Error(`must set only one element to SlideTab's "wrap" option.`);
       return;
     }
+
 
     if (isDefined(opt.responsiveBasedButtonWidth) && opt.responsiveBasedButtonWidth.isApply === true) {
       _.setResponsiveBasedButtonWidth();
@@ -110,18 +124,17 @@ class SlideTab {
       if (wrapWidth > $(_.slideNavi.getHandle()).outerWidth()) {
         _.slideNavi.disable().setX(0);
 
-        /*
-         if (btnWidthMax <= expectedAverageBtnWidth) {
-         console.log('slide exist. btnWidthMax <= expectedAverageBtnWidth');
-         _.destroySlideNavi();
-         _.setListItemsPercentageWidth(_.btnListItems, true);
-         _.wrap.addClass(percentageTabClass);
+         // if (btnWidthMax <= expectedAverageBtnWidth) {
+         // console.log('slide exist. btnWidthMax <= expectedAverageBtnWidth');
+         // _.destroySlideNavi();
+         // _.setListItemsPercentageWidth(_.btnListItems, true);
+         // _.wrap.addClass(percentageTabClass);
+         //
+         // } else {
+         // console.log('slide exist. btnWidthMax > expectedAverageBtnWidth');
+         // _.slideNavi.disable().setX(0);
+         // }
 
-         } else {
-         console.log('slide exist. btnWidthMax > expectedAverageBtnWidth');
-         _.slideNavi.disable().setX(0);
-         }
-         */
       } else {
         _.slideNavi.enable();
       }
@@ -132,7 +145,7 @@ class SlideTab {
     if (!listItems || listItems.length <= 0) return;
 
     if (flag) {
-      let percentage = (100 / listItems.length).toFixed(4) + '%';
+      const percentage = (100 / listItems.length).toFixed(4) + '%';
       listItems.css({width: percentage});
     } else {
       listItems.css({width: ''});
@@ -143,7 +156,7 @@ class SlideTab {
     const _ = this;
 
     _.slideNavi = new HorizontalSlideNavi({
-      Dragdealer: _.Dragdealer,
+      Dragdealer: _.option.Dragdealer,
 
       // Navi.js option
       btns: $('li a', _.btnsWrap),
@@ -161,6 +174,8 @@ class SlideTab {
       clickCallback: function (obj) {
         if (!obj || !obj.btn) return;
 
+        /*
+
         const btn = $(obj.btn),
           href = btn.attr('href'),
           target = btn.attr('target') || '_self';
@@ -175,9 +190,12 @@ class SlideTab {
         } else {
           _.global.open(href, target);
         }
+        */
       },
 
       activateCallback: function (obj) {
+        console.log('activateCallback :', obj);
+
         let btns = $(_.slideNavi.getBtns()),
           btn = $(_.slideNavi.getBtn(obj.index));
 
@@ -279,7 +297,7 @@ class SlideTab {
   }
 
   destroy(obj) {
-    let _ = this;
+    const _ = this;
 
     _.setResizeEventHandler(false);
 

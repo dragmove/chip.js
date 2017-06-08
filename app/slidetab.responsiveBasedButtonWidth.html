@@ -1,37 +1,477 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport"
+          content="user-scalable=no, maximum-scale=1.0, minimum-scale=1.0, width=device-width, initial-scale=1.0">
     <meta property="og:title" content=""/>
-    <meta property="og:url" content="">
+    <meta property="og:type" content=""/>
+    <meta property="og:url" content=""/>
     <meta property="og:image" content=""/>
-    <meta property="og:description" content="">
-    <title>L1</title>
+    <meta property="og:description" content=""/>
     <meta name="description" content=""/>
-    <link rel="shortcut icon" href="" type="image/x-icon"/>
-    <link rel="icon" href="" type="image/x-icon"/>
-
-    <link rel="stylesheet" type="text/css" href="http://ui-static.korea.ncsoft.corp/lineage/v1/css/normalize.css"
-          media="screen"/>
-    <link rel="stylesheet" type="text/css" href="http://ui-static.korea.ncsoft.corp/lineage/v1/css/reset.css"
-          media="screen"/>
+    <meta name="keywords" content=""/>
+    <meta name="author" content=""/>
+    <title>chip.js - SlideTab</title>
     <style>
-        html, body {
-            background-color: #f4f5f7;
+        /*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */
+
+        /* Document
+           ========================================================================== */
+
+        /**
+         * 1. Correct the line height in all browsers.
+         * 2. Prevent adjustments of font size after orientation changes in
+         *    IE on Windows Phone and in iOS.
+         */
+
+        html {
+            line-height: 1.15; /* 1 */
+            -ms-text-size-adjust: 100%; /* 2 */
+            -webkit-text-size-adjust: 100%; /* 2 */
         }
 
+        /* Sections
+           ========================================================================== */
+
+        /**
+         * Remove the margin in all browsers (opinionated).
+         */
+
         body {
-            margin-top: 50px;
+            margin: 0;
+        }
+
+        /**
+         * Add the correct display in IE 9-.
+         */
+
+        article,
+        aside,
+        footer,
+        header,
+        nav,
+        section {
+            display: block;
+        }
+
+        /**
+         * Correct the font size and margin on `h1` elements within `section` and
+         * `article` contexts in Chrome, Firefox, and Safari.
+         */
+
+        h1 {
+            font-size: 2em;
+            margin: 0.67em 0;
+        }
+
+        /* Grouping content
+           ========================================================================== */
+
+        /**
+         * Add the correct display in IE 9-.
+         * 1. Add the correct display in IE.
+         */
+
+        figcaption,
+        figure,
+        main { /* 1 */
+            display: block;
+        }
+
+        /**
+         * Add the correct margin in IE 8.
+         */
+
+        figure {
+            margin: 1em 40px;
+        }
+
+        /**
+         * 1. Add the correct box sizing in Firefox.
+         * 2. Show the overflow in Edge and IE.
+         */
+
+        hr {
+            box-sizing: content-box; /* 1 */
+            height: 0; /* 1 */
+            overflow: visible; /* 2 */
+        }
+
+        /**
+         * 1. Correct the inheritance and scaling of font size in all browsers.
+         * 2. Correct the odd `em` font sizing in all browsers.
+         */
+
+        pre {
+            font-family: monospace, monospace; /* 1 */
+            font-size: 1em; /* 2 */
+        }
+
+        /* Text-level semantics
+           ========================================================================== */
+
+        /**
+         * 1. Remove the gray background on active links in IE 10.
+         * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.
+         */
+
+        a {
+            background-color: transparent; /* 1 */
+            -webkit-text-decoration-skip: objects; /* 2 */
+        }
+
+        /**
+         * 1. Remove the bottom border in Chrome 57- and Firefox 39-.
+         * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
+         */
+
+        abbr[title] {
+            border-bottom: none; /* 1 */
+            text-decoration: underline; /* 2 */
+            text-decoration: underline dotted; /* 2 */
+        }
+
+        /**
+         * Prevent the duplicate application of `bolder` by the next rule in Safari 6.
+         */
+
+        b,
+        strong {
+            font-weight: inherit;
+        }
+
+        /**
+         * Add the correct font weight in Chrome, Edge, and Safari.
+         */
+
+        b,
+        strong {
+            font-weight: bolder;
+        }
+
+        /**
+         * 1. Correct the inheritance and scaling of font size in all browsers.
+         * 2. Correct the odd `em` font sizing in all browsers.
+         */
+
+        code,
+        kbd,
+        samp {
+            font-family: monospace, monospace; /* 1 */
+            font-size: 1em; /* 2 */
+        }
+
+        /**
+         * Add the correct font style in Android 4.3-.
+         */
+
+        dfn {
+            font-style: italic;
+        }
+
+        /**
+         * Add the correct background and color in IE 9-.
+         */
+
+        mark {
+            background-color: #ff0;
+            color: #000;
+        }
+
+        /**
+         * Add the correct font size in all browsers.
+         */
+
+        small {
+            font-size: 80%;
+        }
+
+        /**
+         * Prevent `sub` and `sup` elements from affecting the line height in
+         * all browsers.
+         */
+
+        sub,
+        sup {
+            font-size: 75%;
+            line-height: 0;
+            position: relative;
+            vertical-align: baseline;
+        }
+
+        sub {
+            bottom: -0.25em;
+        }
+
+        sup {
+            top: -0.5em;
+        }
+
+        /* Embedded content
+           ========================================================================== */
+
+        /**
+         * Add the correct display in IE 9-.
+         */
+
+        audio,
+        video {
+            display: inline-block;
+        }
+
+        /**
+         * Add the correct display in iOS 4-7.
+         */
+
+        audio:not([controls]) {
+            display: none;
+            height: 0;
+        }
+
+        /**
+         * Remove the border on images inside links in IE 10-.
+         */
+
+        img {
+            border-style: none;
+        }
+
+        /**
+         * Hide the overflow in IE.
+         */
+
+        svg:not(:root) {
+            overflow: hidden;
+        }
+
+        /* Forms
+           ========================================================================== */
+
+        /**
+         * 1. Change the font styles in all browsers (opinionated).
+         * 2. Remove the margin in Firefox and Safari.
+         */
+
+        button,
+        input,
+        optgroup,
+        select,
+        textarea {
+            font-family: sans-serif; /* 1 */
+            font-size: 100%; /* 1 */
+            line-height: 1.15; /* 1 */
+            margin: 0; /* 2 */
+        }
+
+        /**
+         * Show the overflow in IE.
+         * 1. Show the overflow in Edge.
+         */
+
+        button,
+        input { /* 1 */
+            overflow: visible;
+        }
+
+        /**
+         * Remove the inheritance of text transform in Edge, Firefox, and IE.
+         * 1. Remove the inheritance of text transform in Firefox.
+         */
+
+        button,
+        select { /* 1 */
+            text-transform: none;
+        }
+
+        /**
+         * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`
+         *    controls in Android 4.
+         * 2. Correct the inability to style clickable types in iOS and Safari.
+         */
+
+        button,
+        html [type="button"], /* 1 */
+        [type="reset"],
+        [type="submit"] {
+            -webkit-appearance: button; /* 2 */
+        }
+
+        /**
+         * Remove the inner border and padding in Firefox.
+         */
+
+        button::-moz-focus-inner,
+        [type="button"]::-moz-focus-inner,
+        [type="reset"]::-moz-focus-inner,
+        [type="submit"]::-moz-focus-inner {
+            border-style: none;
+            padding: 0;
+        }
+
+        /**
+         * Restore the focus styles unset by the previous rule.
+         */
+
+        button:-moz-focusring,
+        [type="button"]:-moz-focusring,
+        [type="reset"]:-moz-focusring,
+        [type="submit"]:-moz-focusring {
+            outline: 1px dotted ButtonText;
+        }
+
+        /**
+         * Correct the padding in Firefox.
+         */
+
+        fieldset {
+            padding: 0.35em 0.75em 0.625em;
+        }
+
+        /**
+         * 1. Correct the text wrapping in Edge and IE.
+         * 2. Correct the color inheritance from `fieldset` elements in IE.
+         * 3. Remove the padding so developers are not caught out when they zero out
+         *    `fieldset` elements in all browsers.
+         */
+
+        legend {
+            box-sizing: border-box; /* 1 */
+            color: inherit; /* 2 */
+            display: table; /* 1 */
+            max-width: 100%; /* 1 */
+            padding: 0; /* 3 */
+            white-space: normal; /* 1 */
+        }
+
+        /**
+         * 1. Add the correct display in IE 9-.
+         * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.
+         */
+
+        progress {
+            display: inline-block; /* 1 */
+            vertical-align: baseline; /* 2 */
+        }
+
+        /**
+         * Remove the default vertical scrollbar in IE.
+         */
+
+        textarea {
+            overflow: auto;
+        }
+
+        /**
+         * 1. Add the correct box sizing in IE 10-.
+         * 2. Remove the padding in IE 10-.
+         */
+
+        [type="checkbox"],
+        [type="radio"] {
+            box-sizing: border-box; /* 1 */
+            padding: 0; /* 2 */
+        }
+
+        /**
+         * Correct the cursor style of increment and decrement buttons in Chrome.
+         */
+
+        [type="number"]::-webkit-inner-spin-button,
+        [type="number"]::-webkit-outer-spin-button {
+            height: auto;
+        }
+
+        /**
+         * 1. Correct the odd appearance in Chrome and Safari.
+         * 2. Correct the outline style in Safari.
+         */
+
+        [type="search"] {
+            -webkit-appearance: textfield; /* 1 */
+            outline-offset: -2px; /* 2 */
+        }
+
+        /**
+         * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.
+         */
+
+        [type="search"]::-webkit-search-cancel-button,
+        [type="search"]::-webkit-search-decoration {
+            -webkit-appearance: none;
+        }
+
+        /**
+         * 1. Correct the inability to style clickable types in iOS and Safari.
+         * 2. Change font properties to `inherit` in Safari.
+         */
+
+        ::-webkit-file-upload-button {
+            -webkit-appearance: button; /* 1 */
+            font: inherit; /* 2 */
+        }
+
+        /* Interactive
+           ========================================================================== */
+
+        /*
+         * Add the correct display in IE 9-.
+         * 1. Add the correct display in Edge, IE, and Firefox.
+         */
+
+        details, /* 1 */
+        menu {
+            display: block;
         }
 
         /*
-         * wrap - RWD Lineage 의 layout wrap css 를 임의 작성해두었습니다. 적용시, 참고 부탁드립니다.
+         * Add the correct display in all browsers.
          */
-        .wrap {
+
+        summary {
+            display: list-item;
+        }
+
+        /* Scripting
+           ========================================================================== */
+
+        /**
+         * Add the correct display in IE 9-.
+         */
+
+        canvas {
+            display: inline-block;
+        }
+
+        /**
+         * Add the correct display in IE.
+         */
+
+        template {
+            display: none;
+        }
+
+        /* Hidden
+           ========================================================================== */
+
+        /**
+         * Add the correct display in IE 10-.
+         */
+
+        [hidden] {
+            display: none;
+        }
+    </style>
+    <style>
+        html, body {
+            background-color: #fff;
+        }
+
+        #wrapper {
             position: relative;
-            margin: 0 auto;
-            max-width: 1260px;
+            width: 100%;
+            font-family: Roboto, "Droid Sans", "Malgun Gothic", Helvetica, "Apple Gothic", Tahoma, Dotum, sans-serif;
         }
 
         /*
@@ -40,11 +480,11 @@
         .slide-tab {
             position: relative;
             width: 100%;
-            height: 50px;
+            height: 43px;
             margin: 0 auto;
             background-color: #fff;
-            border-bottom: 1px solid #efefef;
             overflow: hidden;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.3);
         }
 
         .slide-tab .handle {
@@ -58,6 +498,7 @@
             position: relative;
             margin: 0;
             padding: 0;
+            font-size: 0;
             white-space: nowrap;
         }
 
@@ -69,138 +510,74 @@
 
         .slide-tab .btns li {
             display: inline-block;
+            height: 43px;
+            line-height: 43px;
         }
 
         .slide-tab .btns li a {
             display: block;
-            margin: 0;
-
-            height: 50px;
-            line-height: 50px;
-            background-color: #fff;
-            color: #8c919a;
+            margin-left: 0;
+            margin-right: 0;
+            padding-left: 8px;
+            padding-right: 8px;
+            min-width: 15px;
+            color: #333;
+            font-size: 15px;
+            font-weight: bold;
             text-align: center;
-
-            /*
-             * RWD 기반에서 버튼의 width 는 percentage 로 자동으로 결정됩니다.
-             * percentage tab 모드가 아니라, slidetab 모드시 버튼의 padding-left, padding-right, min-width 를 지정하시면 됩니다.
-             * 아래의 padding-left, padding-right, min-width 는 임의 설정한 것입니다.
-             */
-            padding-left: 10px;
-            padding-right: 10px;
-            min-width: 65px;
+            text-decoration: none;
         }
 
         .slide-tab .btns li a.on {
-            height: 49px;
-            line-height: 49px;
-            color: #1f1f1f;
-            border-bottom: 1px solid #1f1f1f;
+            color: #f43142;
         }
 
-        /*
-         * slidetab 이 자동적으로 percentage navi 와 momentum scroll navi 형태로 전환되도록 하기 위해, 아래의 css 가 필요합니다.
-         */
         .slide-tab.percentage .handle,
-        .slide-tab.percentage .btns { width: 100%; }
-        .slide-tab.percentage .btns li a { padding-left: 0; padding-right: 0; }
-
-        /*
-         * tablet, pc, max
-         */
-        @media screen and (min-width: 640px) {
-            /*
-             * slidetab 이 자동적으로 percentage navi 와 momentum scroll navi 형태로 전환되므로, mobile, tablet, pc, max 모드를 구분하지 않습니다.
-             */
+        .slide-tab.percentage .btns {
+            width: 100%;
         }
 
-        @media screen and (min-width: 960px) {
-            /*
-             * wrap - RWD Lineage 의 layout wrap css 를 임의 작성해두었습니다. 적용시, 참고 부탁드립니다.
-             */
-            .wrap {
-                margin: 0 23px;
-            }
-
-            /*
-             * slide tab
-             * slidetab 이 자동적으로 percentage navi 와 momentum scroll navi 형태로 전환되므로, mobile, tablet, pc, max 모드를 구분하지 않습니다.
-             * 기능은 js 에서 관리하며, css 는 해상도에 따라 달라지는 디자인만을 변경해야 합니다.
-             */
-            .slide-tab {
-                border: 1px solid #e1e1e5;
-            }
-
-            .slide-tab .btns li {
-                border-left: 1px solid #e1e1e5;
-            }
-            .slide-tab .btns li:first-child {
-                border-left: none;
-            }
-
-            .slide-tab .btns li a {
-                background-color: #fff;
-                color: #000;
-            }
-            .slide-tab .btns li a.on {
-                height: 50px;
-                line-height: 50px;
-                background-color: #c69c7c;
-                color: #fff;
-                border-bottom: none;
-            }
-        }
-
-        @media screen and (min-width: 1260px) {
-            /*
-             * wrap - RWD Lineage 의 layout wrap css 를 임의 작성해두었습니다. 적용시, 참고 부탁드립니다.
-             */
-            .wrap {
-                margin: 0 auto;
-            }
+        .slide-tab.percentage .btns li a {
+            padding-left: 0;
+            padding-right: 0;
         }
     </style>
-
-    <script src="http://ui-static.korea.ncsoft.corp/common/js/lib/jquery-3.1.0.min.js"></script>
 </head>
 
 <body>
-    <div class="wrap">
-
-        <div class="slide-tab">
-            <div class="handle">
-                <ul class="btns">
-                    <li><a href="#">시세동향</a></li><li><a href="#">관심아이템</a></li><li><a href="#">상점 현황</a></li><li><a href="#">시세동향</a></li><li><a href="#">관심아이템</a></li><li><a href="#">상점 현황</a></li><li><a href="#">시세동향</a></li><li><a href="#">관심아이템</a></li><li><a href="#">상점 현황</a></li><li><a href="#">시세동향</a></li><li><a href="#">관심아이템</a></li>
-                </ul>
-            </div>
+<div id="wrapper">
+    <div class="slide-tab">
+        <div class="handle">
+            <ul class="btns">
+                <li><a href="#">홈</a></li>
+                <li><a href="#">베스트</a></li>
+                <li><a href="#">NOW배송</a></li>
+                <li><a href="#">장보기</a></li>
+                <li><a href="#">푸드</a></li>
+                <li><a href="#">패션</a></li>
+                <li><a href="#">여행</a></li>
+                <li><a href="#">핫픽</a></li>
+                <li><a href="#">배달</a></li>
+                <li><a href="#">브랜드</a></li>
+            </ul>
         </div>
-
     </div>
+</div>
 
-    <script src="slidetab.js"></script>
-    <script>
-        // 3 depth index. free to change variable name.
-        window.d3Index = 2;
+<script type="text/javascript" src="lib/jquery-3.1.1.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="http://skidding.github.io/dragdealer/src/dragdealer.js"></script>
+<script type="text/javascript" src="./main.js" charset="utf-8"></script>
+<script>
+  (function ($) {
+    "use strict";
 
-        (function ($) {
-            "use strict";
+    $(document).ready(init);
 
-            $(document).ready(function () {
-                let slideTab = new SlideTab({
-                    wrap: $('.slide-tab'),
-                    activateIndex: window.d3Index
+    function init() {
+      var sliceTab = window.createSlideTab();
+    }
+  }(jQuery));
+</script>
 
-                    // option. change between 'momentum scroll navi' and 'percentage navi' based on check button width.
-                    /*
-                    responsiveBasedButtonWidth: {
-                        isApply: true,
-                        classWhenPercentageTab: 'percentage'
-                    }
-                    */
-                });
-                slideTab.init();
-            });
-        }(jQuery));
-    </script>
 </body>
 </html>
