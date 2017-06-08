@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta property="og:title" content=""/>
+    <meta property="og:url" content="">
+    <meta property="og:image" content=""/>
+    <meta property="og:description" content="">
+    <title>L1</title>
+    <meta name="description" content=""/>
+    <link rel="shortcut icon" href="" type="image/x-icon"/>
+    <link rel="icon" href="" type="image/x-icon"/>
+
+    <link rel="stylesheet" type="text/css" href="http://ui-static.korea.ncsoft.corp/lineage/v1/css/normalize.css"
+          media="screen"/>
+    <link rel="stylesheet" type="text/css" href="http://ui-static.korea.ncsoft.corp/lineage/v1/css/reset.css"
+          media="screen"/>
+    <style>
+        html, body {
+            background-color: #f4f5f7;
+        }
+
+        body {
+            margin-top: 50px;
+        }
+
+        /*
+         * wrap - RWD Lineage 의 layout wrap css 를 임의 작성해두었습니다. 적용시, 참고 부탁드립니다.
+         */
+        .wrap {
+            position: relative;
+            margin: 0 auto;
+            max-width: 1260px;
+        }
+
+        /*
+         * slide tab
+         */
+        .slide-tab {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-bottom: 1px solid #efefef;
+            overflow: hidden;
+        }
+
+        .slide-tab .handle {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .slide-tab .btns {
+            display: block;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            white-space: nowrap;
+        }
+
+        .slide-tab .btns:after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .slide-tab .btns li {
+            display: inline-block;
+        }
+
+        .slide-tab .btns li a {
+            display: block;
+            margin: 0;
+
+            height: 50px;
+            line-height: 50px;
+            background-color: #fff;
+            color: #8c919a;
+            text-align: center;
+
+            /*
+             * percentage tab 모드가 아니라, slidetab 모드시 버튼의 padding-left, padding-right, min-width 를 지정하시면 됩니다.
+             */
+            padding-left: 10px;
+            padding-right: 10px;
+            min-width: 65px;
+        }
+
+        .slide-tab .btns li a.on {
+            height: 49px;
+            line-height: 49px;
+            color: #1f1f1f;
+            border-bottom: 1px solid #1f1f1f;
+        }
+
+        /*
+         * tablet, pc, max
+         */
+        @media screen and (min-width: 640px) {
+            /*
+             * tablet 모드로 전환시, 무조건 percentage navi 형태로 전환되므로 아래의 css 가 필요합니다.
+             */
+            .slide-tab .handle, .slide-tab .btns { width: 100%; }
+            .slide-tab .btns li a { padding-left: 0; padding-right: 0; }
+        }
+
+        @media screen and (min-width: 960px) {
+            /*
+             * wrap - RWD Lineage 의 layout wrap css 를 임의 작성해두었습니다. 적용시, 참고 부탁드립니다.
+             */
+            .wrap {
+                margin: 0 23px;
+            }
+
+            /*
+             * slide tab
+             */
+            .slide-tab {
+                border: 1px solid #e1e1e5;
+            }
+
+            .slide-tab .btns li {
+                border-left: 1px solid #e1e1e5;
+            }
+            .slide-tab .btns li:first-child {
+                border-left: none;
+            }
+
+            .slide-tab .btns li a {
+                background-color: #fff;
+                color: #000;
+            }
+            .slide-tab .btns li a.on {
+                height: 50px;
+                line-height: 50px;
+                background-color: #c69c7c;
+                color: #fff;
+                border-bottom: none;
+            }
+        }
+
+        @media screen and (min-width: 1260px) {
+            /*
+             * wrap - RWD Lineage 의 layout wrap css 를 임의 작성해두었습니다. 적용시, 참고 부탁드립니다.
+             */
+            .wrap {
+                margin: 0 auto;
+            }
+        }
+    </style>
+
+    <script src="http://ui-static.korea.ncsoft.corp/common/js/lib/jquery-3.1.0.min.js"></script>
+</head>
+
+<body>
+<div class="wrap">
+
+    <div class="slide-tab">
+        <div class="handle">
+            <ul class="btns">
+                <li><a href="#">시세동향</a></li><li><a href="#">관심아이템</a></li><li><a href="#">상점 현황</a></li><li><a href="#">시세동향</a></li><li><a href="#">관심아이템</a></li><li><a href="#">상점 현황</a></li><li><a href="#">시세동향</a></li><li><a href="#">관심아이템</a></li><li><a href="#">상점 현황</a></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<script src="slidetab.js"></script>
+<script>
+    (function ($) {
+        "use strict";
+
+        $(document).ready(function () {
+            let slideTab = new SlideTab({
+                wrap: $('.slide-tab'),
+                activateIndex: 1,
+
+                // slidetab 이 자동적으로 percentage navi 와 momentum scroll navi 형태로 전환되지 않으므로, responsiveBasedButtonWidth option 변수를 null 처리합니다.
+                responsiveBasedButtonWidth: null
+
+                // breakpoint option - css breakpoint 설정 변경시, 원하는 breakpoint 를 전달하여 js측 동작도 함께 맞춰야 합니다.
+                /*
+                 breakpoint: {
+                     tablet: 640,
+                     pc: 960,
+                     max: 1260
+                 },
+                 */
+            });
+            slideTab.init();
+        });
+    }(jQuery));
+</script>
+</body>
+</html>

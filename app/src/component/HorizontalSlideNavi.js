@@ -80,6 +80,8 @@
  btnsWrap = $('.btns', slideNaviWrap);
 
  let slideNavi = new HorizontalSlideNavi({
+ Dragdealer: Dragdealer, // require Dragdealer Library
+
  // Navi.js options
  btns: $('li a', btnsWrap),
  mouseoverCallback: function (obj) {
@@ -176,6 +178,7 @@ class HorizontalSlideNavi extends Navi {
        clickCallback,
        activateCallback,
        */
+
       Dragdealer: null,
 
       wrap: null,
@@ -190,11 +193,13 @@ class HorizontalSlideNavi extends Navi {
 
       dragStartCallback: null,
       dragStopCallback: null,
-      slideEndCallback: null
-    };
-    $.extend(opt, options);
+      slideEndCallback: null,
 
-    opt.Dragdealer = (opt.Dragdealer) ? opt.Dragdealer : window.Dragdealer;
+      global: window
+    };
+    $.extend(true, opt, options);
+
+    opt.Dragdealer = (opt.Dragdealer) ? opt.Dragdealer : opt.global.Dragdealer;
     if (!opt.Dragdealer) {
       // https://github.com/skidding/dragdealer
       throw new Error('HorizontalSlideNavi.js require Dragdealer.js Library.');
@@ -206,23 +211,33 @@ class HorizontalSlideNavi extends Navi {
 
     _.option = opt;
 
-    _.$proxyResize = $.proxy(_.resize, _);
-
     _.isDraggable = false;
 
     _.dragDealer = null;
+
+    _.proxy = {
+      resizeEventHandler: null
+    };
   }
 
   init(obj) {
     super.init(obj);
 
-    this.setInstance();
+    const _ = this;
+
+    _.proxy.resizeEventHandler = $.proxy(_.resize, _);
+
+    _.setInstance();
+
+    _.setResizeEventHandler(true);
+    _.resize();
+
+    return _;
   }
 
   setInstance() {
-    const _ = this;
-
-    let opt = _.option;
+    const _ = this,
+      opt = _.option;
 
     _.dragDealer = new opt.Dragdealer($(opt.wrap).get(0), {
       handleClass: opt.handleClass,
@@ -239,8 +254,20 @@ class HorizontalSlideNavi extends Navi {
       callback: opt.slideEndCallback
     });
 
-    $(window).on('resize.ui.horizontalslidenavi', _.$proxyResize);
-    _.resize();
+    return _;
+  }
+
+  setResizeEventHandler(flag) {
+    const _ = this,
+      global = $(_.option.global);
+
+    if (flag) {
+      global.on('resize.ui.horizontalslidenavi', _.proxy.resizeEventHandler);
+    } else {
+      global.off('resize.ui.horizontalslidenavi', _.proxy.resizeEventHandler);
+    }
+
+    return _;
   }
 
   resize(evt) {
@@ -248,18 +275,19 @@ class HorizontalSlideNavi extends Navi {
 
     if (!_.dragDealer) return;
 
+    let opt = _.option;
+
     if ($(_.getHandle()).outerWidth() > $(opt.wrap).width()) {
       // console.log('can scroll');
-      _.dragDealer.enable();
 
+      _.dragDealer.enable();
       _.isDraggable = true;
 
     } else {
       // console.log('can not scroll');
+
       if (!_.dragDealer.disabled) _.dragDealer.disable();
-
       _.setRatioX(0);
-
       _.isDraggable = false;
     }
 
@@ -269,10 +297,7 @@ class HorizontalSlideNavi extends Navi {
   /*
    * public methods
    */
-  // getBtns()
-  // getBtn(index)
-  // getActivatedIndex()
-  // activate(index)
+  // getBtns(), getBtn(index), getActivatedIndex(), activate(index) method from Navi.js
 
   getRatioX() {
     let offset = this.dragDealer.getValue();
@@ -316,7 +341,8 @@ class HorizontalSlideNavi extends Navi {
   destroy(obj) {
     let _ = this;
 
-    $(window).off('resize.ui.horizontalslidenavi', _.$proxyResize);
+    _.setResizeEventHandler(false);
+
     _.$proxyResize = null;
 
     _.isDraggable = false;
