@@ -1,85 +1,13 @@
-/*
- @ example
-
- // css
- .dropdown .option li.selected {
- color: #000;
- }
- .dropdown .option li.selected {
- color: #f00;
- }
-
- // js
- let dropdown = new Dropdown({
- wrap: $('.dropdown'),
- activateCallback: function (obj) {
- console.log('activateCallback - obj :', obj); // { btns, btn, title, index, prevIndex }
- },
- activateIndex: 0, // default is 0.
- titleBtnClass: 'select', // default is 'select'
- optionWrapClass: 'option', // default is 'option'
- activateOptionClass: 'selected', // default is 'selected'
-
- openCallback: function (obj) {
- console.log('openCallback - obj :', obj); // { title, index }
- },
- closeCallback: function (obj) {
- console.log('closeCallback - obj :', obj); // { title, index }
- },
-
- isCloseByClickOutside: true, // default is true
- isDisableClass: 'disabled' // default is 'disabled'
- }).init();
-
- // dropdown public methods
- // get title.
- // console.log('dropdown.getTitle() :', dropdown.getTitle());
-
- // set title.
- // dropdown.setTitle('temp title');
-
- // get titleBtn node
- // console.log('dropdown.getTitleBtn() :', dropdown.getTitleBtn());
-
- // get option wrap node
- // console.log('dropdown.getOptionWrap() :', dropdown.getOptionWrap());
-
- // get activated option index.
- // console.log( 'dropdown.getActivatedOptionIndex() :', dropdown.getActivatedOptionIndex() );
-
- // get activated option's data-value
- // console.log( 'dropdown.getActivatedOptionValue() :', dropdown.getActivatedOptionValue() );
-
- // activate dropdown option.
- // dropdown.activate(3);
-
- // open dropdown. and, call openCallback
- // dropdown.open();
-
- // close dropdown. and, call closeCallback
- // dropdown.close();
-
- // disable dropdown
- // dropdown.disable(true);
-
- // enable dropdown
- // dropdown.disable(false);
-
- // change dropdown menu options. and, reset title
- // dropdown.changeOptions([{text: 'new-option-1', value: '91'}, {text: 'new-option-2', value: '92'}, {text: 'new-option-3', value: '93'}, {text: 'new-option-4', value: '94'}, {text: 'new-option-5', value: '95'}]);
- // dropdown.setTitle('new-title');
-
- // destroy
- // dropdown.destroy();
- */
-
 import Navi from './Navi';
-import aid from 'aid.js';
+import { isDefined, isString, isArray, isFunction, isExistJQueryObj, not } from '../utils/util';
 
 class Dropdown {
   constructor(options) {
     const _ = this;
-    if (!options) return;
+
+    if (not(isDefined)(options)) {
+      throw new Error(`must set option object when create Dropdown instance.`);
+    }
 
     _.option = $.extend({
       wrap: null,
@@ -96,10 +24,16 @@ class Dropdown {
       isCloseByClickOutside: true,
       isDisableClass: 'disabled',
 
+      // mobile device options
+      useDefaultSelectInMobileDevice: false,
+      isMobileDevice: false,
+
       global: global
     }, options);
 
     _.global = (_.option.global) ? _.option.global : window;
+
+    _.uniqueId = Date.now();
 
     _.wrap = null;
     _.titleBtn = null;
@@ -109,6 +43,15 @@ class Dropdown {
 
     _.isShowOptionWrap = false;
     _.isDisable = false;
+
+    // mobile device
+    _.selectEl = null;
+    _.isMobileDeviceUseDefaultSelect = false;
+
+    _.proxy = {
+      changeSelectElementEventHandler: null,
+      clickDocumentEventHandler: null
+    };
   }
 
   init(obj) {
@@ -126,12 +69,107 @@ class Dropdown {
     _.title = $('> span', _.titleBtn);
     _.optionWrap = $(`.${opt.optionWrapClass}`, _.wrap);
 
-    if (!_.titleBtn.length || !_.optionWrap.length) return;
+    if (_.wrap.length > 1) {
+      throw new Error(`must set only one element to Dropdown's "wrap" option.`);
+    }
 
-    _.setTitleBtn();
-    _.setOptionMenu();
-    _.showOptionMenu(_.isShowOptionWrap, opt.isCloseByClickOutside);
-    _.activate(opt.activateIndex);
+    _.proxy.changeSelectElementEventHandler = $.proxy(_.changeSelectElementEventHandler, _);
+    _.proxy.clickDocumentEventHandler = $.proxy(_.clickDocumentEventHandler, _);
+
+    if (opt.isMobileDevice === true) {
+      // phone or tablet device
+
+      if (opt.useDefaultSelectInMobileDevice === true) {
+        // console.log('use <select> in mobile device');
+        _.isMobileDeviceUseDefaultSelect = true;
+
+        _.titleBtn.remove();
+        _.optionWrap.remove();
+
+        _.titleBtn = null;
+        _.title = null;
+        _.optionWrap = null;
+
+        // set default <select>
+        _.selectEl = $('select', _.wrap);
+
+        if (_.selectEl.length > 1) {
+          throw new Error(`must exist only one <select> element within Dropdown's "wrap" option element.`);
+        }
+
+        let selectOptionBtns = $('option', _.selectEl),
+          selectOptionBtn = _.selectEl.find(':selected'),
+          selectOptionIndex = selectOptionBtns.index(selectOptionBtn) + 1;
+
+        _.selectEl.data('prevIndex', selectOptionIndex);
+
+        _.setSelectElementEventHandler(true);
+
+      } else {
+        // no use <select> in mobile device
+        $('select', _.wrap).remove();
+
+        if (_.titleBtn.length <= 0 || _.optionWrap.length <= 0) return;
+
+        _.setTitleBtn();
+        _.setOptionMenu();
+        _.showOptionMenu(_.isShowOptionWrap, opt.isCloseByClickOutside);
+        _.activate(opt.activateIndex);
+      }
+
+    } else {
+      // pc device
+      $('select', _.wrap).remove();
+
+      if (_.titleBtn.length <= 0 || _.optionWrap.length <= 0) return;
+
+      _.setTitleBtn();
+      _.setOptionMenu();
+      _.showOptionMenu(_.isShowOptionWrap, opt.isCloseByClickOutside);
+      _.activate(opt.activateIndex);
+    }
+
+    return _;
+  }
+
+  setSelectElementEventHandler(flag) {
+    const _ = this;
+
+    if (_.isMobileDeviceUseDefaultSelect !== true) return _;
+
+    if (flag === true) {
+      _.selectEl.on('change.ui.dropdown', _.proxy.changeSelectElementEventHandler);
+    } else {
+      _.selectEl.off('change.ui.dropdown', _.proxy.changeSelectElementEventHandler);
+    }
+
+    return _;
+  }
+
+  changeSelectElementEventHandler(evt) {
+    const _ = this,
+      opt = _.option;
+
+    let selectEl = $(evt.target),
+      val = selectEl.get(0).value,
+      optionBtns = $('option', selectEl),
+      optionBtn = selectEl.find(':selected'),
+      index = optionBtns.index(optionBtn) + 1,
+      prevIndex = selectEl.data('prevIndex');
+
+    selectEl.data('prevIndex', index);
+
+    if (isFunction(opt.activateCallback)) {
+      const data = {
+        btns: optionBtns,
+        btn: optionBtn,
+        title: optionBtn.text(),
+        index: index,
+        prevIndex: prevIndex,
+        value: val
+      };
+      opt.activateCallback.call(_, data);
+    }
 
     return _;
   }
@@ -139,10 +177,14 @@ class Dropdown {
   setTitleBtn() {
     const _ = this;
 
-    _.titleBtn.on('click.ui.dropdown', evt => {
-      if (_.isDisable) return;
+    if (_.isMobileDeviceUseDefaultSelect === true) return _;
 
-      (_.isShowOptionWrap) ? _.close() : _.open();
+    if (not(isExistJQueryObj)(_.titleBtn)) return _;
+
+    _.titleBtn.on('click.ui.dropdown', evt => {
+      if (_.isDisable === true) return;
+
+      (_.isShowOptionWrap === true) ? _.close() : _.open();
     });
 
     return _;
@@ -151,6 +193,10 @@ class Dropdown {
   setOptionMenu() {
     const _ = this,
       opt = _.option;
+
+    if (_.isMobileDeviceUseDefaultSelect === true) return _;
+
+    if (not(isExistJQueryObj)(_.optionWrap)) return _;
 
     if (_.optionMenu) _.optionMenu.destroy();
 
@@ -163,7 +209,7 @@ class Dropdown {
         _.showOptionMenu(false, opt.isCloseByClickOutside);
         _.isShowOptionWrap = false;
 
-        if (_.option.closeCallback) {
+        if (isFunction(_.option.closeCallback)) {
           _.option.closeCallback.call(_, {
             title: btn.text(),
             index: obj.index,
@@ -184,7 +230,7 @@ class Dropdown {
 
         _.setTitle(text);
 
-        if (opt.activateCallback) {
+        if (isFunction(opt.activateCallback)) {
           const data = {
             btns: btns,
             btn: btn,
@@ -205,10 +251,12 @@ class Dropdown {
   setDocumentEventHandler(flag) {
     const _ = this;
 
-    if (flag) {
-      $(document).on('click.ui.dropdown', $.proxy(_.clickDocumentEventHandler, _));
+    if (_.isMobileDeviceUseDefaultSelect === true) return _;
+
+    if (flag === true) {
+      $(document).on(`click.ui.dropdown.${_.uniqueId}`, _.proxy.clickDocumentEventHandler);
     } else {
-      $(document).off('click.ui.dropdown', $.proxy(_.clickDocumentEventHandler, _));
+      $(document).off(`click.ui.dropdown.${_.uniqueId}`, _.proxy.clickDocumentEventHandler);
     }
 
     return _;
@@ -217,9 +265,11 @@ class Dropdown {
   clickDocumentEventHandler(evt) {
     const _ = this;
 
+    if (_.isMobileDeviceUseDefaultSelect === true) return _;
+
     switch (evt.type) {
       case 'click' :
-        if (!_.option.isCloseByClickOutside) return;
+        if (_.option.isCloseByClickOutside !== true) return;
 
         if (evt.target === _.wrap.get(0) || $.contains(_.wrap.get(0), evt.target)) return;
         _.close();
@@ -233,9 +283,11 @@ class Dropdown {
   showOptionMenu(flag, isCloseByClickOutside) {
     const _ = this;
 
-    (flag) ? _.optionWrap.show() : _.optionWrap.hide();
+    if (_.isMobileDeviceUseDefaultSelect === true) return _;
 
-    if (isCloseByClickOutside) _.setDocumentEventHandler(flag);
+    (flag === true) ? _.optionWrap.show() : _.optionWrap.hide();
+
+    if (isCloseByClickOutside === true) _.setDocumentEventHandler(flag);
 
     return _;
   }
@@ -244,38 +296,155 @@ class Dropdown {
    * public methods
    */
   getTitle() {
-    return this.title.text() || '';
+    const _ = this;
+
+    let title = '';
+
+    if (_.isMobileDeviceUseDefaultSelect === true) {
+      const optionBtn = _.selectEl.find(':selected');
+      title = optionBtn.text() || '';
+
+    } else {
+      if (isExistJQueryObj(_.title)) title = this.title.text() || '';
+    }
+
+    return title;
   }
 
   setTitle(str) {
-    this.title.text(str);
+    const _ = this;
 
-    return this;
+    if (_.isMobileDeviceUseDefaultSelect === true) {
+      // there is not title node. can not set title string.
+
+    } else {
+      if (isExistJQueryObj(_.title)) _.title.text(str);
+    }
+
+    return _;
   }
 
   getTitleBtn() {
-    return this.titleBtn;
+    const _ = this;
+
+    let btn = null;
+
+    if (_.isMobileDeviceUseDefaultSelect === true) {
+      btn = _.selectEl.find(':selected');
+
+    } else {
+      btn = (isExistJQueryObj(this.titleBtn)) ? this.titleBtn : null;
+    }
+
+    return btn;
   }
 
   getOptionWrap() {
-    return this.optionWrap;
+    const _ = this;
+
+    let optionWrap = null;
+
+    if (_.isMobileDeviceUseDefaultSelect === true) {
+      optionWrap = (isExistJQueryObj(_.selectEl)) ? _.selectEl : null;
+
+    } else {
+      optionWrap = (isExistJQueryObj(_.optionWrap)) ? _.optionWrap : null;
+    }
+
+    return optionWrap;
   }
 
   getActivatedOptionIndex() {
-    return this.optionMenu.getActivatedIndex() || 0;
+    const _ = this;
+
+    let index = 0;
+
+    if (_.isMobileDeviceUseDefaultSelect === true) {
+      if (isExistJQueryObj(_.selectEl)) index = _.selectEl.get(0).selectedIndex + 1;
+
+    } else {
+      index = (_.optionMenu) ? _.optionMenu.getActivatedIndex() : 0;
+    }
+
+    return index;
   }
 
   getActivatedOptionValue() {
-    const selectedOption = $(this.optionMenu.getBtn(this.getActivatedOptionIndex())),
+    const _ = this;
+
+    let value = null;
+
+    if (_.isMobileDeviceUseDefaultSelect === true) {
+      const optionBtn = _.selectEl.find(':selected');
+      if (optionBtn.length) value = optionBtn.attr('value');
+
+    } else {
+      let selectedOption = null;
+
+      if (_.optionMenu) selectedOption = $(_.optionMenu.getBtn(_.getActivatedOptionIndex()));
       value = (selectedOption) ? (selectedOption.attr('data-value') || null) : null;
+    }
 
     return value;
+  }
+
+  getOptionInfoByValue(optionDataValue) {
+    const _ = this;
+
+    if (not(isString)(optionDataValue)) {
+      throw Error('getOptionInfoByValue(optionDataValue) method requires string parameter.');
+    }
+
+    let index = 0,
+      value = null,
+      optionBtns = null,
+      optionBtn = null;
+
+    if (_.isMobileDeviceUseDefaultSelect === true) {
+      optionBtns = $('option', _.selectEl);
+
+      optionBtn = optionBtns.filter(function (index, element) {
+        return ($(element).attr('value') === optionDataValue);
+      });
+
+      if (optionBtn.length) {
+        index = optionBtns.index(optionBtn) + 1;
+        value = optionBtn.attr('value');
+      }
+
+    } else {
+      optionBtns = _.optionMenu.getBtns();
+
+      if (_.optionMenu) optionBtn = $(optionBtns).filter(function (index, element) {
+        return ($(element).attr('data-value') === optionDataValue);
+      });
+
+      if (optionBtn.length) {
+        index = optionBtns.index(optionBtn) + 1;
+        value = optionBtn.attr('data-value');
+      }
+    }
+
+    return {
+      index: index,
+      value: value,
+      btns: (optionBtns.length > 0) ? optionBtns : [],
+      btn: (isExistJQueryObj(optionBtn)) ? optionBtn : null,
+      title: optionBtn.text() || ''
+    };
   }
 
   activate(index) {
     const _ = this;
 
-    if (_.optionMenu) _.optionMenu.activate(index);
+    if (_.isMobileDeviceUseDefaultSelect === true) {
+      // phone, tablet device
+      if (isExistJQueryObj(_.selectEl)) _.selectEl.get(0).selectedIndex = index - 1;
+
+    } else {
+      // pc
+      if (_.optionMenu) _.optionMenu.activate(index);
+    }
 
     return _;
   }
@@ -284,15 +453,20 @@ class Dropdown {
     const _ = this,
       opt = _.option;
 
-    _.showOptionMenu(true, opt.isCloseByClickOutside);
-    _.isShowOptionWrap = true;
+    if (_.isMobileDeviceUseDefaultSelect === true) {
+      // <select> element has not open method.
 
-    if (opt.openCallback) {
-      opt.openCallback.call(_, {
-        title: _.getTitle(),
-        index: _.getActivatedOptionIndex(),
-        value: _.getActivatedOptionValue()
-      });
+    } else {
+      _.showOptionMenu(true, opt.isCloseByClickOutside);
+      _.isShowOptionWrap = true;
+
+      if (isFunction(opt.openCallback)) {
+        opt.openCallback.call(_, {
+          title: _.getTitle(),
+          index: _.getActivatedOptionIndex(),
+          value: _.getActivatedOptionValue()
+        });
+      }
     }
 
     return _;
@@ -302,15 +476,20 @@ class Dropdown {
     const _ = this,
       opt = _.option;
 
-    _.showOptionMenu(false, opt.isCloseByClickOutside);
-    _.isShowOptionWrap = false;
+    if (_.isMobileDeviceUseDefaultSelect === true) {
+      // <select> element has not close method.
 
-    if (opt.closeCallback) {
-      opt.closeCallback.call(_, {
-        title: _.getTitle(),
-        index: _.getActivatedOptionIndex(),
-        value: _.getActivatedOptionValue()
-      });
+    } else {
+      _.showOptionMenu(false, opt.isCloseByClickOutside);
+      _.isShowOptionWrap = false;
+
+      if (isFunction(opt.closeCallback)) {
+        opt.closeCallback.call(_, {
+          title: _.getTitle(),
+          index: _.getActivatedOptionIndex(),
+          value: _.getActivatedOptionValue()
+        });
+      }
     }
 
     return _;
@@ -319,19 +498,25 @@ class Dropdown {
   disable(flag) {
     const _ = this;
 
-    flag = (aid.isDefined(flag)) ? flag : true;
+    flag = (isDefined(flag)) ? flag : true;
 
-    if (flag === true) {
-      if (_.isShowOptionWrap) _.close();
-      _.wrap.addClass(_.option.isDisableClass);
+    if (_.isMobileDeviceUseDefaultSelect === true) {
+      // phone or tablet device
+      if (isExistJQueryObj(_.selectEl)) _.selectEl.attr('disabled', flag);
 
     } else {
-      _.wrap.removeClass(_.option.isDisableClass);
+      // pc
     }
+
+    (flag === true) ? _.wrap.addClass(_.option.isDisableClass) : _.wrap.removeClass(_.option.isDisableClass);
 
     _.isDisable = flag;
 
     return _;
+  }
+
+  isDisabled() {
+    return this.isDisable;
   }
 
   changeOptions(optionObjs) {
@@ -340,25 +525,50 @@ class Dropdown {
     const _ = this,
       opt = _.option;
 
-    if (!aid.isArray(optionObjs) || optionObjs.length <= 0) {
-      throw Error('changeOptions(optionListObjs) method requires array parameter has {text: "", value: ""} objects.');
+    if (not(isArray)(optionObjs) || optionObjs.length <= 0) {
+      throw Error('changeOptions(optionObjs) method requires array parameter has {text: "", value: ""} objects.');
     }
 
-    if (_.isShowOptionWrap) _.close();
+    if (_.isMobileDeviceUseDefaultSelect === true) {
+      // phone or tablet device
+      _.setSelectElementEventHandler(false);
 
-    _.setDocumentEventHandler(false);
+      let html = '', obj, text, value;
+      for (let i = 0, max = optionObjs.length; i < max; i++) {
+        obj = optionObjs[i];
+        text = obj.text || '';
+        value = obj.value || '';
 
-    let html = '', obj, text, value;
-    for (let i = 0, max = optionObjs.length; i < max; i++) {
-      obj = optionObjs[i];
-      text = obj.text || '';
-      value = obj.value || '';
+        html += `<option value="${value}">${text}</option>`;
+      }
+      _.selectEl.empty().html(html);
 
-      html += `<li data-value="${value}">${text}</li>`;
+      let selectOptionBtns = $('option', _.selectEl),
+        selectOptionBtn = _.selectEl.find(':selected'),
+        selectOptionIndex = selectOptionBtns.index(selectOptionBtn) + 1;
+
+      _.selectEl.data('prevIndex', selectOptionIndex);
+
+      _.setSelectElementEventHandler(true);
+
+    } else {
+      // pc
+      if (_.isShowOptionWrap) _.close();
+
+      _.setDocumentEventHandler(false);
+
+      let html = '', obj, text, value;
+      for (let i = 0, max = optionObjs.length; i < max; i++) {
+        obj = optionObjs[i];
+        text = obj.text || '';
+        value = obj.value || '';
+
+        html += `<li data-value="${value}">${text}</li>`;
+      }
+      _.optionWrap.empty().html(html);
+
+      _.setOptionMenu();
     }
-    _.optionWrap.empty().html(html);
-
-    _.setOptionMenu();
 
     return _;
   }

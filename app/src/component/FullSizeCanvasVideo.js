@@ -148,7 +148,6 @@ class FullSizeCanvasVideo {
 
     if (_.parent.length <= 0) {
       throw new Error('FullSizeCanvasVideo Class require options have parent.');
-      return;
     }
 
     _.$video = null;

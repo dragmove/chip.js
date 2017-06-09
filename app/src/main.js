@@ -1,7 +1,6 @@
 // import NaviHasTimer from './component/NaviHasTimer';
 // import FullSizeBg from './component/FullSizeBg';
 import Overlay from './component/Overlay';
-import Dropdown from './component/Dropdown';
 // import FullSizeVideo from './component/FullSizeVideo';
 // import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
 import Navi from './component/Navi';
@@ -16,9 +15,9 @@ import SlideTab from './component/SlideTab';
 
   $(document).ready(init);
 
+  // TODO - separate each sample files.
+
   function init() {
-    window.createDropdown = createDropdown;
-    window.createNavi = createNavi;
     window.createHorizontalSlideNavi = createHorizontalSlideNavi;
     window.createSlideTab = createSlideTab;
 
@@ -30,73 +29,6 @@ import SlideTab from './component/SlideTab';
     // testAbstractModal();
     // testModal();
     // testYoutubeModal();
-    // testDropdown();
-  }
-
-  function createDropdown() {
-    let dropdown = new Dropdown({
-      wrap: $('.dropdown'),
-      activateCallback: function (obj) {
-        console.log('activateCallback - obj :', obj); // { btns, btn, title, index, prevIndex }
-      },
-      activateIndex: 0, // default is 0.
-      titleBtnClass: 'select', // default is 'select'
-      optionWrapClass: 'option', // default is 'option'
-      activateOptionClass: 'selected', // default is 'selected'
-
-      openCallback: function (obj) {
-        console.log('openCallback - obj :', obj); // { title, index }
-      },
-      closeCallback: function (obj) {
-        console.log('closeCallback - obj :', obj); // { title, index }
-      },
-
-      isCloseByClickOutside: true, // default is true
-      isDisableClass: 'disabled' // default is 'disabled'
-    }).init();
-
-    return dropdown;
-  }
-
-  function createNavi() {
-    let navi = new Navi({
-      btns: $('.navi li a'),
-      mouseoverCallback: mouseoverCallback,
-      mouseoutCallback: mouseoutCallback,
-      clickCallback: clickCallback,
-      activateCallback: activateCallback
-    });
-    navi.init();
-
-    function mouseoverCallback(obj) {
-      console.log('mouseover :', obj);
-    }
-
-    function mouseoutCallback(obj) {
-      console.log('mouseout :', obj);
-    }
-
-    function clickCallback(obj) {
-      console.log('click :', obj);
-    }
-
-    function activateCallback(obj) {
-      console.log('activateCallback :', obj);
-
-      let btns = $(navi.getBtns()),
-        btn = $(navi.getBtn(obj.index));
-
-      btns.removeClass('on');
-      btn.addClass('on');
-    }
-
-    //activate 3rd btn
-    // navi.activate(3);
-
-    //get activated index
-    // console.log( 'after call "navi.activate(3)", print "_navi.getActivatedIndex()" :', navi.getActivatedIndex() );
-
-    return navi;
   }
 
   function createHorizontalSlideNavi() {

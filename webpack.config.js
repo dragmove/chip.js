@@ -19,6 +19,7 @@ module.exports = {
     imageLoader: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/imageLoader.js'],
     navi: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/navi.js'],
     overlay: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/overlay.js'],
+    dropdown: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/dropdown.js']
   },
 
   output: {

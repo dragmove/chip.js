@@ -109,7 +109,6 @@ class FullSizeVideo {
 
     if (!_.option.videoWrap || $(_.option.videoWrap).length <= 0) {
       throw new Error('FullSizeBg Class require options have videoWrap');
-      return;
     }
 
     _.video = null;

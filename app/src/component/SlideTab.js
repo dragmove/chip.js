@@ -75,9 +75,7 @@ class SlideTab {
 
     if (_.wrap.length > 1) {
       throw new Error(`must set only one element to SlideTab's "wrap" option.`);
-      return;
     }
-
 
     if (isDefined(opt.responsiveBasedButtonWidth) && opt.responsiveBasedButtonWidth.isApply === true) {
       _.setResponsiveBasedButtonWidth();

@@ -13,160 +13,36 @@
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
     <meta name="author" content=""/>
-    <title>chip.js Overlay sample</title>
-    <style type="text/css">
-        /* http://meyerweb.com/eric/tools/css/reset/
-          v2.0 | 20110126
-          License: none (public domain)
-        */
+    <title>chip.js - Dropdown</title>
 
-        html, body, div, span, applet, object, iframe,
-        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-        a, abbr, acronym, address, big, cite, code,
-        del, dfn, em, img, ins, kbd, q, s, samp,
-        small, strike, strong, sub, sup, tt, var,
-        b, u, i, center,
-        dl, dt, dd, ol, ul, li,
-        fieldset, form, label, legend,
-        table, caption, tbody, tfoot, thead, tr, th, td,
-        article, aside, canvas, details, embed,
-        figure, figcaption, footer, header, hgroup,
-        menu, nav, output, ruby, section, summary,
-        time, mark, audio, video {
-            margin: 0;
-            padding: 0;
-            border: 0;
-            font-size: 100%;
-            font: inherit;
-            vertical-align: baseline;
-        }
-
-        /* HTML5 display-role reset for older browsers */
-        article, aside, details, figcaption, figure,
-        footer, header, hgroup, menu, nav, section {
-            display: block;
-        }
-
-        body {
-            line-height: 1;
-        }
-
-        ol, ul {
-            list-style: none;
-        }
-
-        blockquote, q {
-            quotes: none;
-        }
-
-        blockquote:before, blockquote:after,
-        q:before, q:after {
-            content: '';
-            content: none;
-        }
-
-        table {
-            border-collapse: collapse;
-            border-spacing: 0;
-        }
-
-        /*
-         * sample
-         */
-        html, body {
-            width: 100%;
-            height: 100%;
-        }
-
-        #wrapper {
-            position: relative;
-            background: #fff;
-            width: 100%;
-            height: 100%;
-        }
-
-        .dropdown .option li.selected {
-            color: #000;
-        }
-
-        .dropdown .option li.selected {
-            color: #f00;
-        }
-    </style>
+    <link rel="stylesheet" href="css/normalize-v7.0.0/normalize.css">
 </head>
 
 <body>
 <div id="wrapper">
-
-    <div class="dropdown">
+    <div class="ui-dropdown">
         <div class="select">
             <span>title</span>
         </div>
 
         <ul class="option">
-            <li data-value="0">option-1</li>
-            <li data-value="1">option-2</li>
-            <li data-value="2">option-3</li>
-            <li data-value="3">option-4</li>
+            <li data-value="00">option-1</li>
+            <li data-value="01">option-2</li>
+            <li data-value="02">option-3</li>
+            <li data-value="03">option-4</li>
         </ul>
-    </div>
 
+        <select class="" name="select-name-what-you-want">
+            <option value="00">option-1</option>
+            <option value="01">option-2</option>
+            <option value="02">option-3</option>
+            <option value="03">option-4</option>
+        </select>
+    </div>
 </div>
 
 <script type="text/javascript" src="lib/jquery-3.1.1.min.js" charset="utf-8"></script>
-<script type="text/javascript" src="./main.js" charset="utf-8"></script>
-<script>
-    (function ($) {
-        "use strict";
-
-        $(document).ready(init);
-
-        function init() {
-            var dropdown = window.createDropdown();
-
-            // dropdown public methods
-            // get title.
-            // console.log('dropdown.getTitle() :', dropdown.getTitle());
-
-            // set title.
-            // dropdown.setTitle('temp title');
-
-            // get titleBtn node
-            // console.log('dropdown.getTitleBtn() :', dropdown.getTitleBtn());
-
-            // get option wrap node
-            // console.log('dropdown.getOptionWrap() :', dropdown.getOptionWrap());
-
-            // get activated option index.
-            // console.log( 'dropdown.getActivatedOptionIndex() :', dropdown.getActivatedOptionIndex() );
-
-            // get activated option's data-value
-            // console.log( 'dropdown.getActivatedOptionValue() :', dropdown.getActivatedOptionValue() );
-
-            // activate dropdown option.
-            // dropdown.activate(3);
-
-            // open dropdown. and, call openCallback
-            // dropdown.open();
-
-            // close dropdown. and, call closeCallback
-            // dropdown.close();
-
-            // disable dropdown
-            // dropdown.disable(true);
-
-            // enable dropdown
-            // dropdown.disable(false);
-
-            // change dropdown menu options. and, reset title
-            // dropdown.changeOptions([{text: 'new-option-1', value: '91'}, {text: 'new-option-2', value: '92'}, {text: 'new-option-3', value: '93'}, {text: 'new-option-4', value: '94'}, {text: 'new-option-5', value: '95'}]);
-            // dropdown.setTitle('new-title');
-
-            // destroy
-            // dropdown.destroy();
-        }
-    }(jQuery));
-</script>
+<script type="text/javascript" src="dropdown.js" charset="utf-8"></script>
 
 </body>
 </html>

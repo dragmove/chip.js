@@ -97,12 +97,10 @@ class YoutubeModal extends Modal {
 
     if (!_.option.iFrameWrapSelector) {
       throw new Error('YoutubeModal requires options have iFrameWrapSelector');
-      return;
     }
 
     if (!_.option.youtube || !_.option.youtube.id) {
       throw new Error('YoutubeModal requires options have youtube info object');
-      return;
     }
 
     _.iFrameWrap = null;

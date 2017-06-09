@@ -4,12 +4,36 @@ let isDefined = function (obj) {
   return flag;
 };
 
+let isString = function (obj) {
+  if (!isDefined(obj)) return false;
+  return (obj.constructor === String);
+};
+
+let isArray = function (obj) {
+  if (!isDefined(obj)) return false;
+  return (obj.constructor === Array);
+};
+
 let isFunction = function (obj) {
   if (!isDefined(obj)) return false;
   return (obj.constructor === Function);
 };
 
+let isExistJQueryObj = function (obj) {
+  return !(!obj || obj.length <= 0);
+};
+
+let not = function not(func) {
+  return function (object) {
+    return !func(object);
+  };
+};
+
 export {
   isDefined,
-  isFunction
+  isString,
+  isArray,
+  isFunction,
+  isExistJQueryObj,
+  not
 };

@@ -54,7 +54,6 @@ class FullSizeBg {
 
     if (!_.imgWrap || !_.imgWidth || !_.imgHeight) {
       throw new Error('FullSizeBg Class require options have imgWrap, imgWidth, imgHeight');
-      return;
     }
     _.img = $('img', _.imgWrap);
 
