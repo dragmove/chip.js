@@ -53,6 +53,7 @@
 class Navi {
   constructor(options) {
     if (!options) return;
+
     const _ = this;
 
     _.btns = options.btns || [];
@@ -68,16 +69,28 @@ class Navi {
     _.activateIndex = 0;
 
     _.proxy = {
+      mouseoverBtnEventHandler: null,
+      mouseoutBtnEventHandler: null,
+      mousedownBtnEventHandler: null,
+      mouseupBtnEventHandler: null,
+      clickBtnEventHandler: null
+    };
+  }
+
+  init(obj) {
+    const _ = this;
+
+    _.proxy = {
       mouseoverBtnEventHandler: $.proxy(_.mouseoverBtnEventHandler, _),
       mouseoutBtnEventHandler: $.proxy(_.mouseoutBtnEventHandler, _),
       mousedownBtnEventHandler: $.proxy(_.mousedownBtnEventHandler, _),
       mouseupBtnEventHandler: $.proxy(_.mouseupBtnEventHandler, _),
       clickBtnEventHandler: $.proxy(_.clickBtnEventHandler, _)
     };
-  }
 
-  init(obj) {
-    this.setBtnsEventHandler(true);
+    _.setBtnsEventHandler(true);
+
+    return _;
   }
 
   setBtnsEventHandler(flag) {

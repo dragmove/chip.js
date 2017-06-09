@@ -1,6 +1,4 @@
-// import Navi from './component/Navi';
 // import NaviHasTimer from './component/NaviHasTimer';
-// import ImageLoader from './component/ImageLoader';
 // import FullSizeBg from './component/FullSizeBg';
 import Overlay from './component/Overlay';
 import Dropdown from './component/Dropdown';
@@ -19,17 +17,13 @@ import SlideTab from './component/SlideTab';
   $(document).ready(init);
 
   function init() {
-    window.createOverlay = createOverlay;
     window.createDropdown = createDropdown;
     window.createNavi = createNavi;
     window.createHorizontalSlideNavi = createHorizontalSlideNavi;
     window.createSlideTab = createSlideTab;
 
-    // testNavi();
     // testNaviHasTimer();
-    // testImageLoader();
     // testFullSizeBg();
-    // testOverlay();
     // testFullSizeVideo();
     // testFullSizeCanvasVideo();
     // testHorizontalSlideNavi();
@@ -37,40 +31,6 @@ import SlideTab from './component/SlideTab';
     // testModal();
     // testYoutubeModal();
     // testDropdown();
-  }
-
-  function createOverlay() {
-    let overlay = new Overlay({
-      clickCallback: function (evt) {
-        console.log('evt :', evt);
-      }
-    }).init();
-
-    /*
-     * overlay public methods
-     */
-    // set node event handler
-    // overlay.setNodeEventHandler(true/false);
-
-    // get node
-    // console.log(overlay.getNode());
-
-    // set css
-    // overlay.setCss({'background-color': '#f00', ...});
-
-    // append to other element
-    // overlay.appendTo(parent element);
-
-    // show overlay
-    // overlay.show();
-
-    // hide overlay
-    // overlay.hide();
-
-    // destroy overlay
-    // overlay.destroy();
-
-    return overlay;
   }
 
   function createDropdown() {

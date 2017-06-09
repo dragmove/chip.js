@@ -2,10 +2,11 @@ import ImageLoader from './component/ImageLoader';
 
 (function ($) {
   "use strict";
+
   $(document).ready(init);
 
   function init() {
-    let imgLoader = new ImageLoader({
+    const imgLoader = new ImageLoader({
       loadCompleteCallback: (obj) => {
         console.log('loadComplete :', obj);
         console.log('imgLoader.isFinished() :', imgLoader.isFinished());

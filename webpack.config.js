@@ -15,7 +15,10 @@ module.exports = {
 
   entry: {
     main: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/main.js'],
-    imageLoader: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/imageLoader.js']
+
+    imageLoader: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/imageLoader.js'],
+    navi: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/navi.js'],
+    overlay: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/overlay.js'],
   },
 
   output: {
