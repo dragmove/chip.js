@@ -30,7 +30,7 @@ class NaviHasTimer extends Navi {
   }
 
   removeTimer() {
-    const _ = null;
+    const _ = this;
 
     if (_.timer) clearTimeout(_.timer);
     _.timer = null;

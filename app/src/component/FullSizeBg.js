@@ -35,7 +35,7 @@
  });
  fullSizeBg.init();
 
- $(window).on('resize.ui.fullsizebg', function(evt) {
+ $(window).on('resize', function (evt) {
  $('#wrapper').css({
  width: window.innerWidth,
  height: window.innerHeight
@@ -47,6 +47,8 @@
 class FullSizeBg {
   constructor(options) {
     const _ = this;
+
+    _.uniqueId = Date.now();
 
     _.imgWrap = options.imgWrap;
     _.imgWidth = options.imgWidth;
@@ -64,9 +66,11 @@ class FullSizeBg {
   }
 
   init(obj) {
-    $(window).on('resize.ui.fullsizebg', _.$proxyResize);
+    const _ = this;
 
-    return this;
+    $(window).on(`resize.ui.fullsizebg.${_.uniqueId}`, _.$proxyResize);
+
+    return _;
   }
 
   getImageSizeAspectFill() {
@@ -145,7 +149,7 @@ class FullSizeBg {
   destroy(obj) {
     const _ = this;
 
-    $(window).off('resize.ui.fullsizebg', _.$proxyResize);
+    $(window).off(`resize.ui.fullsizebg.${_.uniqueId}`, _.$proxyResize);
 
     _.imgWrap = null;
     _.imgWidth = null;

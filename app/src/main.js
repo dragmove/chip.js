@@ -1,5 +1,3 @@
-// import NaviHasTimer from './component/NaviHasTimer';
-// import FullSizeBg from './component/FullSizeBg';
 import Overlay from './component/Overlay';
 // import FullSizeVideo from './component/FullSizeVideo';
 // import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
@@ -21,8 +19,6 @@ import SlideTab from './component/SlideTab';
     window.createHorizontalSlideNavi = createHorizontalSlideNavi;
     window.createSlideTab = createSlideTab;
 
-    // testNaviHasTimer();
-    // testFullSizeBg();
     // testFullSizeVideo();
     // testFullSizeCanvasVideo();
     // testHorizontalSlideNavi();
