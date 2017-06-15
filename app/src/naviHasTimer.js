@@ -6,7 +6,7 @@ import NaviHasTimer from './component/NaviHasTimer';
   $(document).ready(init);
 
   function init() {
-    const navi = new NaviHasTimer({
+    let navi = new NaviHasTimer({
       btns: $('.navi li a'),
       mouseoverCallback: mouseoverCallback,
       mouseoutCallback: mouseoutCallback,
@@ -45,5 +45,4 @@ import NaviHasTimer from './component/NaviHasTimer';
     //get activated index
     // console.log( 'after call "navi.activate(3)", print "_navi.getActivatedIndex()" :', navi.getActivatedIndex() );
   }
-
 }(jQuery, window));

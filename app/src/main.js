@@ -1,11 +1,8 @@
 import Overlay from './component/Overlay';
 // import FullSizeVideo from './component/FullSizeVideo';
 // import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
-import Navi from './component/Navi';
 import HorizontalSlideNavi from './component/HorizontalSlideNavi';
 import SlideTab from './component/SlideTab';
-// import AbstractModal from './component/AbstractModal';
-// import Modal from './component/Modal';
 // import YoutubeModal from './component/YoutubeModal';
 
 (function ($) {
@@ -22,8 +19,6 @@ import SlideTab from './component/SlideTab';
     // testFullSizeVideo();
     // testFullSizeCanvasVideo();
     // testHorizontalSlideNavi();
-    // testAbstractModal();
-    // testModal();
     // testYoutubeModal();
   }
 

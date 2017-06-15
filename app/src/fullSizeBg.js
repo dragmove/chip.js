@@ -22,5 +22,4 @@ import FullSizeBg from './component/FullSizeBg';
       });
     }).trigger('resize');
   }
-
 }(jQuery, window));

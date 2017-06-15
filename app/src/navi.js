@@ -6,7 +6,7 @@ import Navi from './component/Navi';
   $(document).ready(init);
 
   function init() {
-    const navi = new Navi({
+    let navi = new Navi({
       btns: $('.navi li a'),
       mouseoverCallback: mouseoverCallback,
       mouseoutCallback: mouseoutCallback,
@@ -37,11 +37,10 @@ import Navi from './component/Navi';
       btn.addClass('on');
     }
 
-    //activate 3rd btn
+    // activate 3rd btn
     // navi.activate(3);
 
-    //get activated index
+    // get activated index
     // console.log( 'after call "navi.activate(3)", print "_navi.getActivatedIndex()" :', navi.getActivatedIndex() );
   }
-
 }(jQuery, window));

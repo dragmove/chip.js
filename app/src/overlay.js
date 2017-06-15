@@ -6,7 +6,7 @@ import Overlay from './component/Overlay';
   $(document).ready(init);
 
   function init() {
-    const overlay = new Overlay({
+    let overlay = new Overlay({
       clickCallback: function (evt) {
         console.log('evt :', evt);
       }
@@ -38,5 +38,4 @@ import Overlay from './component/Overlay';
     // destroy overlay
     // overlay.destroy();
   }
-
 }(jQuery, window));

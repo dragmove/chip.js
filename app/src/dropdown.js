@@ -9,7 +9,7 @@ import Dropdown from './component/Dropdown';
     let useDefaultSelectInMobileDevice = true,
       isMobileDevice = ( $('body').hasClass('mobile') || $('body').hasClass('tablet') ) ? true : false;
 
-    const dropdown = new Dropdown({
+    let dropdown = new Dropdown({
       wrap: $('.ui-dropdown'),
 
       // options
@@ -86,5 +86,4 @@ import Dropdown from './component/Dropdown';
     // destroy
     // dropdown.destroy();
   }
-
 }(jQuery, window));

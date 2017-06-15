@@ -38,7 +38,7 @@
  let overlay = new Overlay();
  overlay.init();
 
- let modal = new Modal({
+ let modal = new ModalHasOverlay({
  wrapClass: 'modal-wrap',
  contents: '<div class="modal"><p>contents</p><a href="#" class="btn-close">close</a></div>',
  appendTo: $('body'),
