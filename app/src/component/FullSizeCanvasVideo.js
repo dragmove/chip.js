@@ -113,6 +113,10 @@
  });
  */
 
+
+
+// TODO - add setVolume, getVolume feature.
+
 class FullSizeCanvasVideo {
   constructor(options) {
     const _ = this;
@@ -130,11 +134,11 @@ class FullSizeCanvasVideo {
       videoUrl: '',
       posterUrl: '',
 
+      contentMode: FullSizeCanvasVideo.ASPECT_FILL, // FullSizeCanvasVideo.ASPECT_FILL, FullSizeCanvasVideo.ASPECT_FIT, FullSizeCanvasVideo.WIDTH_FIT
+
       autoplay: true,
       loop: true,
       muted: false,
-
-      contentMode: FullSizeCanvasVideo.ASPECT_FILL, // FullSizeCanvasVideo.ASPECT_FILL, FullSizeCanvasVideo.ASPECT_FIT, FullSizeCanvasVideo.WIDTH_FIT
 
       canplayCallback: null,
       timeupdateCallback: null,
@@ -144,8 +148,7 @@ class FullSizeCanvasVideo {
     };
     $.extend(_.option, options);
 
-    _.parent = _.option.parent;
-
+    _.parent = $(_.option.parent);
     if (_.parent.length <= 0) {
       throw new Error('FullSizeCanvasVideo Class require options have parent.');
     }
@@ -552,10 +555,6 @@ class FullSizeCanvasVideo {
     return func;
   }
 
-  isIOS() {
-    return /iPad|iPhone|iPod/.test(navigator.platform);
-  }
-
   play() {
     const _ = this;
     if (!_.video) return;
@@ -648,6 +647,10 @@ class FullSizeCanvasVideo {
     _.$proxyResize = null;
 
     return _;
+  }
+
+  isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.platform);
   }
 }
 FullSizeCanvasVideo.ASPECT_FILL = 'ASPECT_FILL';
