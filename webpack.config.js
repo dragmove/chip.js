@@ -6,7 +6,7 @@ module.exports = {
     contentBase: './app',
     noInfo: true, //  --no-info option
     // host: '',
-    port: 9001,
+    port: 9000,
     hot: true,
     inline: true
   },
@@ -22,6 +22,7 @@ module.exports = {
     overlay: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/overlay.js'],
     dropdown: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/dropdown.js'],
     fullSizeBg: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/fullSizeBg.js'],
+    fullSizeVideo: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/fullSizeVideo.js']
   },
 
   output: {

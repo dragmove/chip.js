@@ -1,6 +1,6 @@
 import Dropdown from './component/Dropdown';
 
-(function ($, global) {
+(function ($) {
   "use strict";
 
   $(document).ready(init);
@@ -87,4 +87,4 @@ import Dropdown from './component/Dropdown';
     // dropdown.destroy();
   }
 
-}(jQuery, window));
+}(jQuery));

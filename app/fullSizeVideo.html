@@ -13,7 +13,7 @@
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
     <meta name="author" content=""/>
-    <title>chip.js - FullSizeBg</title>
+    <title>chip.js - FullSizeVideo</title>
 
     <link rel="stylesheet" href="css/normalize-v7.0.0/normalize.css">
     <style>
@@ -23,26 +23,29 @@
             background: #333;
         }
 
-        .fullsize-bg {
+        .fullsize-video {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
         }
+
+        .fullsize-video video {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
     </style>
 </head>
 
 <body>
 <div id="wrapper">
-    <div class="fullsize-bg">
-        <img src="https://images.unsplash.com/photo-1474496517593-015d8b59450d?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&s=49563d997d36faad03833ddab8d15c0a"
-             alt="">
-    </div>
+    <div class="fullsize-video"></div>
 </div>
 
 <script type="text/javascript" src="lib/jquery-3.1.1.min.js" charset="utf-8"></script>
-<script type="text/javascript" src="fullSizeBg.js" charset="utf-8"></script>
+<script type="text/javascript" src="fullSizeVideo.js" charset="utf-8"></script>
 
 </body>
 </html>

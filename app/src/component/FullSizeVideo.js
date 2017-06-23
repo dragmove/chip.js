@@ -33,19 +33,15 @@
 
  let fullSizeVideo = new FullSizeVideo({
  videoWrap: $('.fullsize-video'),
- width: 320,
- height: 176,
- alignX: 'center',
- alignY: 'center',
-
- videoUrls: ['data/video_320x176.mp4'],
-
- posterUrl: 'https://images.unsplash.com/photo-1474496517593-015d8b59450d?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&s=49563d997d36faad03833ddab8d15c0a',
- posterAlt: 'poster alt string',
+ videoUrls: ['https://www.w3schools.com/tags/mov_bbb.mp4', 'https://www.w3schools.com/tags/mov_bbb.ogg'],
+ videoWidth: 320,
+ videoHeight: 176,
+ alignX: 'center', // left, center, right
+ alignY: 'center', // top, center, bottom
 
  autoplay: true,
  loop: false,
- muted: true,
+ muted: false,
 
  canplayCallback: (obj) => {
  console.log('canplayCallback obj :', obj);
@@ -62,6 +58,7 @@
 
  setTimeout(function() {
  fullSizeVideo.play();
+ fullSizeVideo.setVolume(0.5);
  }, 2000);
 
  setTimeout(function() {
@@ -71,6 +68,7 @@
  setTimeout(function() {
  fullSizeVideo.seek(5);
  fullSizeVideo.play();
+ fullSizeVideo.setVolume(1.0);
  }, 6000);
 
  $(window).on('resize', function(evt) {
@@ -83,19 +81,17 @@
 
 class FullSizeVideo {
   constructor(options) {
-    let _ = this;
+    const _ = this;
+
+    _.uniqueId = Date.now();
 
     _.option = {
       videoWrap: null,
-      width: 320,
-      height: 240,
+      videoUrls: [],
+      videoWidth: 320,
+      videoHeight: 240,
       alignX: 'center',
       alignY: 'center',
-
-      videoUrls: [],
-
-      posterUrl: '',
-      posterAlt: '',
 
       autoplay: true,
       loop: false,
@@ -107,19 +103,23 @@ class FullSizeVideo {
     };
     $.extend(_.option, options);
 
-    if (!_.option.videoWrap || $(_.option.videoWrap).length <= 0) {
-      throw new Error('FullSizeBg Class require options have videoWrap');
+    _.option.videoWrap = $(_.option.videoWrap);
+    if (_.option.videoWrap.length <= 0) {
+      throw new Error('FullSizeVideo Class require options have videoWrap');
     }
 
     _.video = null;
-    _.poster = null;
 
     _.$proxyResize = $.proxy(_.resize, _);
   }
 
   init(obj) {
-    this.setInstance();
-    this.setCallbacks();
+    const _ = this;
+
+    _.setInstance();
+    _.setCallbacks();
+
+    return _;
   }
 
   setInstance() {
@@ -132,20 +132,17 @@ class FullSizeVideo {
       videoSourceTpl += `<source src="${url}" type="video/${ext}"></source>`;
     }
 
-    let tpl = '';
-    if (opt.posterUrl) tpl = `<img src="${opt.posterUrl}" alt="${opt.posterAlt}">`;
-    tpl += `<video>${videoSourceTpl}</video>`;
+    const tpl = `<video>${videoSourceTpl}</video>`;
     $(opt.videoWrap).append(tpl);
 
     _.video = $('video', opt.videoWrap);
-    _.poster = $('img', opt.videoWrap);
 
-    let video = _.video.get(0);
+    const video = _.video.get(0);
     if (opt.loop === true) video.setAttribute('loop', '');
     if (opt.muted === true) video.setAttribute('muted', '');
     if (opt.autoplay === true) video.setAttribute('autoplay', '');
 
-    $(window).on('resize.ui.fullsizevideo', _.$proxyResize);
+    $(window).on(`resize.ui.fullsizevideo.${_.uniqueId}`, _.$proxyResize);
   }
 
   setCallbacks() {
@@ -194,16 +191,16 @@ class FullSizeVideo {
   }
 
   getVideoSizeAspectFill() {
-    let _ = this,
+    const _ = this,
       opt = _.option;
 
     let winWidth = window.innerWidth,
       winHeight = window.innerHeight,
       modifiedSizeW = winWidth,
-      modifiedSizeH = Math.ceil((winWidth / opt.width) * opt.height);
+      modifiedSizeH = Math.ceil((winWidth / opt.videoWidth) * opt.videoHeight);
 
     if (modifiedSizeH < winHeight) {
-      modifiedSizeW = Math.ceil((winHeight / opt.height) * opt.width);
+      modifiedSizeW = Math.ceil((winHeight / opt.videoHeight) * opt.videoWidth);
       modifiedSizeH = winHeight;
     }
 
@@ -258,27 +255,19 @@ class FullSizeVideo {
   }
 
   resize(evt) {
-    let _ = this,
+    const _ = this,
       size = _.getVideoSizeAspectFill();
 
-    _.poster.width(size.width).height(size.height);
     _.video.width(size.width).height(size.height);
 
-    // TODO - require change to bottom, and test
-    /*
-    _.video.attr({
-      width: size.width,
-      height: size.height
-    });
-    */
     _.setWrapAlign(_.option.alignX, _.option.alignY, size);
 
     return _;
   }
 
   play() {
-    let _ = this;
-    if (!_.video || _.video.length <= 0) return;
+    const _ = this;
+    if (!_.video || _.video.length <= 0) return _;
 
     let video = _.video.get(0);
     video.play();
@@ -287,8 +276,8 @@ class FullSizeVideo {
   }
 
   pause() {
-    let _ = this;
-    if (!_.video || _.video.length <= 0) return;
+    const _ = this;
+    if (!_.video || _.video.length <= 0) return _;
 
     let video = _.video.get(0);
     video.pause();
@@ -297,8 +286,8 @@ class FullSizeVideo {
   }
 
   stop() {
-    let _ = this;
-    if (!_.video || _.video.length <= 0) return;
+    const _ = this;
+    if (!_.video || _.video.length <= 0) return _;
 
     let video = _.video.get(0);
     video.pause();
@@ -308,13 +297,37 @@ class FullSizeVideo {
   }
 
   seek(second) {
-    let _ = this;
-    if (!_.video || _.video.length <= 0) return;
+    const _ = this;
+    if (!_.video || _.video.length <= 0) return _;
 
-    let video = _.video.get(0);
+    const video = _.video.get(0);
     video.currentTime = second;
 
     return _;
+  }
+
+  setVolume(number) {
+    const _ = this;
+
+    if (number < 0 || number > 1) {
+      throw new Error('must set a number between 0.0 and 1.0');
+    }
+
+    if (!_.video || _.video.length <= 0) return _;
+
+    const video = _.video.get(0);
+    video.volume = number;
+
+    return _;
+  }
+
+  getVolume() {
+    const _ = this;
+
+    if (!_.video || _.video.length <= 0) return null;
+
+    const video = _.video.get(0);
+    return video.volume;
   }
 
   getVideoNode() {
@@ -331,10 +344,10 @@ class FullSizeVideo {
     $(video).off('timeupdate.ui.video.fullsizevideo');
     $(video).off('ended.ui.video.fullsizevideo');
 
-    _.video = null;
-    _.poster = null;
+    $(window).off(`resize.ui.fullsizevideo.${_.uniqueId}`, _.$proxyResize);
 
-    $(window).off('resize.ui.fullsizevideo', _.$proxyResize);
+    _.video = null;
+    _.$proxyResize = null;
 
     return _;
   }

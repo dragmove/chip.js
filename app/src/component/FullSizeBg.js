@@ -43,24 +43,27 @@
  }).trigger('resize');
  */
 
-
 class FullSizeBg {
   constructor(options) {
     const _ = this;
 
     _.uniqueId = Date.now();
 
-    _.imgWrap = options.imgWrap;
-    _.imgWidth = options.imgWidth;
-    _.imgHeight = options.imgHeight;
+    _.option = {
+      imgWrap: null,
+      imgWidth: 320,
+      imgHeight: 240,
+      alignX: 'center',
+      alignY: 'center'
+    };
+    $.extend(_.option, options);
 
-    if (!_.imgWrap || !_.imgWidth || !_.imgHeight) {
-      throw new Error('FullSizeBg Class require options have imgWrap, imgWidth, imgHeight');
+    _.option.imgWrap = $(_.option.imgWrap);
+    if (_.option.imgWrap.length <= 0) {
+      throw new Error('FullSizeBg Class require options have imgWrap');
     }
-    _.img = $('img', _.imgWrap);
 
-    _.alignX = options.alignX || 'center';
-    _.alignY = options.alignY || 'center';
+    _.img = $('img', _.option.imgWrap);
 
     _.$proxyResize = $.proxy(_.resize, _);
   }
@@ -74,15 +77,16 @@ class FullSizeBg {
   }
 
   getImageSizeAspectFill() {
-    const _ = this;
+    const _ = this,
+      opt = _.option;
 
     let winWidth = window.innerWidth,
       winHeight = window.innerHeight,
       modifiedSizeW = winWidth,
-      modifiedSizeH = Math.ceil((winWidth / _.imgWidth) * _.imgHeight);
+      modifiedSizeH = Math.ceil((winWidth / opt.imgWidth) * opt.imgHeight);
 
     if (modifiedSizeH < winHeight) {
-      modifiedSizeW = Math.ceil((winHeight / _.imgHeight) * _.imgWidth);
+      modifiedSizeW = Math.ceil((winHeight / opt.imgHeight) * opt.imgWidth);
       modifiedSizeH = winHeight;
     }
 
@@ -128,7 +132,7 @@ class FullSizeBg {
         break;
     }
 
-    _.imgWrap.css({
+    _.option.imgWrap.css({
       left: left,
       top: top
     });
@@ -141,7 +145,7 @@ class FullSizeBg {
       size = _.getImageSizeAspectFill();
 
     _.img.width(size.width).height(size.height);
-    _.setWrapAlign(_.alignX, _.alignY, size);
+    _.setWrapAlign(_.option.alignX, _.option.alignY, size);
 
     return _;
   }
@@ -151,14 +155,7 @@ class FullSizeBg {
 
     $(window).off(`resize.ui.fullsizebg.${_.uniqueId}`, _.$proxyResize);
 
-    _.imgWrap = null;
-    _.imgWidth = null;
-    _.imgHeight = null;
-
     _.img = null;
-
-    _.alignX = '';
-    _.alignY = '';
 
     _.$proxyResize = null;
 

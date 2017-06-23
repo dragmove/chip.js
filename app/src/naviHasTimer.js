@@ -1,6 +1,6 @@
 import NaviHasTimer from './component/NaviHasTimer';
 
-(function ($, global) {
+(function ($) {
   "use strict";
 
   $(document).ready(init);
@@ -46,4 +46,4 @@ import NaviHasTimer from './component/NaviHasTimer';
     // console.log( 'after call "navi.activate(3)", print "_navi.getActivatedIndex()" :', navi.getActivatedIndex() );
   }
 
-}(jQuery, window));
+}(jQuery));

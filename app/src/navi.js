@@ -1,6 +1,6 @@
 import Navi from './component/Navi';
 
-(function ($, global) {
+(function ($) {
   "use strict";
 
   $(document).ready(init);
@@ -44,4 +44,4 @@ import Navi from './component/Navi';
     // console.log( 'after call "navi.activate(3)", print "_navi.getActivatedIndex()" :', navi.getActivatedIndex() );
   }
 
-}(jQuery, window));
+}(jQuery));

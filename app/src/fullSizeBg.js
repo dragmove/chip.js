@@ -1,6 +1,6 @@
 import FullSizeBg from './component/FullSizeBg';
 
-(function ($, global) {
+(function ($) {
   "use strict";
 
   $(document).ready(init);
@@ -23,4 +23,4 @@ import FullSizeBg from './component/FullSizeBg';
     }).trigger('resize');
   }
 
-}(jQuery, window));
+}(jQuery));

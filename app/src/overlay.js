@@ -1,6 +1,6 @@
 import Overlay from './component/Overlay';
 
-(function ($, global) {
+(function ($) {
   "use strict";
 
   $(document).ready(init);
@@ -39,4 +39,4 @@ import Overlay from './component/Overlay';
     // overlay.destroy();
   }
 
-}(jQuery, window));
+}(jQuery));

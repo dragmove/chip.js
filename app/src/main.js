@@ -1,5 +1,4 @@
 import Overlay from './component/Overlay';
-// import FullSizeVideo from './component/FullSizeVideo';
 // import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
 import Navi from './component/Navi';
 import HorizontalSlideNavi from './component/HorizontalSlideNavi';
@@ -19,7 +18,6 @@ import SlideTab from './component/SlideTab';
     window.createHorizontalSlideNavi = createHorizontalSlideNavi;
     window.createSlideTab = createSlideTab;
 
-    // testFullSizeVideo();
     // testFullSizeCanvasVideo();
     // testHorizontalSlideNavi();
     // testAbstractModal();
