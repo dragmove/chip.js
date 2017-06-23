@@ -7,15 +7,15 @@
 
 
 ## Components
-dropdown
-fullSizeBg
-fullSizeVideo
-imageLoader
-modal
-modalHasOverlay
-navi
-naviHasTimer
-overlay
+dropdown  
+fullSizeBg  
+fullSizeVideo  
+imageLoader  
+modal  
+modalHasOverlay  
+navi  
+naviHasTimer  
+overlay  
 
 
 ## Contact
