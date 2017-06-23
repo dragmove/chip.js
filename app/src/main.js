@@ -1,7 +1,6 @@
 // import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
 import HorizontalSlideNavi from './component/HorizontalSlideNavi';
 import SlideTab from './component/SlideTab';
-// import YoutubeModal from './component/YoutubeModal';
 
 (function ($) {
   "use strict";
@@ -16,7 +15,6 @@ import SlideTab from './component/SlideTab';
 
     // testFullSizeCanvasVideo();
     // testHorizontalSlideNavi();
-    // testYoutubeModal();
   }
 
   function createHorizontalSlideNavi() {
@@ -135,44 +133,4 @@ import SlideTab from './component/SlideTab';
 
     return slideTab;
   }
-
-  /*
-   function testYoutubeModal() {
-   let overlay = new Overlay();
-   overlay.init();
-
-   let youtubeModal = new YoutubeModal({
-   wrapClass: 'modal-wrap',
-   contents: `<div class="modal">
-   <div class="embed-responsive-video">
-   <div class="iframe-wrap">
-   </div>
-   </div>
-   <a href="#" class="btn-close">close</a>
-   </div>`,
-   appendTo: $('body'),
-   closeBtnSelector: '.btn-close',
-
-   isCloseByClickOutside: true,
-   isCloseByEscKey: true,
-
-   showCallback: function () {
-   // console.log('showCallback :', this);
-   },
-   hideCallback: function () {
-   // console.log('hideCallback :', this);
-   },
-
-   overlay: overlay,
-
-   iFrameWrapSelector: '.iframe-wrap',
-   youtube: {
-   id: 'YzKLbB5B0tg',
-   width: '',
-   height: ''
-   }
-   });
-   youtubeModal.init().show();
-   }
-   */
 }(jQuery));
