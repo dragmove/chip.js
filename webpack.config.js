@@ -15,8 +15,11 @@ module.exports = {
 
   entry: {
     main: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/main.js'],
-
+    dropdown: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/dropdown.js'],
+    fullSizeBg: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/fullSizeBg.js'],
     imageLoader: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/imageLoader.js'],
+    modal: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/modal.js'],
+    modalHasOverlay: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/modalHasOverlay.js'],
     navi: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/navi.js'],
     naviHasTimer: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/naviHasTimer.js'],
     overlay: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/overlay.js'],

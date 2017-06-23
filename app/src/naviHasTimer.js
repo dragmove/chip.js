@@ -6,7 +6,7 @@ import NaviHasTimer from './component/NaviHasTimer';
   $(document).ready(init);
 
   function init() {
-    const navi = new NaviHasTimer({
+    let navi = new NaviHasTimer({
       btns: $('.navi li a'),
       mouseoverCallback: mouseoverCallback,
       mouseoutCallback: mouseoutCallback,

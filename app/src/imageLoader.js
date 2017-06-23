@@ -6,7 +6,7 @@ import ImageLoader from './component/ImageLoader';
   $(document).ready(init);
 
   function init() {
-    const imgLoader = new ImageLoader({
+    let imgLoader = new ImageLoader({
       loadCompleteCallback: (obj) => {
         console.log('loadComplete :', obj);
         console.log('imgLoader.isFinished() :', imgLoader.isFinished());
