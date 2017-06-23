@@ -35,6 +35,8 @@
  }
 
  // js
+ import Modal from './component/Modal';
+
  let modal = new Modal({
  wrapClass: 'modal-wrap',
  contents: '<div class="modal"><p>contents</p><a href="#" class="btn-close">close</a></div>',
@@ -52,7 +54,20 @@
  });
  modal.init().show();
 
- console.log('modal.getNode() :', modal.getNode());
+ // get node
+ // console.log('modal.getNode() :', modal.getNode());
+
+ // append to other element
+ // modal.appendTo( element );
+
+ // show
+ // modal.show();
+
+ // hide
+ // modal.hide();
+
+ // destroy
+ // modal.destroy();
  */
 
 class Modal {

@@ -48,6 +48,9 @@
  }
 
  // js
+ import Overlay from './component/Overlay';
+ import YoutubeModal from './component/YoutubeModal';
+
  let overlay = new Overlay();
  overlay.init();
 
@@ -55,8 +58,7 @@
  wrapClass: 'modal-wrap',
  contents: `<div class="modal">
  <div class="embed-responsive-video">
- <div class="iframe-wrap">
- </div>
+ <div class="iframe-wrap"></div>
  </div>
  <a href="#" class="btn-close">close</a>
  </div>`,
@@ -67,10 +69,10 @@
  isCloseByEscKey: true,
 
  showCallback: function () {
- // console.log('showCallback :', this);
+ console.log('showCallback :', this);
  },
  hideCallback: function () {
- // console.log('hideCallback :', this);
+ console.log('hideCallback :', this);
  },
 
  overlay: overlay,
@@ -82,9 +84,26 @@
  height: ''
  }
  });
+
  youtubeModal.init().show();
 
- console.log(youtubeModal.getYoutubeIFrame());
+ // get node
+ // console.log('youtubeModal.getNode() :', youtubeModal.getNode());
+
+ // append to other element
+ // youtubeModal.appendTo( element );
+
+ // get youtube iframe
+ // console.log('youtubeModal.getYoutubeIFrame() :', youtubeModal.getYoutubeIFrame());
+
+ // show
+ // youtubeModal.show();
+
+ // hide
+ // youtubeModal.hide();
+
+ // destroy
+ // youtubeModal.destroy();
  */
 
 import Modal from './ModalHasOverlay';

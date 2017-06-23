@@ -25,5 +25,17 @@ import Modal from './component/Modal';
 
     // get node
     // console.log('modal.getNode() :', modal.getNode());
+
+    // append to other element
+    // modal.appendTo( element );
+
+    // show
+    // modal.show();
+
+    // hide
+    // modal.hide();
+
+    // destroy
+    // modal.destroy();
   }
 }(jQuery, window));

@@ -24,6 +24,7 @@ module.exports = {
     navi: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/navi.js'],
     naviHasTimer: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/naviHasTimer.js'],
     overlay: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/overlay.js'],
+    youtubeModal: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/youtubeModal.js']
   },
 
   output: {
