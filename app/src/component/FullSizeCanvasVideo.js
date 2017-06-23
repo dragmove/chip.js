@@ -529,7 +529,7 @@ class FullSizeCanvasVideo {
     return {
       width: modifiedSizeW,
       height: modifiedSizeH
-    }
+    };
   }
 
   getVideoContentModeFunc(contentMode) {

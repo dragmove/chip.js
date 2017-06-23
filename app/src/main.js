@@ -1,4 +1,3 @@
-import Overlay from './component/Overlay';
 // import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
 import HorizontalSlideNavi from './component/HorizontalSlideNavi';
 import SlideTab from './component/SlideTab';

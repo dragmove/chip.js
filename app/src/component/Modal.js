@@ -230,7 +230,7 @@ class Modal {
 
     _.setCloseBtnEventHandler(false);
     _.setWrapEventHandler(false);
-    _.setEscKeyEventHandler(false)
+    _.setEscKeyEventHandler(false);
 
     _.wrap = null;
     _.parentNode = null;

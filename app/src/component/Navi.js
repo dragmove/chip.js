@@ -202,7 +202,7 @@ class Navi {
       _.activateCallback.call(null, {
         prevIndex: prevIndex,
         index: idx
-      })
+      });
     }
 
     _.currentIndex = _.activateIndex = idx;

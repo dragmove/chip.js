@@ -4,7 +4,7 @@ var pkg = require('./package.json'),
   webpack = require('webpack'),
   WebpackDevServer = require('webpack-dev-server'),
   webpackStream = require('webpack-stream'),
-  jshint = require('gulp-jshint');
+  eslint = require('gulp-eslint');
 
 function banner() {
   var date = new Date();
@@ -84,9 +84,17 @@ function buildMinJs(name, options) {
 };
 
 gulp.task('lint', function () {
+  /*
   return gulp.src('app/*.js')
     .pipe(jshint())
     .pipe(jshint.reporter('default'));
+    */
+
+  return gulp.src('app/src/component/*')
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
+
 });
 
 /*

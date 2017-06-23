@@ -2,27 +2,41 @@
   "name": "chip.js",
   "version": "0.0.1",
   "description": "",
-  "main": "build/main.js",
+  "keywords": [
+    "chip.js",
+    "chipjs",
+    "chip",
+    "javascript",
+    "js",
+    "dragmove"
+  ],
+  "homepage": "https://github.com/dragmove/chip.js",
+  "bugs": {
+    "url": "https://github.com/dragmove/chip.js/issues",
+    "email": "dragmove@gmail.com"
+  },
+  "main": "",
   "scripts": {
-    "test": "jest",
-    "flow": "flow"
+    "test": "jest"
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest"
   },
-  "author": "dragmove",
-  "license": "MIT",
+  "author": "Hyun-Seok.Kim",
+  "license": {
+    "type": "MIT",
+    "url": "https://opensource.org/licenses/mit-license.php"
+  },
   "devDependencies": {
-    "aid.js": "^0.1.27",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.23.1",
+    "babel-eslint": "^7.2.3",
     "babel-loader": "^6.3.2",
     "babel-polyfill": "^6.23.0",
     "babel-preset-es2015": "^6.22.0",
     "extend": "^3.0.0",
     "gulp": "^3.9.1",
-    "gulp-jshint": "^2.0.4",
-    "jshint": "^2.9.4",
+    "gulp-eslint": "^4.0.0",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1",
     "webpack-stream": "^3.2.0"
