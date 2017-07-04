@@ -1,20 +1,11 @@
-// import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
-// import HorizontalSlideNavi from './component/HorizontalSlideNavi';
-import SlideTab from './component/SlideTab';
+import HorizontalSlideNavi from './component/HorizontalSlideNavi';
 
 (function ($) {
   "use strict";
 
   $(document).ready(init);
 
-  // TODO - separate each sample files.
-
   function init() {
-    // window.createHorizontalSlideNavi = createHorizontalSlideNavi;
-    window.createSlideTab = createSlideTab;
-  }
-
-  function createHorizontalSlideNavi() {
     let slideNaviWrap = $('.slide-navi'),
       btnsWrap = $('.btns', slideNaviWrap);
 
@@ -102,32 +93,6 @@ import SlideTab from './component/SlideTab';
      if (btn.length) slideNavi.setX(-btn.position().left);
      }
      */
-
-    return slideNavi;
   }
 
-  function createSlideTab() {
-    let slideTab = new SlideTab({
-      Dragdealer: window.Dragdealer,
-      wrap: $('.slide-tab'),
-      activateIndex: 1
-
-      // option. change between 'momentum scroll navi' and 'percentage navi' based on check button width.
-      /*
-       responsiveBasedButtonWidth: {
-       isApply: true,
-       classWhenPercentageTab: 'percentage'
-       },
-
-       breakpoint: {
-       tablet: 640,
-       pc: 960,
-       max: 1260
-       }
-       */
-    });
-    slideTab.init();
-
-    return slideTab;
-  }
 }(jQuery));

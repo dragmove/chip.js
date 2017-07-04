@@ -26,7 +26,9 @@ module.exports = {
     overlay: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/overlay.js'],
     youtubeModal: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/youtubeModal.js'],
 
+    // TODO
     fullSizeCanvasVideo: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/fullSizeCanvasVideo.js'],
+    horizontalSlideNavi: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/horizontalSlideNavi.js']
   },
 
   output: {
