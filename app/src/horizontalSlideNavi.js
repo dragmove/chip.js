@@ -6,13 +6,14 @@ import HorizontalSlideNavi from './component/HorizontalSlideNavi';
   $(document).ready(init);
 
   function init() {
+    // set HorizontalSlideNavi extends Navi
     let slideNaviWrap = $('.slide-navi'),
       btnsWrap = $('.btns', slideNaviWrap);
 
     let slideNavi = new HorizontalSlideNavi({
       Dragdealer: window.Dragdealer,
 
-      // Navi.js options
+      // Navi options
       btns: $('li a', btnsWrap),
 
       mouseoverCallback: function (obj) {
@@ -39,7 +40,7 @@ import HorizontalSlideNavi from './component/HorizontalSlideNavi';
         btn.addClass('on');
       },
 
-      // HorizontalSlideNavi.js options
+      // HorizontalSlideNavi options
       wrap: slideNaviWrap,
       handleClass: 'handle',
       btnsWrap: btnsWrap,
@@ -62,37 +63,37 @@ import HorizontalSlideNavi from './component/HorizontalSlideNavi';
     });
     slideNavi.init();
 
-    /*
-     // TEST
-     $('.test-btns a').on('click', function (evt) {
-     let index = $(this).index() + 1;
-     activateSlideNavi(index);
-     });
+    // control HorizontalSlideNavi by external
+    $('#test-btns a').on('click', function (evt) {
+      evt.preventDefault();
 
-     function activateSlideNavi(index) {
-     if (slideNavi) slideNavi.activate(index);
+      const index = $('#test-btns a').index(this) + 1;
+      activateSlideNavi(index);
+    });
 
-     if (index < 1 || index > slideNavi.getBtns().length) return;
+    function activateSlideNavi(index) {
+      if (slideNavi) slideNavi.activate(index);
 
-     let prev = (index <= 1) ? 0 : index - 1,
-     next = (index > slideNavi.getBtns().length) ? 0 : index + 1;
+      if (index < 1 || index > slideNavi.getBtns().length) return;
 
-     if (!prev) {
-     // go to left end.
-     slideNavi.setRatioX(0);
-     return;
-     }
+      const prev = (index <= 1) ? 0 : index - 1,
+        next = (index > slideNavi.getBtns().length) ? 0 : index + 1;
 
-     if (!next) {
-     // go go right end.
-     slideNavi.setRatioX(1);
-     return;
-     }
+      if (!prev) {
+        // go to left end.
+        slideNavi.setRatioX(0);
+        return;
+      }
 
-     let btn = $(slideNavi.getBtn(prev));
-     if (btn.length) slideNavi.setX(-btn.position().left);
-     }
-     */
+      if (!next) {
+        // go go right end.
+        slideNavi.setRatioX(1);
+        return;
+      }
+
+      const btn = $(slideNavi.getBtn(prev));
+      if (btn.length) slideNavi.setX(-btn.position().left);
+    }
   }
 
 }(jQuery));
