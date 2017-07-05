@@ -7,14 +7,13 @@ import HorizontalSlideNavi from './component/HorizontalSlideNavi';
 
   function init() {
     // set HorizontalSlideNavi extends Navi
-    let slideNaviWrap = $('.slide-navi'),
-      btnsWrap = $('.btns', slideNaviWrap);
+    let slideNaviWrap = $('.slide-navi');
 
     let slideNavi = new HorizontalSlideNavi({
       Dragdealer: window.Dragdealer,
 
       // Navi options
-      btns: $('li a', btnsWrap),
+      btns: $('.btns li a', slideNaviWrap),
 
       mouseoverCallback: function (obj) {
         // console.log('mouseover :', obj);
@@ -43,7 +42,6 @@ import HorizontalSlideNavi from './component/HorizontalSlideNavi';
       // HorizontalSlideNavi options
       wrap: slideNaviWrap,
       handleClass: 'handle',
-      btnsWrap: btnsWrap,
 
       disabled: false,
       slide: true,

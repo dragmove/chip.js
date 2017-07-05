@@ -1,5 +1,5 @@
 import Navi from './Navi';
-import { isDefined, isString, isArray, isFunction, isExistJQueryObj, not } from '../utils/util';
+import { isDefined, isString, isFunction, isExistJQueryObj, not } from '../utils/util';
 
 class Dropdown {
   constructor(options) {
@@ -524,7 +524,7 @@ class Dropdown {
 
     const _ = this;
 
-    if (not(isArray)(optionObjs) || optionObjs.length <= 0) {
+    if (not(Array.isArray)(optionObjs) || optionObjs.length <= 0) {
       throw Error('changeOptions(optionObjs) method requires array parameter has {text: "", value: ""} objects.');
     }
 
