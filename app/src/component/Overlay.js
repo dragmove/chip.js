@@ -60,7 +60,7 @@ class Overlay {
   /*
    * public methods
    */
-  init(obj) {
+  init(obj = null) {
     const _ = this;
 
     _.node = $(document.createElement('div')).addClass(_.option.class);
@@ -137,7 +137,7 @@ class Overlay {
     return _;
   }
 
-  destroy(obj) {
+  destroy(obj = null) {
     const _ = this;
 
     obj = $.extend({

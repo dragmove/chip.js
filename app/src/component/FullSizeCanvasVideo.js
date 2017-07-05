@@ -168,7 +168,7 @@ class FullSizeCanvasVideo {
     _.$proxyResize = $.proxy(_.resize, _);
   }
 
-  init(obj) {
+  init(obj = null) {
     this.setInstance();
     this.setCallbacks();
   }
@@ -613,7 +613,7 @@ class FullSizeCanvasVideo {
     return _;
   }
 
-  destroy(obj) {
+  destroy(obj = null) {
     const _ = this;
     _.stop();
 

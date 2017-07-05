@@ -5,22 +5,46 @@
  <div class="slide-navi">
  <div class="handle">
  <ul class="btns">
- <li><a href="#">btn 1</a></li><li><a href="#">btn 2</a></li><li><a href="#">btn 3</a></li><li><a href="#">btn 4</a></li><li><a href="#">btn 5</a></li><li><a href="#">btn 6</a></li><li><a href="#">btn 7</a></li><li><a href="#">btn 8</a></li><li><a href="#">btn 9</a></li><li><a href="#">btn 10</a></li>
+ <li><a href="#">genji</a></li>
+ <li><a href="#">mccree</a></li>
+ <li><a href="#">pharah</a></li>
+ <li><a href="#">reaper</a></li>
+ <li><a href="#">soldier-76</a></li>
+ <li><a href="#">sombra</a></li>
+ <li><a href="#">tracer</a></li>
+ <li><a href="#">bastion</a></li>
+ <li><a href="#">hanzo</a></li>
+ <li><a href="#">junkrat</a></li>
  </ul>
  </div>
  </div>
 
- <div class="test-btns">
- <a href="#">1</a>
- <a href="#">2</a>
- <a href="#">3</a>
- <a href="#">4</a>
- <a href="#">5</a>
- <a href="#">6</a>
- <a href="#">7</a>
- <a href="#">8</a>
- <a href="#">9</a>
- <a href="#">10</a>
+ <style>
+ #test-btns {
+ margin-top: 10px;
+ }
+
+ #test-btns a {
+ cursor: pointer;
+ color: #333;
+ }
+
+ #test-btns a:hover {
+ color: #f43142;
+ }
+ </style>
+
+ <div id="test-btns">
+ <a>1</a>
+ <a>2</a>
+ <a>3</a>
+ <a>4</a>
+ <a>5</a>
+ <a>6</a>
+ <a>7</a>
+ <a>8</a>
+ <a>9</a>
+ <a>10</a>
  </div>
 
  // css
@@ -29,6 +53,7 @@
  width: 100%;
  height: 50px;
  overflow: hidden;
+ border-bottom: 1px solid rgba(0, 0, 0, 0.5);
  }
 
  .slide-navi .handle {
@@ -42,6 +67,7 @@
  position: relative;
  margin: 0;
  padding: 0;
+ font-size: 0;
  white-space: nowrap;
  }
 
@@ -55,50 +81,53 @@
  display: inline-block;
  height: 50px;
  line-height: 50px;
- outline: 1px solid #006666;
  }
 
  .slide-navi .btns li a {
  display: block;
  margin-left: 0;
  margin-right: 0;
- padding-left: 5px;
- padding-right: 5px;
- background-color: #555555;
- color: #222;
+ padding-left: 8px;
+ padding-right: 8px;
+ color: #333;
+ font-size: 15px;
+ font-weight: bold;
  text-align: center;
+ text-decoration: none;
  }
 
  .slide-navi .btns li a.on {
- color: #f00;
+ color: #f43142;
  }
 
  // js
  import HorizontalSlideNavi from './component/HorizontalSlideNavi';
 
- let slideNaviWrap = $('.slide-navi'),
- btnsWrap = $('.btns', slideNaviWrap);
+ // set HorizontalSlideNavi extends Navi
+ let slideNaviWrap = $('.slide-navi');
 
  let slideNavi = new HorizontalSlideNavi({
- Dragdealer: Dragdealer, // require Dragdealer Library
+ Dragdealer: window.Dragdealer,
 
- // Navi.js options
- btns: $('li a', btnsWrap),
+ // Navi options
+ btns: $('.btns li a', slideNaviWrap),
+
  mouseoverCallback: function (obj) {
- console.log('mouseover :', obj);
+ // console.log('mouseover :', obj);
  },
  mouseoutCallback: function (obj) {
- console.log('mouseout :', obj);
+ // console.log('mouseout :', obj);
  },
  mousedownCallback: function (obj) {
- console.log('mousedown :', obj);
+ // console.log('mousedown :', obj);
  },
  mouseupCallback: function (obj) {
- console.log('mouseup :', obj);
+ // console.log('mouseup :', obj);
  },
  clickCallback: function (obj) {
- console.log('click :', obj);
+ // console.log('click :', obj);
  },
+
  activateCallback: function (obj) {
  let btns = $(slideNavi.getBtns()),
  btn = $(slideNavi.getBtn(obj.index));
@@ -107,10 +136,9 @@
  btn.addClass('on');
  },
 
- // HorizontalSlideNavi.js options
+ // HorizontalSlideNavi options
  wrap: slideNaviWrap,
  handleClass: 'handle',
- btnsWrap: btnsWrap,
 
  disabled: false,
  slide: true,
@@ -119,20 +147,22 @@
  css3: true,
 
  dragStartCallback: function (x, y) {
- console.log('dragStartCallback :', x, y);
+ // console.log('dragStartCallback :', x, y);
  },
  dragStopCallback: function (x, y) {
- console.log('dragStopCallback :', x, y);
+ // console.log('dragStopCallback :', x, y);
  },
  slideEndCallback: function (x, y) {
- console.log('scrollEnd x, y :', x, y);
+ // console.log('scrollEnd x, y :', x, y);
  }
  });
  slideNavi.init();
 
- // TEST
- $('.test-btns a').on('click', function (evt) {
- let index = $(this).index() + 1;
+ // control HorizontalSlideNavi by external
+ $('#test-btns a').on('click', function (evt) {
+ evt.preventDefault();
+
+ const index = $('#test-btns a').index(this) + 1;
  activateSlideNavi(index);
  });
 
@@ -141,7 +171,7 @@
 
  if (index < 1 || index > slideNavi.getBtns().length) return;
 
- let prev = (index <= 1) ? 0 : index - 1,
+ const prev = (index <= 1) ? 0 : index - 1,
  next = (index > slideNavi.getBtns().length) ? 0 : index + 1;
 
  if (!prev) {
@@ -156,18 +186,24 @@
  return;
  }
 
- let btn = $(slideNavi.getBtn(prev));
+ const btn = $(slideNavi.getBtn(prev));
  if (btn.length) slideNavi.setX(-btn.position().left);
  }
  */
 
 import Navi from './Navi';
+import { isDefined, not } from '../utils/util';
 
 class HorizontalSlideNavi extends Navi {
   constructor(options) {
-    if (!options) return;
+    if (not(isDefined)(options)) {
+      throw new Error('require option object when create HorizontalSlideNavi instance.');
+    }
 
     let opt = {
+      // require Dragdealer library
+      Dragdealer: null,
+
       /*
        // Navi.js options
        btns,
@@ -179,11 +215,9 @@ class HorizontalSlideNavi extends Navi {
        activateCallback,
        */
 
-      Dragdealer: null,
-
+      // HorizontalSlideNavi.js options
       wrap: null,
-      handleClass: '',
-      btnsWrap: null,
+      handleClass: 'handle',
 
       disabled: false,
       slide: true,
@@ -191,18 +225,17 @@ class HorizontalSlideNavi extends Navi {
       speed: 0.25,
       css3: true,
 
-      dragStartCallback: null,
-      dragStopCallback: null,
-      slideEndCallback: null,
+      dragStartCallback: null, // function(x, y)
+      dragStopCallback: null, // function(x, y)
+      slideEndCallback: null, // function(x, y)
 
       global: window
     };
     $.extend(true, opt, options);
 
     opt.Dragdealer = (opt.Dragdealer) ? opt.Dragdealer : opt.global.Dragdealer;
-    if (!opt.Dragdealer) {
-      // https://github.com/skidding/dragdealer
-      throw new Error('HorizontalSlideNavi.js require Dragdealer.js Library.');
+    if (not(isDefined)(opt.Dragdealer)) {
+      throw new Error('HorizontalSlideNavi.js require Dragdealer Library - https://github.com/skidding/dragdealer');
     }
 
     super(opt);
@@ -211,16 +244,19 @@ class HorizontalSlideNavi extends Navi {
 
     _.option = opt;
 
+    _.uniqueId = Date.now();
+
     _.isDraggable = false;
 
     _.dragDealer = null;
 
+    // add resize event handler to proxy object in Navi.js
     $.extend(true, _.proxy, {
       resizeEventHandler: null
     });
   }
 
-  init(obj) {
+  init(obj = null) {
     super.init(obj);
 
     const _ = this;
@@ -262,9 +298,10 @@ class HorizontalSlideNavi extends Navi {
       global = $(_.option.global);
 
     if (flag === true) {
-      global.on('resize.ui.horizontalslidenavi', _.proxy.resizeEventHandler);
+      global.on(`resize.ui.horizontalslidenavi.${_.uniqueId}`, _.proxy.resizeEventHandler);
+
     } else {
-      global.off('resize.ui.horizontalslidenavi', _.proxy.resizeEventHandler);
+      global.off(`resize.ui.horizontalslidenavi.${_.uniqueId}`, _.proxy.resizeEventHandler);
     }
 
     return _;
@@ -273,22 +310,22 @@ class HorizontalSlideNavi extends Navi {
   resize(evt) {
     const _ = this;
 
-    if (!_.dragDealer) return;
+    if (isDefined(_.dragDealer)) {
+      let opt = _.option;
 
-    let opt = _.option;
+      if ($(_.getHandle()).outerWidth() > $(opt.wrap).width()) {
+        // console.log('can scroll');
 
-    if ($(_.getHandle()).outerWidth() > $(opt.wrap).width()) {
-      // console.log('can scroll');
+        _.dragDealer.enable();
+        _.isDraggable = true;
 
-      _.dragDealer.enable();
-      _.isDraggable = true;
+      } else {
+        // console.log('can not scroll');
 
-    } else {
-      // console.log('can not scroll');
-
-      if (!_.dragDealer.disabled) _.dragDealer.disable();
-      _.setRatioX(0);
-      _.isDraggable = false;
+        if (_.dragDealer.disabled === false) _.dragDealer.disable();
+        _.setRatioX(0);
+        _.isDraggable = false;
+      }
     }
 
     return _;
@@ -297,9 +334,10 @@ class HorizontalSlideNavi extends Navi {
   /*
    * public methods
    */
-  // getBtns(), getBtn(index), getActivatedIndex(), activate(index) method from Navi.js
+  // can use getBtns(), getBtn(index), getActivatedIndex(), activate(index) method from Navi.js
+
   getRatioX() {
-    let offset = this.dragDealer.getValue();
+    const offset = this.dragDealer.getValue();
     return offset[0];
   }
 
@@ -312,10 +350,12 @@ class HorizontalSlideNavi extends Navi {
   }
 
   setX(x) {
-    const offset = this.getOffsetRatioByPosition(x);
-    this.dragDealer.setValue(offset[0], offset[1]);
+    const _ = this,
+      offset = _.getOffsetRatioByPosition(x);
 
-    return this;
+    _.dragDealer.setValue(offset[0], offset[1]);
+
+    return _;
   }
 
   setRatioX(ratioX) {
@@ -337,16 +377,14 @@ class HorizontalSlideNavi extends Navi {
     return this;
   }
 
-  destroy(obj) {
+  destroy(obj = null) {
     const _ = this;
 
     _.setResizeEventHandler(false);
 
-    _.$proxyResize = null;
-
     _.isDraggable = false;
 
-    if (_.dragDealer) _.dragDealer.unbindEventListeners();
+    if (isDefined(_.dragDealer)) _.dragDealer.unbindEventListeners();
     _.dragDealer = null;
 
     super.destroy(obj);

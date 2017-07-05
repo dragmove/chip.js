@@ -14,7 +14,6 @@ module.exports = {
   context: __dirname,
 
   entry: {
-    main: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/main.js'],
     dropdown: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/dropdown.js'],
     fullSizeBg: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/fullSizeBg.js'],
     fullSizeVideo: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/fullSizeVideo.js'],
@@ -25,8 +24,13 @@ module.exports = {
     naviHasTimer: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/naviHasTimer.js'],
     overlay: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/overlay.js'],
     youtubeModal: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/youtubeModal.js'],
+    horizontalSlideNavi: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/horizontalSlideNavi.js'],
 
+    // TODO
     fullSizeCanvasVideo: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/fullSizeCanvasVideo.js'],
+
+    // TODO - ING
+    slideTab: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/slideTab.js']
   },
 
   output: {
@@ -52,7 +56,7 @@ module.exports = {
   },
 
   // https://webpack.js.org/configuration/devtool/
-  devtool: 'source-map',
+  devtool: 'eval-source-map',
 
   plugins: [
     new webpack.optimize.UglifyJsPlugin({

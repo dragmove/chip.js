@@ -91,7 +91,7 @@ class ModalHasOverlay extends Modal {
     return _;
   }
 
-  destroy(obj) {
+  destroy(obj = null) {
     const _ = this;
 
     obj = $.extend({

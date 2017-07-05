@@ -17,7 +17,7 @@ class PositionalModal extends ModalHasOverlay {
   /*
    * protected methods
    */
-  init(obj) {
+  init(obj = null) {
     super.init(obj);
 
     const _ = this;
@@ -57,7 +57,7 @@ class PositionalModal extends ModalHasOverlay {
     return this;
   }
 
-  destroy(obj) {
+  destroy(obj = null) {
     const _ = this;
 
     $(_.global)

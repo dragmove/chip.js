@@ -1,12 +1,12 @@
 import Navi from './Navi';
-import { isDefined, isString, isArray, isFunction, isExistJQueryObj, not } from '../utils/util';
+import { isDefined, isString, isFunction, isExistJQueryObj, not } from '../utils/util';
 
 class Dropdown {
   constructor(options) {
     const _ = this;
 
     if (not(isDefined)(options)) {
-      throw new Error('must set option object when create Dropdown instance.');
+      throw new Error('require option object when create Dropdown instance.');
     }
 
     _.option = $.extend({
@@ -54,7 +54,7 @@ class Dropdown {
     };
   }
 
-  init(obj) {
+  init(obj = null) {
     this.setInstance();
 
     return this;
@@ -70,7 +70,7 @@ class Dropdown {
     _.optionWrap = $(`.${opt.optionWrapClass}`, _.wrap);
 
     if (_.wrap.length > 1) {
-      throw new Error('must set only one element to Dropdown\'s "wrap" option.');
+      throw new Error('require only one element to Dropdown\'s "wrap" option.');
     }
 
     _.proxy.changeSelectElementEventHandler = $.proxy(_.changeSelectElementEventHandler, _);
@@ -524,7 +524,7 @@ class Dropdown {
 
     const _ = this;
 
-    if (not(isArray)(optionObjs) || optionObjs.length <= 0) {
+    if (not(Array.isArray)(optionObjs) || optionObjs.length <= 0) {
       throw Error('changeOptions(optionObjs) method requires array parameter has {text: "", value: ""} objects.');
     }
 
@@ -572,7 +572,7 @@ class Dropdown {
     return _;
   }
 
-  destroy(obj) {
+  destroy(obj = null) {
     const _ = this;
 
     _.wrap = null;

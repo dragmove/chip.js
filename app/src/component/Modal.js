@@ -103,7 +103,7 @@ class Modal {
   /*
    * public methods
    */
-  init(obj) {
+  init(obj = null) {
     const _ = this;
 
     _.wrap = $(document.createElement('div')).addClass(_.option.wrapClass);
@@ -240,7 +240,7 @@ class Modal {
     return _;
   }
 
-  destroy(obj) {
+  destroy(obj = null) {
     const _ = this;
 
     _.setCloseBtnEventHandler(false);
