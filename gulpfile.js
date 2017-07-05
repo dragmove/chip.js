@@ -7,12 +7,14 @@ var pkg = require('./package.json'),
   eslint = require('gulp-eslint');
 
 function banner() {
-  var date = new Date();
-  return [
-    '/**',
-    ' * @update : ' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
-    ' */',
-    ''].join('\n');
+  return `/*
+ * ${pkg.name} ${pkg.version}
+ * ${pkg.homepage}
+ *
+ * The MIT License (MIT)
+ * Copyright (c) 2016-2017 Hyun-Seok.Kim, dragmove@gmail.com
+ */
+`;
 }
 
 function buildMinJs(name, options) {
@@ -84,17 +86,10 @@ function buildMinJs(name, options) {
 };
 
 gulp.task('lint', function () {
-  /*
-  return gulp.src('app/*.js')
-    .pipe(jshint())
-    .pipe(jshint.reporter('default'));
-    */
-
   return gulp.src('app/src/component/*')
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
-
 });
 
 /*
