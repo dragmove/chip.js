@@ -6,7 +6,7 @@ class Dropdown {
     const _ = this;
 
     if (not(isDefined)(options)) {
-      throw new Error('must set option object when create Dropdown instance.');
+      throw new Error('require option object when create Dropdown instance.');
     }
 
     _.option = $.extend({
@@ -54,7 +54,7 @@ class Dropdown {
     };
   }
 
-  init(obj) {
+  init(obj = null) {
     this.setInstance();
 
     return this;
@@ -70,7 +70,7 @@ class Dropdown {
     _.optionWrap = $(`.${opt.optionWrapClass}`, _.wrap);
 
     if (_.wrap.length > 1) {
-      throw new Error('must set only one element to Dropdown\'s "wrap" option.');
+      throw new Error('require only one element to Dropdown\'s "wrap" option.');
     }
 
     _.proxy.changeSelectElementEventHandler = $.proxy(_.changeSelectElementEventHandler, _);
@@ -572,7 +572,7 @@ class Dropdown {
     return _;
   }
 
-  destroy(obj) {
+  destroy(obj = null) {
     const _ = this;
 
     _.wrap = null;

@@ -28,10 +28,15 @@
  ]);
  */
 
+import { isDefined, not } from '../utils/util';
+
 class ImageLoader {
   constructor(options) {
-    if (!options) return;
-    let _ = this;
+    if (not(isDefined)(options)) {
+      throw new Error('require option object when create ImageLoader instance.');
+    }
+
+    const _ = this;
 
     _.loadCompleteCallback = options.loadCompleteCallback || null;
     _.loadPerCompleteCallback = options.loadPerCompleteCallback || null;
@@ -173,7 +178,7 @@ class ImageLoader {
    * @method destroy
    * @return {Object} Returns context
    */
-  destroy(obj) {
+  destroy(obj = null) {
     let _ = this;
 
     if (_.isLoading === true) {

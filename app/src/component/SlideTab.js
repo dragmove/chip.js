@@ -53,7 +53,7 @@ class SlideTab {
     };
   }
 
-  init(obj) {
+  init(obj = null) {
     const _ = this;
     if (!_.option) return;
 
@@ -74,7 +74,7 @@ class SlideTab {
     _.btnListItems = $('li', _.btnsWrap);
 
     if (_.wrap.length > 1) {
-      throw new Error(`must set only one element to SlideTab's "wrap" option.`);
+      throw new Error(`require only one element to SlideTab's "wrap" option.`);
     }
 
     if (isDefined(opt.responsiveBasedButtonWidth) && opt.responsiveBasedButtonWidth.isApply === true) {
@@ -294,7 +294,7 @@ class SlideTab {
     }
   }
 
-  destroy(obj) {
+  destroy(obj = null) {
     const _ = this;
 
     _.setResizeEventHandler(false);

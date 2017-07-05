@@ -50,9 +50,13 @@
  console.log( 'after call "navi.activate(3)", print "_navi.getActivatedIndex()" :', navi.getActivatedIndex() );
  */
 
+import { isDefined, not } from '../utils/util';
+
 class Navi {
   constructor(options) {
-    if (!options) return;
+    if (not(isDefined)(options)) {
+      throw new Error('require option object when create Navi instance.');
+    }
 
     const _ = this;
 
@@ -77,7 +81,7 @@ class Navi {
     };
   }
 
-  init(obj) {
+  init(obj = null) {
     const _ = this;
 
     _.proxy = {
@@ -242,7 +246,7 @@ class Navi {
     return _;
   }
 
-  destroy(obj) {
+  destroy(obj = null) {
     const _ = this;
 
     _.setBtnsEventHandler(false);

@@ -131,7 +131,7 @@ class YoutubeModal extends Modal {
   /*
    * protected methods
    */
-  init(obj) {
+  init(obj = null) {
     super.init(obj);
 
     const _ = this;
@@ -172,7 +172,7 @@ class YoutubeModal extends Modal {
     return _;
   }
 
-  destroy(obj) {
+  destroy(obj = null) {
     const _ = this;
 
     _.iFrameWrap = null;

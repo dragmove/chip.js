@@ -113,7 +113,7 @@ class FullSizeVideo {
     _.$proxyResize = $.proxy(_.resize, _);
   }
 
-  init(obj) {
+  init(obj = null) {
     const _ = this;
 
     _.setInstance();
@@ -310,7 +310,7 @@ class FullSizeVideo {
     const _ = this;
 
     if (number < 0 || number > 1) {
-      throw new Error('must set a number between 0.0 and 1.0');
+      throw new Error('require a number between 0.0 and 1.0');
     }
 
     if (!_.video || _.video.length <= 0) return _;
@@ -334,7 +334,7 @@ class FullSizeVideo {
     return this.video;
   }
 
-  destroy(obj) {
+  destroy(obj = null) {
     let _ = this,
       video = _.video.get(0);
 

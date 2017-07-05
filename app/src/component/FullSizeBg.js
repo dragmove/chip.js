@@ -43,8 +43,14 @@
  }).trigger('resize');
  */
 
+import { isDefined, not } from '../utils/util';
+
 class FullSizeBg {
   constructor(options) {
+    if (not(isDefined)(options)) {
+      throw new Error('require option object when create FullSizeBg instance.');
+    }
+
     const _ = this;
 
     _.uniqueId = Date.now();
@@ -68,7 +74,7 @@ class FullSizeBg {
     _.$proxyResize = $.proxy(_.resize, _);
   }
 
-  init(obj) {
+  init(obj = null) {
     const _ = this;
 
     $(window).on(`resize.ui.fullsizebg.${_.uniqueId}`, _.$proxyResize);
@@ -150,7 +156,7 @@ class FullSizeBg {
     return _;
   }
 
-  destroy(obj) {
+  destroy(obj = null) {
     const _ = this;
 
     $(window).off(`resize.ui.fullsizebg.${_.uniqueId}`, _.$proxyResize);
