@@ -14,36 +14,33 @@
 
  let navi = new NaviHasTimer({
  btns: $('.navi li a'),
- mouseoverCallback: mouseoverCallback,
- mouseoutCallback: mouseoutCallback,
- clickCallback: clickCallback,
- activateCallback: activateCallback,
-
- timerInterval: 1000
- });
- navi.init();
-
- function mouseoverCallback(obj) {
+ mouseoverCallback: (obj) => {
  console.log('mouseover :', obj);
- }
-
- function mouseoutCallback(obj) {
+ },
+ mouseoutCallback: (obj) => {
  console.log('mouseout :', obj);
- }
-
- function clickCallback(obj) {
+ },
+ mousedownCallback: (obj) => {
+ console.log('mousedown :', obj);
+ },
+ mouseupCallback: (obj) => {
+ console.log('mouseup :', obj);
+ },
+ clickCallback: (obj) => {
  console.log('click :', obj);
- }
-
- function activateCallback(obj) {
+ },
+ activateCallback: (obj) => {
  console.log('activateCallback :', obj);
 
- let btns = $(navi.getBtns()),
+ const btns = $(navi.getBtns()),
  btn = $(navi.getBtn(obj.index));
 
  btns.removeClass('on');
  btn.addClass('on');
- }
+ },
+
+ timerInterval: 1000
+ }).init();
 
  //activate 3rd btn
  // navi.activate(3);
@@ -53,22 +50,24 @@
  */
 
 import Navi from './Navi';
-import { isDefined, not } from '../utils/util';
+import {isDefined, isNumber, not} from '../utils/util';
 
 class NaviHasTimer extends Navi {
   constructor(options) {
     if (not(isDefined)(options)) {
-      throw new Error('require option object when create NaviHasTimer instance.');
+      throw new Error('require options object when create NaviHasTimer instance');
     }
 
     super(options);
 
-    this.timerInterval = (options.timerInterval >= 0 || typeof options.timerInterval !== 'undefined') ? options.timerInterval : 500;
+    this.timerInterval = (isNumber(options.timerInterval) && options.timerInterval >= 0) ? options.timerInterval : 500;
+
     this.timer = null;
   }
 
   mouseoverBtnEventHandler(evt) {
     this.removeTimer();
+
     super.mouseoverBtnEventHandler(evt);
   }
 
@@ -99,12 +98,15 @@ class NaviHasTimer extends Navi {
   /*
    * public methods
    */
+  // setBtnsEventHandler(flag)
   // getBtns()
   // getBtn(index)
   // getActivatedIndex()
   // activate(index)
+
   destroy(obj = null) {
     this.removeTimer();
+
     super.destroy(obj);
 
     return this;

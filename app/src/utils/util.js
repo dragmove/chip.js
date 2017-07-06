@@ -8,6 +8,11 @@ let isDefined = function (obj) {
   return flag;
 };
 
+let isNumber = function isNumber(obj) {
+  if (!isDefined(obj)) return false;
+  return (obj.constructor === Number);
+};
+
 let isString = function (obj) {
   if (!isDefined(obj)) return false;
   return (obj.constructor === String);
@@ -65,6 +70,7 @@ let pipeline = function pipeline(seed /* args */) {
 export {
   existy,
   isDefined,
+  isNumber,
   isString,
   isFunction,
   isExistJQueryObj,

@@ -8,36 +8,33 @@ import NaviHasTimer from './component/NaviHasTimer';
   function init() {
     let navi = new NaviHasTimer({
       btns: $('.navi li a'),
-      mouseoverCallback: mouseoverCallback,
-      mouseoutCallback: mouseoutCallback,
-      clickCallback: clickCallback,
-      activateCallback: activateCallback,
+      mouseoverCallback: (obj) => {
+        console.log('mouseover :', obj);
+      },
+      mouseoutCallback: (obj) => {
+        console.log('mouseout :', obj);
+      },
+      mousedownCallback: (obj) => {
+        console.log('mousedown :', obj);
+      },
+      mouseupCallback: (obj) => {
+        console.log('mouseup :', obj);
+      },
+      clickCallback: (obj) => {
+        console.log('click :', obj);
+      },
+      activateCallback: (obj) => {
+        console.log('activateCallback :', obj);
+
+        const btns = $(navi.getBtns()),
+          btn = $(navi.getBtn(obj.index));
+
+        btns.removeClass('on');
+        btn.addClass('on');
+      },
 
       timerInterval: 1000
-    });
-    navi.init();
-
-    function mouseoverCallback(obj) {
-      console.log('mouseover :', obj);
-    }
-
-    function mouseoutCallback(obj) {
-      console.log('mouseout :', obj);
-    }
-
-    function clickCallback(obj) {
-      console.log('click :', obj);
-    }
-
-    function activateCallback(obj) {
-      console.log('activateCallback :', obj);
-
-      let btns = $(navi.getBtns()),
-        btn = $(navi.getBtn(obj.index));
-
-      btns.removeClass('on');
-      btn.addClass('on');
-    }
+    }).init();
 
     //activate 3rd btn
     // navi.activate(3);
