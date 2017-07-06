@@ -60,9 +60,9 @@ class SlideTab {
 
     _.option = opt;
 
-    _.global = _.option.global || window;
-
     _.uniqueId = Date.now();
+
+    _.global = _.option.global || window;
 
     _.wrap = null;
     _.btnsWrap = null;

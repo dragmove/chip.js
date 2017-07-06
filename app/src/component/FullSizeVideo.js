@@ -83,8 +83,6 @@ class FullSizeVideo {
   constructor(options) {
     const _ = this;
 
-    _.uniqueId = Date.now();
-
     _.option = {
       videoWrap: null,
       videoUrls: [],
@@ -107,6 +105,8 @@ class FullSizeVideo {
     if (_.option.videoWrap.length <= 0) {
       throw new Error('FullSizeVideo Class require options have videoWrap');
     }
+
+    _.uniqueId = Date.now();
 
     _.video = null;
 
