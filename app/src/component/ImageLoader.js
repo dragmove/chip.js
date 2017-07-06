@@ -28,19 +28,19 @@
  ]);
  */
 
-import { isDefined, not } from '../utils/util';
+import { isDefined, isFunction, not } from '../utils/util';
 
 class ImageLoader {
   constructor(options) {
     if (not(isDefined)(options)) {
-      throw new Error('require option object when create ImageLoader instance.');
+      throw new Error('require options object when create ImageLoader instance.');
     }
 
     const _ = this;
 
-    _.loadCompleteCallback = options.loadCompleteCallback || null;
-    _.loadPerCompleteCallback = options.loadPerCompleteCallback || null;
-    _.loadErrorCallback = options.loadErrorCallback || null;
+    _.loadCompleteCallback = isFunction(options.loadCompleteCallback) ? options.loadCompleteCallback : null;
+    _.loadPerCompleteCallback = isFunction(options.loadPerCompleteCallback) ? options.loadPerCompleteCallback : null;
+    _.loadErrorCallback = isFunction(options.loadErrorCallback) ? options.loadErrorCallback : null;
 
     _.isLoading = false;
     _.isFinish = false;
@@ -53,11 +53,12 @@ class ImageLoader {
     _.loadFailNum = 0;
     _.loadSuccessNum = 0;
     _.loadCompleteNum = 0;
+
     _.percentageLoaded = 0;
   }
 
   loadNext() {
-    let _ = this;
+    const _ = this;
 
     if (_.loadingIndex >= _.imgURLArr.length) {
       _.isLoading = false;
@@ -72,6 +73,7 @@ class ImageLoader {
     }
 
     let img = document.createElement('img');
+
     img.onload = function (evt) {
       let img = this;
       if (img) _.loadedImgArr.push(img);
@@ -125,66 +127,75 @@ class ImageLoader {
    * start load images
    *
    * @method start
-   * @return {Object} Returns context
+   * @param {Array} imgURLArr
+   * @returns {Object} return context
    */
   start(imgURLArr) {
     const _ = this;
 
-    if (!imgURLArr || imgURLArr.constructor !== Array || imgURLArr.length <= 0) return;
-    _.imgURLArr = imgURLArr;
+    if (not(isDefined)(imgURLArr) || not(Array.isArray)(imgURLArr)) {
+      throw TypeError('imgURLArr parameter type of start() must be array type.');
+    }
 
-    if (_.isLoading) return;
-    _.isLoading = true;
-    _.isFinish = false;
+    if (imgURLArr.length > 0) {
+      _.imgURLArr = imgURLArr;
 
-    _.loadNext();
+      if (!_.isLoading) {
+        _.isLoading = true;
+        _.isFinish = false;
+
+        _.loadNext();
+      }
+    }
 
     return _;
   }
 
   /**
-   * get load finish all image files
+   * get flag finish load all images
    *
    * @method isFinished
-   * @return {Boolean} Returns boolean
+   * @returns {Boolean} return boolean
    */
   isFinished() {
     return this.isFinish;
   }
 
   /**
-   * get Array have loaded images
+   * get array have loaded images
    *
    * @method getLoadedImageArr
-   * @return {Array} Returns array
+   * @returns {Array} return array
    */
   getLoadedImgs() {
     return this.loadedImgArr;
   }
 
   /**
-   * get percentage Number(0 ~ 1)
+   * get percentage number(0 ~ 1)
    *
    * @method getPercentageLoaded
-   * @return {Number} Returns number(0 ~ 1)
+   * @returns {Number} return number(0 ~ 1)
    */
   getPercentageLoaded() {
     return this.percentageLoaded;
   }
 
   /**
-   * destroy ImageLoader instance
+   * destroy
    *
    * @method destroy
-   * @return {Object} Returns context
+   * @param {Object} hook object
+   * @returns {Object} return context
    */
   destroy(obj = null) {
-    let _ = this;
+    const _ = this;
 
     if (_.isLoading === true) {
       let img;
       for (let i = 0, max = _.imgArr.length; i < max; i++) {
         img = _.imgArr[i];
+
         if (img) {
           img.onload = null;
           img.onerror = null;
@@ -199,9 +210,9 @@ class ImageLoader {
     _.isLoading = false;
     _.isFinish = false;
 
-    _.loadedImgArr = null;
-    _.imgArr = null;
-    _.imgURLArr = null;
+    _.loadedImgArr = [];
+    _.imgArr = [];
+    _.imgURLArr = [];
 
     _.loadingIndex = 0;
     _.loadFailNum = 0;
