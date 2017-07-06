@@ -18,8 +18,8 @@ let isFunction = function (obj) {
   return (obj.constructor === Function);
 };
 
-let isExistJQueryObj = function (obj) {
-  return !(!obj || obj.length <= 0);
+let isExistJQueryEle = function ($ele) {
+  return !(!$ele || $ele.length <= 0);
 };
 
 let not = function not(func) {
@@ -62,15 +62,20 @@ let pipeline = function pipeline(seed /* args */) {
   }, seed);
 };
 
+let notSingleEle = not(function ($ele) {
+  return $ele.length === 1;
+});
+
 export {
   existy,
   isDefined,
   isString,
   isFunction,
-  isExistJQueryObj,
+  isExistJQueryEle,
   not,
   each,
   best,
   rest,
-  pipeline
+  pipeline,
+  notSingleEle
 };

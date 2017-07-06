@@ -1,5 +1,5 @@
 import Navi from './Navi';
-import { isDefined, isString, isFunction, isExistJQueryObj, not } from '../utils/util';
+import { isDefined, isString, isFunction, isExistJQueryEle, not } from '../utils/util';
 
 class Dropdown {
   constructor(options) {
@@ -31,9 +31,9 @@ class Dropdown {
       global: global
     }, options);
 
-    _.global = (_.option.global) ? _.option.global : window;
-
     _.uniqueId = Date.now();
+
+    _.global = (_.option.global) ? _.option.global : window;
 
     _.wrap = null;
     _.titleBtn = null;
@@ -179,7 +179,7 @@ class Dropdown {
 
     if (_.isMobileDeviceUseDefaultSelect === true) return _;
 
-    if (not(isExistJQueryObj)(_.titleBtn)) return _;
+    if (not(isExistJQueryEle)(_.titleBtn)) return _;
 
     _.titleBtn.on('click.ui.dropdown', evt => {
       if (_.isDisable === true) return;
@@ -196,7 +196,7 @@ class Dropdown {
 
     if (_.isMobileDeviceUseDefaultSelect === true) return _;
 
-    if (not(isExistJQueryObj)(_.optionWrap)) return _;
+    if (not(isExistJQueryEle)(_.optionWrap)) return _;
 
     if (_.optionMenu) _.optionMenu.destroy();
 
@@ -305,7 +305,7 @@ class Dropdown {
       title = optionBtn.text() || '';
 
     } else {
-      if (isExistJQueryObj(_.title)) title = this.title.text() || '';
+      if (isExistJQueryEle(_.title)) title = this.title.text() || '';
     }
 
     return title;
@@ -318,7 +318,7 @@ class Dropdown {
       // there is not title node. can not set title string.
 
     } else {
-      if (isExistJQueryObj(_.title)) _.title.text(str);
+      if (isExistJQueryEle(_.title)) _.title.text(str);
     }
 
     return _;
@@ -333,7 +333,7 @@ class Dropdown {
       btn = _.selectEl.find(':selected');
 
     } else {
-      btn = (isExistJQueryObj(this.titleBtn)) ? this.titleBtn : null;
+      btn = (isExistJQueryEle(this.titleBtn)) ? this.titleBtn : null;
     }
 
     return btn;
@@ -345,10 +345,10 @@ class Dropdown {
     let optionWrap = null;
 
     if (_.isMobileDeviceUseDefaultSelect === true) {
-      optionWrap = (isExistJQueryObj(_.selectEl)) ? _.selectEl : null;
+      optionWrap = (isExistJQueryEle(_.selectEl)) ? _.selectEl : null;
 
     } else {
-      optionWrap = (isExistJQueryObj(_.optionWrap)) ? _.optionWrap : null;
+      optionWrap = (isExistJQueryEle(_.optionWrap)) ? _.optionWrap : null;
     }
 
     return optionWrap;
@@ -360,7 +360,7 @@ class Dropdown {
     let index = 0;
 
     if (_.isMobileDeviceUseDefaultSelect === true) {
-      if (isExistJQueryObj(_.selectEl)) index = _.selectEl.get(0).selectedIndex + 1;
+      if (isExistJQueryEle(_.selectEl)) index = _.selectEl.get(0).selectedIndex + 1;
 
     } else {
       index = (_.optionMenu) ? _.optionMenu.getActivatedIndex() : 0;
@@ -429,7 +429,7 @@ class Dropdown {
       index: index,
       value: value,
       btns: (optionBtns.length > 0) ? optionBtns : [],
-      btn: (isExistJQueryObj(optionBtn)) ? optionBtn : null,
+      btn: (isExistJQueryEle(optionBtn)) ? optionBtn : null,
       title: optionBtn.text() || ''
     };
   }
@@ -439,7 +439,7 @@ class Dropdown {
 
     if (_.isMobileDeviceUseDefaultSelect === true) {
       // phone, tablet device
-      if (isExistJQueryObj(_.selectEl)) _.selectEl.get(0).selectedIndex = index - 1;
+      if (isExistJQueryEle(_.selectEl)) _.selectEl.get(0).selectedIndex = index - 1;
 
     } else {
       // pc
@@ -502,7 +502,7 @@ class Dropdown {
 
     if (_.isMobileDeviceUseDefaultSelect === true) {
       // phone or tablet device
-      if (isExistJQueryObj(_.selectEl)) _.selectEl.attr('disabled', flag);
+      if (isExistJQueryEle(_.selectEl)) _.selectEl.attr('disabled', flag);
 
     } else {
       // pc
