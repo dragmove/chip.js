@@ -67,9 +67,11 @@ let pipeline = function pipeline(seed /* args */) {
   }, seed);
 };
 
-let notSingleEle = not(function ($ele) {
+let singleEle = function singleEle($ele) {
   return $ele.length === 1;
-});
+};
+
+let notSingleEle = not(singleEle);
 
 export {
   existy,
@@ -83,5 +85,6 @@ export {
   best,
   rest,
   pipeline,
+  singleEle,
   notSingleEle
 };
