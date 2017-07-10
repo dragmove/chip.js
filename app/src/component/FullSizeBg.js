@@ -82,9 +82,7 @@ class FullSizeBg {
   init(obj = null) {
     const _ = this;
 
-    _.proxy = {
-      resizeEventHandler: $.proxy(_.resize, _)
-    };
+    _.proxy.resizeEventHandler = $.proxy(_.resize, _);
 
     _.setResizeEventHandler(true);
 

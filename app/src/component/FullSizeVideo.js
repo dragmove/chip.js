@@ -79,11 +79,13 @@
  }).trigger('resize');
  */
 
+import { isDefined, isFunction, not, notSingleEle } from '../utils/util';
+
 class FullSizeVideo {
   constructor(options) {
     const _ = this;
 
-    _.option = {
+    _.option = $.extend({
       videoWrap: null,
       videoUrls: [],
       videoWidth: 320,
@@ -97,26 +99,35 @@ class FullSizeVideo {
 
       canplayCallback: null,
       timeupdateCallback: null,
-      endedCallback: null
-    };
-    $.extend(_.option, options);
+      endedCallback: null,
+
+      global: window
+    }, options);
 
     _.option.videoWrap = $(_.option.videoWrap);
-    if (_.option.videoWrap.length <= 0) {
-      throw new Error('FullSizeVideo Class require options have videoWrap');
+
+    if (notSingleEle(_.option.videoWrap)) {
+      throw new Error('FullSizeVideo Class require options has a single videoWrap');
     }
 
     _.uniqueId = Date.now();
 
+    _.global = _.option.global;
+
     _.video = null;
 
-    _.$proxyResize = $.proxy(_.resize, _);
+    _.proxy = {
+      resizeEventHandler: null
+    };
   }
 
   init(obj = null) {
     const _ = this;
 
+    _.proxy.resizeEventHandler = $.proxy(_.resize, _);
+
     _.setInstance();
+
     _.setCallbacks();
 
     return _;
@@ -142,16 +153,27 @@ class FullSizeVideo {
     if (opt.muted === true) video.setAttribute('muted', '');
     if (opt.autoplay === true) video.setAttribute('autoplay', '');
 
-    $(window).on(`resize.ui.fullsizevideo.${_.uniqueId}`, _.$proxyResize);
+    _.setResizeEventHandler(true);
+  }
+
+  setResizeEventHandler(flag) {
+    const _ = this;
+
+    if (flag === true) {
+      $(_.global).on(`resize.ui.fullsizevideo.${_.uniqueId}`, _.proxy.resizeEventHandler);
+
+    } else {
+      $(_.global).off(`resize.ui.fullsizevideo.${_.uniqueId}`, _.proxy.resizeEventHandler);
+    }
   }
 
   setCallbacks() {
-    let _ = this,
+    const _ = this,
       opt = _.option,
       video = _.video.get(0),
       isVideoHasOnended = video.hasOwnProperty('onended');
 
-    if (opt.canplayCallback) {
+    if (isFunction(opt.canplayCallback)) {
       $(video).on('canplay.ui.video.fullsizevideo', (evt) => {
         opt.canplayCallback.call(null, {
           event: evt
@@ -159,9 +181,9 @@ class FullSizeVideo {
       });
     }
 
-    if (opt.timeupdateCallback || (!isVideoHasOnended && opt.endedCallback)) {
+    if (isFunction(opt.timeupdateCallback) || (!isVideoHasOnended && isFunction(opt.endedCallback))) {
       $(video).on('timeupdate.ui.video.fullsizevideo', (evt) => {
-        if (opt.timeupdateCallback) {
+        if (isFunction(opt.timeupdateCallback)) {
           opt.timeupdateCallback.call(null, {
             event: evt,
             currentTime: video.currentTime,
@@ -169,7 +191,7 @@ class FullSizeVideo {
           });
         }
 
-        if (opt.endedCallback && (video.currentTime >= video.duration)) {
+        if (isFunction(opt.endedCallback) && (video.currentTime >= video.duration)) {
           opt.endedCallback.call(null, {
             event: evt,
             currentTime: video.currentTime,
@@ -179,7 +201,7 @@ class FullSizeVideo {
       });
     }
 
-    if (isVideoHasOnended && opt.endedCallback) {
+    if (isVideoHasOnended && isFunction(opt.endedCallback)) {
       $(video).on('ended.ui.video.fullsizevideo', (evt) => {
         opt.endedCallback.call(null, {
           event: evt,
@@ -267,9 +289,9 @@ class FullSizeVideo {
 
   play() {
     const _ = this;
-    if (!_.video || _.video.length <= 0) return _;
+    if (not(isDefined)(_.video) || notSingleEle(_.video)) return _;
 
-    let video = _.video.get(0);
+    const video = _.video.get(0);
     video.play();
 
     return _;
@@ -277,9 +299,9 @@ class FullSizeVideo {
 
   pause() {
     const _ = this;
-    if (!_.video || _.video.length <= 0) return _;
+    if (not(isDefined)(_.video) || notSingleEle(_.video)) return _;
 
-    let video = _.video.get(0);
+    const video = _.video.get(0);
     video.pause();
 
     return _;
@@ -287,9 +309,9 @@ class FullSizeVideo {
 
   stop() {
     const _ = this;
-    if (!_.video || _.video.length <= 0) return _;
+    if (not(isDefined)(_.video) || notSingleEle(_.video)) return _;
 
-    let video = _.video.get(0);
+    const video = _.video.get(0);
     video.pause();
     video.currentTime = 0;
 
@@ -298,7 +320,7 @@ class FullSizeVideo {
 
   seek(second) {
     const _ = this;
-    if (!_.video || _.video.length <= 0) return _;
+    if (not(isDefined)(_.video) || notSingleEle(_.video)) return _;
 
     const video = _.video.get(0);
     video.currentTime = second;
@@ -313,7 +335,7 @@ class FullSizeVideo {
       throw new Error('require a number between 0.0 and 1.0');
     }
 
-    if (!_.video || _.video.length <= 0) return _;
+    if (not(isDefined)(_.video) || notSingleEle(_.video)) return _;
 
     const video = _.video.get(0);
     video.volume = number;
@@ -324,7 +346,7 @@ class FullSizeVideo {
   getVolume() {
     const _ = this;
 
-    if (!_.video || _.video.length <= 0) return null;
+    if (not(isDefined)(_.video) || notSingleEle(_.video)) return null;
 
     const video = _.video.get(0);
     return video.volume;
@@ -344,10 +366,11 @@ class FullSizeVideo {
     $(video).off('timeupdate.ui.video.fullsizevideo');
     $(video).off('ended.ui.video.fullsizevideo');
 
-    $(window).off(`resize.ui.fullsizevideo.${_.uniqueId}`, _.$proxyResize);
+    _.setResizeEventHandler(false);
+
+    _.proxy.resizeEventHandler = null;
 
     _.video = null;
-    _.$proxyResize = null;
 
     return _;
   }
