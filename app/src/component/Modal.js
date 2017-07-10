@@ -74,7 +74,7 @@ class Modal {
   constructor(options) {
     const _ = this;
 
-    _.option = {
+    _.option = ({
       wrapClass: 'modal-wrap',
       contents: '',
       appendTo: $('body'),
@@ -83,8 +83,7 @@ class Modal {
       isCloseByEscKey: true,
       showCallback: null,
       hideCallback: null
-    };
-    $.extend(_.option, options);
+    }, options);
 
     _.wrap = null;
     _.contents = null;
@@ -116,16 +115,15 @@ class Modal {
 
     _.closeBtn = $(_.option.closeBtnSelector, _.wrap);
 
-    _.proxy = {
-      closeBtnEventHandler: $.proxy(_.closeBtnEventHandler, _),
-      wrapEventHandler: $.proxy(_.wrapEventHandler, _),
-      escKeyEventHandler: $.proxy(_.escKeyEventHandler, _)
-    };
+    _.proxy.closeBtnEventHandler = $.proxy(_.closeBtnEventHandler, _);
+    _.proxy.wrapEventHandler = $.proxy(_.wrapEventHandler, _);
+    _.proxy.escKeyEventHandler = $.proxy(_.escKeyEventHandler, _);
 
-    if (_.closeBtn.length) _.setCloseBtnEventHandler(true);
+    if (_.closeBtn.length > 0) _.setCloseBtnEventHandler(true);
 
-    if (_.option.isCloseByClickOutside) _.setWrapEventHandler(true);
-    if (_.option.isCloseByEscKey) _.setEscKeyEventHandler(true);
+    if (_.option.isCloseByClickOutside === true) _.setWrapEventHandler(true);
+
+    if (_.option.isCloseByEscKey === true) _.setEscKeyEventHandler(true);
 
     return _;
   }
@@ -135,8 +133,9 @@ class Modal {
 
     if (!_.closeBtn) return;
 
-    if (flag) {
+    if (flag === true) {
       _.closeBtn.on('click.ui.modal', _.proxy.closeBtnEventHandler);
+
     } else {
       _.closeBtn.off('click.ui.modal', _.proxy.closeBtnEventHandler);
     }

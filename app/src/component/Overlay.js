@@ -34,20 +34,19 @@
  // overlay.destroy();
  */
 
-import { isFunction } from '../utils/util';
+import { isDefined, isFunction, not } from '../utils/util';
 
 class Overlay {
   constructor(options) {
     const _ = this;
 
-    _.option = {
+    _.option = $.extend({
       class: 'overlay',
       color: '#000',
       opacity: 0.5,
       appendTo: $('body'),
       clickCallback: null
-    };
-    $.extend(_.option, options);
+    }, options);
 
     _.node = null;
     _.parentNode = _.option.appendTo;
@@ -77,7 +76,7 @@ class Overlay {
 
     _.parentNode.append(_.node);
 
-    _.proxy.clickOverlayEventHandler = $.proxy(_.option.clickCallback, _);
+    _.proxy.clickOverlayEventHandler = (isFunction(_.option.clickCallback)) ? $.proxy(_.option.clickCallback, _) : null;
 
     _.hide();
 
@@ -89,10 +88,11 @@ class Overlay {
   setNodeEventHandler(flag) {
     const _ = this;
 
-    if (!_.option || !isFunction(_.option.clickCallback)) return _;
+    if (not(isFunction)(_.option.clickCallback)) return _;
 
     if (flag === true) {
       _.node.on('click.ui.overlay', _.proxy.clickOverlayEventHandler);
+
     } else {
       _.node.off('click.ui.overlay', _.proxy.clickOverlayEventHandler);
     }
