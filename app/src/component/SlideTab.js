@@ -212,7 +212,7 @@ class SlideTab {
       // HorizontalSlideNavi.js option
       wrap: _.wrap,
       handleClass: _.option.handleClass,
-      btnsWrap: _.btnsWrap
+      btnsWrap: _.btnsWrap,
 
       disabled: _.option.horizontalSlideNavi.disabled,
       slide: _.option.horizontalSlideNavi.slide,

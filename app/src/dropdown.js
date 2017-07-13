@@ -7,10 +7,10 @@ import Dropdown from './component/Dropdown';
 
   function init() {
     let useDefaultSelectInMobileDevice = true,
-      isMobileDevice = ( $('body').hasClass('mobile') || $('body').hasClass('tablet') ) ? true : false;
+      isMobileDevice = ( $('body').hasClass('phone') || $('body').hasClass('tablet') ) ? true : false;
 
     let dropdown = new Dropdown({
-      wrap: $('.ui-dropdown'),
+      wrap: $('.ui-dropdown')
 
       // options
       /*
@@ -18,19 +18,20 @@ import Dropdown from './component/Dropdown';
 
        titleBtnClass: 'select', // default is 'select'
        optionWrapClass: 'option', // default is 'option'
+
        activateOptionClass: 'selected', // default is 'selected'
        activateCallback: function (obj) {
-       console.log('activateCallback - obj :', obj); // { btns, btn, title, index, prevIndex }
+       console.log('activateCallback :', obj); // { btns, btn, title, index, prevIndex }
        },
        openCallback: function (obj) {
-       console.log('openCallback - obj :', obj); // { title, index }
+       console.log('openCallback :', obj); // { title, index }
        },
        closeCallback: function (obj) {
-       console.log('closeCallback - obj :', obj); // { title, index }
+       console.log('closeCallback :', obj); // { title, index }
        },
 
        isCloseByClickOutside: true, // default is true
-       isDisableClass: 'disabled' // default is 'disabled'
+       disableClass: 'disabled' // default is 'disabled'
 
        // If "useDefaultSelectInMobileDevice", "isMobileDevice" variables are all true, use <select> element instead of <ul class="option">...</ul> custom UI.
        // useDefaultSelectInMobileDevice: useDefaultSelectInMobileDevice, // default is false

@@ -6,7 +6,7 @@ class Dropdown {
     const _ = this;
 
     if (not(isDefined)(options)) {
-      throw new Error('require option object when create Dropdown instance.');
+      throw new Error('require options object when create Dropdown instance.');
     }
 
     _.option = $.extend({
@@ -22,18 +22,18 @@ class Dropdown {
       closeCallback: null,
 
       isCloseByClickOutside: true,
-      isDisableClass: 'disabled',
+      disableClass: 'disabled',
 
       // mobile device options
       useDefaultSelectInMobileDevice: false,
       isMobileDevice: false,
 
-      global: global
+      global: window
     }, options);
 
     _.uniqueId = Date.now();
 
-    _.global = (_.option.global) ? _.option.global : window;
+    _.global = _.option.global;
 
     _.wrap = null;
     _.titleBtn = null;
@@ -128,8 +128,6 @@ class Dropdown {
       _.showOptionMenu(_.isShowOptionWrap, opt.isCloseByClickOutside);
       _.activate(opt.activateIndex);
     }
-
-    return _;
   }
 
   setSelectElementEventHandler(flag) {
@@ -242,8 +240,7 @@ class Dropdown {
           opt.activateCallback.call(this, data);
         }
       }
-    });
-    _.optionMenu.init();
+    }).init();
 
     return _;
   }
@@ -255,6 +252,7 @@ class Dropdown {
 
     if (flag === true) {
       $(document).on(`click.ui.dropdown.${_.uniqueId}`, _.proxy.clickDocumentEventHandler);
+
     } else {
       $(document).off(`click.ui.dropdown.${_.uniqueId}`, _.proxy.clickDocumentEventHandler);
     }
@@ -508,7 +506,7 @@ class Dropdown {
       // pc
     }
 
-    (flag === true) ? _.wrap.addClass(_.option.isDisableClass) : _.wrap.removeClass(_.option.isDisableClass);
+    (flag === true) ? _.wrap.addClass(_.option.disableClass) : _.wrap.removeClass(_.option.disableClass);
 
     _.isDisable = flag;
 

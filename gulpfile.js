@@ -17,7 +17,7 @@ function banner() {
 `;
 }
 
-function buildMinJs(name, options) {
+function buildMinJS(name, options) {
   var entry = {};
   entry[name] = ['./app/src/' + name + '.js'];
 
@@ -50,39 +50,6 @@ function buildMinJs(name, options) {
   return gulp.src('')
     .pipe(webpackStream(config, webpack))
     .pipe(gulp.dest(dist));
-
-  /*
-  var entry = {};
-
-  if (options) {
-    if (options.hasNoBabelPolyfill) {
-      entry[name] = ['./app/src/' + name + '.js'];
-    }
-  } else {
-    entry[name] = ['babel-polyfill', './app/src/' + name + '.js'];
-  }
-
-  var config = extend({}, require('./webpack.config.js'), {
-    devtool: 'eval-source-map',
-    entry: entry,
-    plugins: [
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          drop_console: false,
-          warnings: false
-        },
-        sourceMap: true,
-        mangle: false
-      })
-    ]
-  });
-
-  var dist = (options && options.distPath) ? options.distPath : 'js';
-  return gulp.src('')
-    .pipe(webpackStream(config))
-    .pipe(concat(name + '.merge.js'))
-    .pipe(gulp.dest(dist));
-    */
 };
 
 gulp.task('lint', function () {
@@ -106,6 +73,8 @@ gulp.task('webpack-dev-server', function () {
 });
 
 // build js
-gulp.task('buildMain', () => {
-  buildMinJs('main', {requireBabelPolyfill: true, distPath: './app/js/'})
-});
+/*
+ gulp.task('buildMain', () => {
+ buildMinJS('main', {requireBabelPolyfill: true, distPath: './app/js/'})
+ });
+ */
