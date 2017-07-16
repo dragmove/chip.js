@@ -47,11 +47,11 @@ import { isDefined, not, notSingleEle } from '../utils/util';
 
 class FullSizeBg {
   constructor(options) {
+    const _ = this;
+
     if (not(isDefined)(options)) {
       throw new Error('require options object when create FullSizeBg instance');
     }
-
-    const _ = this;
 
     _.option = $.extend({
       imgWrap: null,

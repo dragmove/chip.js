@@ -1,5 +1,5 @@
 import Navi from './Navi';
-import { isDefined, isString, isFunction, isExistJQueryEle, not } from '../utils/util';
+import { isDefined, isString, isFunction, isExistJQueryEle, not, notSingleEle } from '../utils/util';
 
 class Dropdown {
   constructor(options) {
@@ -69,7 +69,7 @@ class Dropdown {
     _.title = $('> span', _.titleBtn);
     _.optionWrap = $(`.${opt.optionWrapClass}`, _.wrap);
 
-    if (_.wrap.length > 1) {
+    if (notSingleEle(_.wrap.length)) {
       throw new Error('require only one element to Dropdown\'s "wrap" option');
     }
 
@@ -93,8 +93,8 @@ class Dropdown {
         // set default <select>
         _.selectEl = $('select', _.wrap);
 
-        if (_.selectEl.length > 1) {
-          throw new Error('must exist only one <select> element within Dropdown\'s "wrap" option element');
+        if (notSingleEle(_.selectEl.length)) {
+          throw new Error('require only one <select> element within Dropdown\'s "wrap" option element');
         }
 
         let selectOptionBtns = $('option', _.selectEl),
@@ -137,6 +137,7 @@ class Dropdown {
 
     if (flag === true) {
       _.selectEl.on('change.ui.dropdown', _.proxy.changeSelectElementEventHandler);
+
     } else {
       _.selectEl.off('change.ui.dropdown', _.proxy.changeSelectElementEventHandler);
     }
@@ -166,6 +167,7 @@ class Dropdown {
         prevIndex: prevIndex,
         value: val
       };
+
       opt.activateCallback.call(_, data);
     }
 
