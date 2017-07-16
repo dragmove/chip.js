@@ -6,7 +6,7 @@ class Dropdown {
     const _ = this;
 
     if (not(isDefined)(options)) {
-      throw new Error('require options object when create Dropdown instance.');
+      throw new Error('require options object when create Dropdown instance');
     }
 
     _.option = $.extend({
@@ -70,7 +70,7 @@ class Dropdown {
     _.optionWrap = $(`.${opt.optionWrapClass}`, _.wrap);
 
     if (_.wrap.length > 1) {
-      throw new Error('require only one element to Dropdown\'s "wrap" option.');
+      throw new Error('require only one element to Dropdown\'s "wrap" option');
     }
 
     _.proxy.changeSelectElementEventHandler = $.proxy(_.changeSelectElementEventHandler, _);
@@ -94,7 +94,7 @@ class Dropdown {
         _.selectEl = $('select', _.wrap);
 
         if (_.selectEl.length > 1) {
-          throw new Error('must exist only one <select> element within Dropdown\'s "wrap" option element.');
+          throw new Error('must exist only one <select> element within Dropdown\'s "wrap" option element');
         }
 
         let selectOptionBtns = $('option', _.selectEl),
@@ -390,7 +390,7 @@ class Dropdown {
     const _ = this;
 
     if (not(isString)(optionDataValue)) {
-      throw Error('getOptionInfoByValue(optionDataValue) method requires string parameter.');
+      throw Error('getOptionInfoByValue(optionDataValue) method requires string parameter');
     }
 
     let index = 0,
@@ -523,7 +523,7 @@ class Dropdown {
     const _ = this;
 
     if (not(Array.isArray)(optionObjs) || optionObjs.length <= 0) {
-      throw Error('changeOptions(optionObjs) method requires array parameter has {text: "", value: ""} objects.');
+      throw Error('changeOptions(optionObjs) method requires array parameter has {text: "", value: ""} objects');
     }
 
     if (_.isMobileDeviceUseDefaultSelect === true) {

@@ -197,7 +197,7 @@ import { isDefined, not } from '../utils/util';
 class HorizontalSlideNavi extends Navi {
   constructor(options) {
     if (not(isDefined)(options)) {
-      throw new Error('require option object when create HorizontalSlideNavi instance.');
+      throw new Error('require option object when create HorizontalSlideNavi instance');
     }
 
     let opt = {

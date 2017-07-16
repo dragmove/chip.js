@@ -150,7 +150,7 @@ class FullSizeCanvasVideo {
 
     _.parent = $(_.option.parent);
     if (_.parent.length <= 0) {
-      throw new Error('FullSizeCanvasVideo Class require options have parent.');
+      throw new Error('FullSizeCanvasVideo Class require options have parent');
     }
 
     _.$video = null;

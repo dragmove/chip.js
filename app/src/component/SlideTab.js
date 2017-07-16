@@ -6,7 +6,7 @@ class SlideTab {
     const _ = this;
 
     if (not(isDefined)(options)) {
-      throw new Error('require option object when create SlideTab instance.');
+      throw new Error('require option object when create SlideTab instance');
     }
 
     let opt = {
@@ -102,7 +102,7 @@ class SlideTab {
     _.btnListItems = $('li', _.btnsWrap);
 
     if (_.wrap.length > 1) {
-      throw new Error('must set only one element to SlideTab\'s "wrap" option.');
+      throw new Error('must set only one element to SlideTab\'s "wrap" option');
     }
 
 

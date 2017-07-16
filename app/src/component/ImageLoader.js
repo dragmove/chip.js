@@ -33,7 +33,7 @@ import { isDefined, isFunction, not } from '../utils/util';
 class ImageLoader {
   constructor(options) {
     if (not(isDefined)(options)) {
-      throw new Error('require options object when create ImageLoader instance.');
+      throw new Error('require options object when create ImageLoader instance');
     }
 
     const _ = this;
@@ -134,7 +134,7 @@ class ImageLoader {
     const _ = this;
 
     if (not(isDefined)(imgURLArr) || not(Array.isArray)(imgURLArr)) {
-      throw TypeError('imgURLArr parameter type of start() must be array type.');
+      throw TypeError('imgURLArr parameter type of start() must be array type');
     }
 
     if (imgURLArr.length > 0) {

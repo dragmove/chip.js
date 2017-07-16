@@ -48,7 +48,7 @@ import { isDefined, not, notSingleEle } from '../utils/util';
 class FullSizeBg {
   constructor(options) {
     if (not(isDefined)(options)) {
-      throw new Error('require options object when create FullSizeBg instance.');
+      throw new Error('require options object when create FullSizeBg instance');
     }
 
     const _ = this;
