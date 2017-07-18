@@ -81,8 +81,7 @@ import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
 
     $('#btn-seek').on('click', function (evt) {
       evt.preventDefault();
-      canvasVideo.seek(30);
+      canvasVideo.seek(3);
     });
   }
-
 }(jQuery));

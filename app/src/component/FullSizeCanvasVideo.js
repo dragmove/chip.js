@@ -1,127 +1,10 @@
-/*
- @example
-
- // html
- <div id="wrapper">
- <div class="canvas-video"></div>
-
- <div class="fixed-btns">
- <button id="btn-play">play</button>
- <button id="btn-pause">pause</button>
- <button id="btn-stop">stop</button>
- <button id="btn-seek">seek</button>
- </div>
- </div>
-
- // css
- #wrapper {
- position: relative;
- background: #333;
- }
-
- .canvas-video {
- position: relative;
- overflow: hidden;
- }
-
- .fixed-btns {
- position: fixed;
- top: 0;
- left: 0;
- }
-
- // js
- import FullSizeCanvasVideo from './component/FullSizeCanvasVideo';
-
- let canvasVideo = new FullSizeCanvasVideo({
- parent: $('.canvas-video'),
- videoClass: 'video',
- canvasClass: 'canvas',
-
- autoplay: true,
- loop: true,
- muted: false,
-
- width: 960,
- height: 540,
- alignX: 'center', // left, center, right
- alignY: 'center', // top, center, bottom
-
- fps: 30,
- videoUrl: ${video url},
- posterUrl: ${poster image url},
-
- contentMode: FullSizeCanvasVideo.ASPECT_FIT,
-
- canplayCallback: (obj) => { // iOS, Adr v
- console.log('external canplayCallback() obj :', obj);
- },
-
- timeupdateCallback: (obj) => { // iOS, Adr v
- //console.log('external timeupdateCallback() obj :', obj);
- },
-
- endedCallback: (obj) => { // iOS, Adr v
- console.log('external endedCallback() obj :', obj);
- },
-
- visibilitychangeCallback: (obj) => {
- console.log('extenal visibilitychangeCallback() obj :', obj);
-
- if(obj.documentHidden) {
- canvasVideo.pause();
- } else {
- canvasVideo.play();
- }
- }
- });
- canvasVideo.init();
-
- $(window).on('resize', function(evt) {
- console.log('main.js - resize. window.innerWidth, window.innerHeight :', window.innerWidth, window.innerHeight);
-
- $('.canvas-video').css({
- width: window.innerWidth,
- height: window.innerHeight
- });
-
- $('#wrapper').css({
- width: window.innerWidth,
- height: window.innerHeight
- });
- }).trigger('resize');
-
- // test btns
- $('#btn-play').on('click', function(evt) {
- evt.preventDefault();
- canvasVideo.play();
- });
-
- $('#btn-pause').on('click', function(evt) {
- evt.preventDefault();
- canvasVideo.pause();
- });
-
- $('#btn-stop').on('click', function(evt) {
- evt.preventDefault();
- canvasVideo.stop();
- });
-
- $('#btn-seek').on('click', function(evt) {
- evt.preventDefault();
- canvasVideo.seek(30);
- });
- */
-
-
-
 // TODO - add setVolume, getVolume feature.
 
 class FullSizeCanvasVideo {
   constructor(options) {
     const _ = this;
 
-    _.option = {
+    _.option = $.extend({
       parent: null,
       videoClass: 'video',
       canvasClass: 'canvas',
@@ -145,12 +28,11 @@ class FullSizeCanvasVideo {
       endedCallback: null,
 
       visibilitychangeCallback: null
-    };
-    $.extend(_.option, options);
+    }, options);
 
     _.parent = $(_.option.parent);
     if (_.parent.length <= 0) {
-      throw new Error('FullSizeCanvasVideo Class require options have parent');
+      throw new Error('FullSizeCanvasVideo Class require options have parent.');
     }
 
     _.$video = null;

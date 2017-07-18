@@ -14,7 +14,6 @@ import HorizontalSlideNavi from './component/HorizontalSlideNavi';
 
       // Navi options
       btns: $('.btns li a', slideNaviWrap),
-
       mouseoverCallback: function (obj) {
         // console.log('mouseover :', obj);
       },
@@ -30,7 +29,6 @@ import HorizontalSlideNavi from './component/HorizontalSlideNavi';
       clickCallback: function (obj) {
         // console.log('click :', obj);
       },
-
       activateCallback: function (obj) {
         let btns = $(slideNavi.getBtns()),
           btn = $(slideNavi.getBtn(obj.index));
@@ -93,5 +91,4 @@ import HorizontalSlideNavi from './component/HorizontalSlideNavi';
       if (btn.length) slideNavi.setX(-btn.position().left);
     }
   }
-
 }(jQuery));

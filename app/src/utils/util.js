@@ -2,7 +2,7 @@ let existy = function existy(obj) {
   return obj != null;
 };
 
-let isDefined = function (obj) {
+let isDefined = function isDefined(obj) {
   let flag = true;
   if (obj === null || typeof obj === 'undefined') return false;
   return flag;
@@ -13,17 +13,22 @@ let isNumber = function isNumber(obj) {
   return (obj.constructor === Number);
 };
 
-let isString = function (obj) {
+let isString = function isString(obj) {
   if (!isDefined(obj)) return false;
   return (obj.constructor === String);
 };
 
-let isFunction = function (obj) {
+let isObject = function isObject(obj) {
+  if (!isDefined(obj)) return false;
+  return (obj.constructor === Object);
+};
+
+let isFunction = function isFunction(obj) {
   if (!isDefined(obj)) return false;
   return (obj.constructor === Function);
 };
 
-let isExistJQueryEle = function ($ele) {
+let isExistJQueryEle = function isExistJQueryEle($ele) {
   return !(!$ele || $ele.length <= 0);
 };
 
@@ -78,6 +83,7 @@ export {
   isDefined,
   isNumber,
   isString,
+  isObject,
   isFunction,
   isExistJQueryEle,
   not,

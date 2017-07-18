@@ -7,15 +7,17 @@
 
 
 ## Components
-dropdown  
-fullSizeBg  
-fullSizeVideo  
-imageLoader  
-modal  
-modalHasOverlay  
-navi  
-naviHasTimer  
-overlay  
+Dropdown  
+FullSizeBg  
+FullSizeVideo  
+FullSizeCanvasVideo  
+HorizontalSlideNavi  
+ImageLoader  
+Modal  
+ModalHasOverlay  
+Navi  
+NaviHasTimer  
+Overlay  
 youtubeModal
 
 

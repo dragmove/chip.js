@@ -27,6 +27,10 @@
     "type": "MIT",
     "url": "https://opensource.org/licenses/mit-license.php"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dragmove/chip.js"
+  },
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.23.1",

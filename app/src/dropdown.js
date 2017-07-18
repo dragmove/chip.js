@@ -87,5 +87,4 @@ import Dropdown from './component/Dropdown';
     // destroy
     // dropdown.destroy();
   }
-
 }(jQuery));

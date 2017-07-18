@@ -107,7 +107,7 @@ class FullSizeVideo {
     _.option.videoWrap = $(_.option.videoWrap);
 
     if (notSingleEle(_.option.videoWrap)) {
-      throw new Error('FullSizeVideo Class require options has a single videoWrap');
+      throw new Error('FullSizeVideo Class require options has a single videoWrap.');
     }
 
     _.uniqueId = Date.now();
@@ -332,7 +332,7 @@ class FullSizeVideo {
     const _ = this;
 
     if (number < 0 || number > 1) {
-      throw new Error('require a number between 0.0 and 1.0');
+      throw new Error('require a number between 0.0 and 1.0.');
     }
 
     if (not(isDefined)(_.video) || notSingleEle(_.video)) return _;

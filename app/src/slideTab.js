@@ -52,7 +52,7 @@ import SlideTab from './component/SlideTab';
       }
 
     });
+    
     slideTab.init();
   }
-
 }(jQuery));

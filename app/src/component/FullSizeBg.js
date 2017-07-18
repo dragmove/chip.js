@@ -1,48 +1,3 @@
-/*
- @example
-
- // html
- <div id="wrapper">
- <div class="fullsize-bg">
- <img src="https://images.unsplash.com/photo-1474496517593-015d8b59450d?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&s=49563d997d36faad03833ddab8d15c0a" alt="">
- </div>
- </div>
-
- // css
- #wrapper {
- position: relative;
- overflow: hidden;
- background: #333;
- }
-
- .fullsize-bg {
- position: absolute;
- top: 0;
- left: 0;
- width: 100%;
- height: 100%;
- }
-
- // js
- import FullSizeBg from './component/FullSizeBg';
-
- let fullSizeBg = new FullSizeBg({
- imgWrap: $('.fullsize-bg'),
- imgWidth: 4592,
- imgHeight: 3064,
- alignX: 'center', // left, center, right
- alignY: 'center' // top, center, bottom
- });
- fullSizeBg.init();
-
- $(window).on('resize', function (evt) {
- $('#wrapper').css({
- width: window.innerWidth,
- height: window.innerHeight
- });
- }).trigger('resize');
- */
-
 import { isDefined, not, notSingleEle } from '../utils/util';
 
 class FullSizeBg {
@@ -50,7 +5,7 @@ class FullSizeBg {
     const _ = this;
 
     if (not(isDefined)(options)) {
-      throw new Error('require options object when create FullSizeBg instance');
+      throw new Error('require options object when create FullSizeBg instance.');
     }
 
     _.option = $.extend({
@@ -71,7 +26,7 @@ class FullSizeBg {
     _.img = $('img', _.option.imgWrap);
 
     if (notSingleEle(_.option.imgWrap) || notSingleEle(_.img)) {
-      throw new Error('FullSizeBg Class require options object has a single imgWrap has a single img');
+      throw new Error('FullSizeBg Class require options object has a single imgWrap has a single img.');
     }
 
     _.proxy = {

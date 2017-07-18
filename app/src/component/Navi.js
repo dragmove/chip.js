@@ -1,58 +1,9 @@
-/*
- @example
-
- // html
- <ul class="navi">
- <li><a href="#">1</a></li>
- <li><a href="#">2</a></li>
- <li><a href="#">3</a></li>
- <li><a href="#">4</a></li>
- </ul>
-
- // js
- import Navi from './component/Navi';
-
- let navi = new Navi({
- btns: $('.navi li a'),
- mouseoverCallback: (obj) => {
- console.log('mouseoverCallback :', obj);
- },
- mouseoutCallback: (obj) => {
- console.log('mouseoutCallback :', obj);
- },
- mousedownCallback: (obj) => {
- console.log('momousedownCallbackusedown :', obj);
- },
- mouseupCallback: (obj) => {
- console.log('mouseupCallback:', obj);
- },
- clickCallback: (obj) => {
- console.log('clickCallback :', obj);
- },
- activateCallback: (obj) => {
- console.log('activateCallback :', obj);
-
- const btns = $(navi.getBtns()),
- btn = $(navi.getBtn(obj.index));
-
- btns.removeClass('on');
- btn.addClass('on');
- }
- }).init();
-
- // activate 3rd btn
- // navi.activate(3);
-
- // get activated index
- // console.log( 'after call "navi.activate(3)", print "_navi.getActivatedIndex()" :', navi.getActivatedIndex() );
- */
-
 import {isDefined, not} from '../utils/util';
 
 class Navi {
   constructor(options) {
     if (not(isDefined)(options)) {
-      throw new Error('require options object when create Navi instance');
+      throw new Error('require options object when create Navi instance.');
     }
 
     const _ = this;

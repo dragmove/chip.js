@@ -53,5 +53,4 @@ import FullSizeVideo from './component/FullSizeVideo';
       });
     }).trigger('resize');
   }
-
 }(jQuery));

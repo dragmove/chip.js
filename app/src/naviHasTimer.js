@@ -42,5 +42,4 @@ import NaviHasTimer from './component/NaviHasTimer';
     //get activated index
     // console.log( 'after call "navi.activate(3)", print "_navi.getActivatedIndex()" :', navi.getActivatedIndex() );
   }
-
 }(jQuery));

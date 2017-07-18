@@ -38,5 +38,4 @@ import Overlay from './component/Overlay';
     // destroy overlay
     // overlay.destroy();
   }
-
 }(jQuery));

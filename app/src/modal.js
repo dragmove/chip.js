@@ -1,6 +1,6 @@
 import Modal from './component/Modal';
 
-(function ($, global) {
+(function ($) {
   "use strict";
 
   $(document).ready(init);
@@ -38,4 +38,4 @@ import Modal from './component/Modal';
     // destroy
     // modal.destroy();
   }
-}(jQuery, window));
+}(jQuery));

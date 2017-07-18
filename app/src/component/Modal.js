@@ -1,80 +1,8 @@
-/*
- @example
-
- // css
- .modal-wrap {
- position: fixed;
- top: 0;
- right: 0;
- bottom: 0;
- left: 0;
- }
-
- .modal {
- position: relative;
- display: block;
- margin: 0 auto;
- top: 50%;
-
- -webkit-transform: translateY(-50%);
- -moz-transform: translateY(-50%);
- -ms-transform: translateY(-50%);
- -o-transform: translateY(-50%);
- transform: translateY(-50%);
-
- width: 200px;
- height: 200px;
- background: #3F51B5;
- }
-
- .btn-close {
- position: absolute;
- top: 0;
- right: 0;
- background: #D50000;
- }
-
- // js
- import Modal from './component/Modal';
-
- let modal = new Modal({
- wrapClass: 'modal-wrap',
- contents: '<div class="modal"><p>contents</p><a href="#" class="btn-close">close</a></div>',
- appendTo: $('body'),
- closeBtnSelector: '.btn-close',
- isCloseByClickOutside: true,
- isCloseByEscKey: true,
-
- showCallback: function () {
- console.log('showCallback :', this);
- },
- hideCallback: function () {
- console.log('hideCallback :', this);
- }
- });
- modal.init().show();
-
- // get node
- // console.log('modal.getNode() :', modal.getNode());
-
- // append to other element
- // modal.appendTo( element );
-
- // show
- // modal.show();
-
- // hide
- // modal.hide();
-
- // destroy
- // modal.destroy();
- */
-
 class Modal {
   constructor(options) {
     const _ = this;
 
-    _.option = ({
+    _.option = $.extend({
       wrapClass: 'modal-wrap',
       contents: '',
       appendTo: $('body'),

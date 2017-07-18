@@ -1,7 +1,7 @@
 import Overlay from './component/Overlay';
 import ModalHasOverlay from './component/ModalHasOverlay';
 
-(function ($, global) {
+(function ($) {
   "use strict";
 
   $(document).ready(init);
@@ -32,4 +32,4 @@ import ModalHasOverlay from './component/ModalHasOverlay';
     // get node
     // console.log('modal.getNode() :', modal.getNode());
   }
-}(jQuery, window));
+}(jQuery));

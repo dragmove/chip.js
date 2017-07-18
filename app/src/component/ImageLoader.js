@@ -1,39 +1,9 @@
-/*
- @example
-
- import ImageLoader from './component/ImageLoader';
-
- let imgLoader = new ImageLoader({
- loadCompleteCallback: (obj) => {
- console.log('loadComplete :', obj);
- console.log('imgLoader.isFinished() :', imgLoader.isFinished());
- console.log('imgLoader.getLoadedImgs() :', imgLoader.getLoadedImgs());
- },
- loadPerCompleteCallback: (obj) => {
- console.log('loadPerComplete :', obj);
- console.log('imgLoader.isFinished() :', imgLoader.isFinished());
- console.log('imgLoader.getLoadedImgs() :', imgLoader.getLoadedImgs());
- },
- loadErrorCallback: (obj) => {
- console.log('loadError :', obj)
- console.log('imgLoader.isFinished() :', imgLoader.isFinished());
- console.log('imgLoader.getLoadedImgs() :', imgLoader.getLoadedImgs());
- }
- });
-
- imgLoader.start([
- 'https://images.unsplash.com/photo-1431794062232-2a99a5431c6c?dpr=2&auto=compress,format&crop=entropy&fit=crop&w=767&h=511&q=80&cs=tinysrgb',
- 'https://images.unsplash.com/error-dummy-url.png',
- 'https://images.unsplash.com/photo-1459666644539-a9755287d6b0?dpr=2&auto=compress,format&crop=entropy&fit=crop&w=767&h=463&q=80&cs=tinysrgb'
- ]);
- */
-
 import { isDefined, isFunction, not } from '../utils/util';
 
 class ImageLoader {
   constructor(options) {
     if (not(isDefined)(options)) {
-      throw new Error('require options object when create ImageLoader instance');
+      throw new Error('require options object when create ImageLoader instance.');
     }
 
     const _ = this;
@@ -122,7 +92,6 @@ class ImageLoader {
   /*
    * public methods
    */
-
   /**
    * start load images
    *
@@ -134,7 +103,7 @@ class ImageLoader {
     const _ = this;
 
     if (not(isDefined)(imgURLArr) || not(Array.isArray)(imgURLArr)) {
-      throw TypeError('imgURLArr parameter type of start() must be array type');
+      throw TypeError('imgURLArr parameter type of start() must be array type.');
     }
 
     if (imgURLArr.length > 0) {
