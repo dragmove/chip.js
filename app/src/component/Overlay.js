@@ -1,4 +1,4 @@
-import { isDefined, isFunction, not } from '../utils/util';
+import { isFunction, not, truthy } from '../utils/util';
 
 class Overlay {
   constructor(options) {
@@ -55,7 +55,7 @@ class Overlay {
 
     if (not(isFunction)(_.option.clickCallback)) return _;
 
-    if (flag === true) {
+    if (truthy(flag)) {
       _.node.on('click.ui.overlay', _.proxy.clickOverlayEventHandler);
 
     } else {
@@ -111,7 +111,7 @@ class Overlay {
 
     _.setNodeEventHandler(false);
 
-    if (obj.isRemoveNode) $(_.node).remove();
+    if (truthy(obj.isRemoveNode)) $(_.node).remove();
 
     _.option = null;
     _.node = null;

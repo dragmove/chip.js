@@ -1,22 +1,18 @@
 import HorizontalSlideNavi from './HorizontalSlideNavi';
-import { isDefined, not, each, best, pipeline } from '../utils/util';
+import { isDefined, not, truthy, best, pipeline } from '../utils/util';
 
 class SlideTab {
   constructor(options) {
-    const _ = this;
-
     if (not(isDefined)(options)) {
       throw new Error('require option object when create SlideTab instance.');
     }
 
-    let opt = {
+    let opt = $.extend(true, {
       Dragdealer: null,
 
       wrap: null,
       handleClass: 'handle',
       btnsWrap: null,
-
-      activateIndex: 0,
 
       responsiveBasedButtonWidth: {
         isApply: true,
@@ -50,13 +46,14 @@ class SlideTab {
       },
 
       global: window
-    };
-    $.extend(true, opt, options);
+    }, options);
 
-    opt.Dragdealer = (opt.Dragdealer) ? opt.Dragdealer : opt.global.Dragdealer;
-    if (!opt.Dragdealer) {
+    opt.Dragdealer = (isDefined(opt.Dragdealer)) ? opt.Dragdealer : opt.global.Dragdealer;
+    if (not(isDefined)(opt.Dragdealer)) {
       throw new Error('SlideTab.js require Dragdealer Library - https://github.com/skidding/dragdealer.');
     }
+
+    const _ = this;
 
     _.option = opt;
 
@@ -70,7 +67,7 @@ class SlideTab {
 
     _.slideNavi = null;
 
-    _.activateIndex = 0;
+    // _.activateIndex = 0; // TODO - remove
 
     _.proxy = {
       resizeEventHandler: null
@@ -86,11 +83,16 @@ class SlideTab {
 
 
     // TODO
-    return;
+    return _;
+
+
 
 
     _.setResizeEventHandler(true);
+
     _.resize();
+
+    return _;
   }
 
   setInstance() {
@@ -101,24 +103,20 @@ class SlideTab {
     _.btnsWrap = $(opt.btnsWrap);
     _.btnListItems = $('li', _.btnsWrap);
 
-    if (_.wrap.length > 1) {
-      throw new Error('must set only one element to SlideTab\'s "wrap" option.');
+    if (_.wrap.length > 1) throw new Error('must set only one element to SlideTab\'s "wrap" option.');
+
+    if (isDefined(opt.responsiveBasedButtonWidth) && truthy(opt.responsiveBasedButtonWidth.isApply)) {
+      // TODO - _.setResponsiveBasedButtonWidth();
+
+    } else {
+      _.setListItemsPercentageWidth(_.btnListItems, false);
     }
-
-    /*
-     // TODO
-     if (isDefined(opt.responsiveBasedButtonWidth) && opt.responsiveBasedButtonWidth.isApply === true) {
-     _.setResponsiveBasedButtonWidth();
-
-     } else {
-     _.setListItemsPercentageWidth(_.btnListItems, false);
-     }
-     */
 
     _.setSlideNavi();
 
-    _.slideNavi.activate(opt.activateIndex);
-    _.activateIndex = opt.activateIndex;
+    // TODO - remove
+    // _.slideNavi.activate(opt.activateIndex);
+    // _.activateIndex = opt.activateIndex;
   }
 
   setResponsiveBasedButtonWidth() {
@@ -149,7 +147,9 @@ class SlideTab {
 
       if (not(isDefined)(_.slideNavi)) {
         _.setSlideNavi();
-        _.slideNavi.activate(_.activateIndex);
+
+        // TODO - remove
+        // _.slideNavi.activate(_.activateIndex);
       }
 
       // recalculate based on positioned layout.
@@ -176,7 +176,7 @@ class SlideTab {
   setListItemsPercentageWidth(listItems, flag) {
     if (!listItems || listItems.length <= 0) return;
 
-    if (flag === true) {
+    if (truthy(flag)) {
       const percentage = (100 / listItems.length).toFixed(4) + '%';
       listItems.css({width: percentage});
 
@@ -187,77 +187,75 @@ class SlideTab {
 
   setSlideNavi() {
     const _ = this,
-      opt = _.option;
+      opt = _.option,
+      navi = opt.horizontalSlideNavi;
 
     _.slideNavi = new HorizontalSlideNavi({
       Dragdealer: _.option.Dragdealer,
 
       // Navi.js option
       btns: $('li a', _.btnsWrap),
-
-
-
-
-
-
-      // TODO - test all
-      mouseoverCallback: opt.horizontalSlideNavi.mouseoverCallback,
-      mouseoutCallback: opt.horizontalSlideNavi.mouseoutCallback,
-      mousedownCallback: opt.horizontalSlideNavi.mousedownCallback,
-      mouseupCallback: opt.horizontalSlideNavi.mouseupCallback,
-      clickCallback: opt.horizontalSlideNavi.clickCallback,
-      activateCallback: opt.horizontalSlideNavi.activateCallback,
+      mouseoverCallback: navi.mouseoverCallback,
+      mouseoutCallback: navi.mouseoutCallback,
+      mousedownCallback: navi.mousedownCallback,
+      mouseupCallback: navi.mouseupCallback,
+      clickCallback: navi.clickCallback,
+      activateCallback: navi.activateCallback,
 
       // HorizontalSlideNavi.js option
       wrap: _.wrap,
-      handleClass: _.option.handleClass,
-      btnsWrap: _.btnsWrap,
+      handleClass: opt.handleClass,
+      btnsWrap: _.btnsWrap, // TODO - remove
 
-      disabled: _.option.horizontalSlideNavi.disabled,
-      slide: _.option.horizontalSlideNavi.slide,
-      loose: _.option.horizontalSlideNavi.loose,
-      speed: _.option.horizontalSlideNavi.speed,
-      css3: _.option.horizontalSlideNavi.css3,
+      disabled: navi.disabled,
+      slide: navi.slide,
+      loose: navi.loose,
+      speed: navi.speed,
+      css3: navi.css3,
 
-      dragStartCallback: _.option.horizontalSlideNavi.dragStartCallback,
-      dragStopCallback: _.option.horizontalSlideNavi.dragStopCallback,
-      slideEndCallback: _.option.horizontalSlideNavi.slideEndCallback
+      dragStartCallback: navi.dragStartCallback,
+      dragStopCallback: navi.dragStopCallback,
+      slideEndCallback: navi.slideEndCallback
 
-      /*
       // TODO - arrange
-       clickCallback: function (obj) {
-       if (!obj || !obj.btn) return;
+      /*
+      clickCallback: function (obj) {
+        if (!obj || !obj.btn) return;
 
-       const btn = $(obj.btn),
-       href = btn.attr('href'),
-       target = btn.attr('target') || '_self';
+        const btn = $(obj.btn),
+          href = btn.attr('href'),
+          target = btn.attr('target') || '_self';
 
-       if (!href || href === '#') {
-       obj.event.preventDefault();
-       return;
-       }
+        if (!href || href === '#') {
+          obj.event.preventDefault();
+          return;
+        }
 
-       if (target === '_self') {
-       _.global.location.href = href;
-       } else {
-       _.global.open(href, target);
-       }
-       },
+        if (target === '_self') {
+          _.global.location.href = href;
 
-       activateCallback: function (obj) {
-       console.log('activateCallback :', obj);
+        } else {
+          _.global.open(href, target);
+        }
+      },
 
-       let btns = $(_.slideNavi.getBtns()),
-       btn = $(_.slideNavi.getBtn(obj.index));
+      activateCallback: function (obj) {
+        console.log('activateCallback :', obj);
 
-       btns.removeClass('on');
-       btn.addClass('on');
+        const btns = $(_.slideNavi.getBtns()),
+          btn = $(_.slideNavi.getBtn(obj.index));
 
-       _.activateIndex = obj.index;
-       },
-       */
-    });
-    _.slideNavi.init();
+        btns.removeClass('on');
+        btn.addClass('on');
+
+        _.activateIndex = obj.index;
+      }
+      */
+
+
+
+
+    }).init();
   }
 
   getBtnWidthMax(btns) {
@@ -285,7 +283,8 @@ class SlideTab {
   destroySlideNavi() {
     const _ = this;
 
-    if (_.slideNavi) _.slideNavi.destroy();
+    if (isDefined(_.slideNavi)) _.slideNavi.destroy();
+
     _.slideNavi = null;
   }
 
@@ -293,7 +292,7 @@ class SlideTab {
     const _ = this,
       global = $(_.global);
 
-    if (flag === true) {
+    if (truthy(flag)) {
       global.on(`resize.ui.slidetab.${_.uniqueId}`, _.proxy.resizeEventHandler);
 
     } else {
@@ -308,12 +307,13 @@ class SlideTab {
       opt = _.option,
       breakpoint = opt.breakpoint;
 
-    if (isDefined(opt.responsiveBasedButtonWidth) && opt.responsiveBasedButtonWidth.isApply === true) {
+    if (isDefined(opt.responsiveBasedButtonWidth) && truthy(opt.responsiveBasedButtonWidth.isApply)) {
       _.setResponsiveBasedButtonWidth();
       return;
     }
 
     if (!breakpoint) return;
+
     if (isDefined(breakpoint.max) && _.global.innerWidth >= breakpoint.max) {
       _.destroySlideNavi();
       _.setListItemsPercentageWidth(_.btnListItems, true);
@@ -327,12 +327,31 @@ class SlideTab {
       _.setListItemsPercentageWidth(_.btnListItems, true);
 
     } else {
-      if (!_.slideNavi) {
+      if (not(isDefined)(_.slideNavi)) {
         _.setSlideNavi();
-        _.slideNavi.activate(_.activateIndex);
+
+        // TODO - remove
+        // _.slideNavi.activate(_.activateIndex);
       }
+
       _.setListItemsPercentageWidth(_.btnListItems, false);
     }
+  }
+
+  getBtns() {
+    return this.slideNavi.getBtns();
+  }
+
+  getBtn(index) {
+    return this.slideNavi.getBtn(index);
+  }
+
+  getActivatedIndex() {
+    return this.slideNavi.getActivatedIndex();
+  }
+
+  activate(index) {
+    this.slideNavi.activate(index);
   }
 
   destroy(obj = null) {
@@ -347,7 +366,7 @@ class SlideTab {
     _.btnsWrap = null;
     _.btnListItems = [];
 
-    _.activateIndex = 0;
+    // _.activateIndex = 0; // TODO - remove
 
     return _;
   }

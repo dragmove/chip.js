@@ -48,6 +48,10 @@ let each = function each(dataCanLoop, func, context) {
   }
 };
 
+let truthy = function truthy(object) {
+  return !!object;
+};
+
 let best = function best(conditionFunc, array) {
   if (!isFunction(conditionFunc)) throw new TypeError('conditionFunc parameter type of best() must be Function.');
   if (!Array.isArray(array)) throw new TypeError('array parameter type of best() must be Array.');
@@ -88,6 +92,7 @@ export {
   isExistJQueryEle,
   not,
   each,
+  truthy,
   best,
   rest,
   pipeline,
