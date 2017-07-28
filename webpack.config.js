@@ -1,4 +1,4 @@
-var webpack = require('webpack'),
+const webpack = require('webpack'),
   path = require('path');
 
 module.exports = {
@@ -25,12 +25,10 @@ module.exports = {
     overlay: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/overlay.js'],
     youtubeModal: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/youtubeModal.js'],
     horizontalSlideNavi: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/horizontalSlideNavi.js'],
+    slideTab: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/slideTab.js'],
 
     // TODO
-    fullSizeCanvasVideo: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/fullSizeCanvasVideo.js'],
-
-    // TODO - ING
-    slideTab: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/slideTab.js']
+    fullSizeCanvasVideo: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/fullSizeCanvasVideo.js']
   },
 
   output: {

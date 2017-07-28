@@ -116,7 +116,7 @@ class SlideTab {
     const _ = this,
       opt = _.option,
       tabClass = opt.responsiveBasedButtonWidth.classWhenPercentageTab,
-      wrapWidth = _.wrap.outerWidth()
+      wrapWidth = _.wrap.outerWidth();
 
     // back to original buttons.
     _.setListItemsPercentageWidth(_.btnListItems, false);
