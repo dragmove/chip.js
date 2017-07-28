@@ -125,6 +125,8 @@ class PositionalModal extends ModalHasOverlay {
         transform: 'translateY(-50%)'
       });
     }
+
+    return _;
   }
 }
 

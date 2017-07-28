@@ -1,5 +1,5 @@
 import HorizontalSlideNavi from './HorizontalSlideNavi';
-import { isDefined, not, truthy, best, pipeline } from '../utils/util';
+import { isDefined, isNumber, isFunction, not, allOf, truthy, nth, best, notSingleEle } from '../utils/util';
 
 class SlideTab {
   constructor(options) {
@@ -19,13 +19,8 @@ class SlideTab {
         classWhenPercentageTab: 'percentage'
       },
 
-      breakpoint: {
-        tablet: 640,
-        pc: 960,
-        max: 1260
-      },
+      switchBreakpoint: Number.MAX_VALUE,
 
-      // TODO - arrange
       horizontalSlideNavi: {
         mouseoverCallback: null, // function(obj) { console.log('mouseoverCallback :', obj) },
         mouseoutCallback: null, // function(obj) { console.log('mouseoutCallback :', obj) },
@@ -44,6 +39,8 @@ class SlideTab {
         dragStopCallback: null, // function(x, y) { console.log('dragStopCallback :', x, y) },
         slideEndCallback: null // function(x, y) { console.log('slideEndCallback :', x, y) }
       },
+
+      resize: null,
 
       global: window
     }, options);
@@ -67,26 +64,21 @@ class SlideTab {
 
     _.slideNavi = null;
 
-    // _.activateIndex = 0; // TODO - remove
-
     _.proxy = {
       resizeEventHandler: null
     };
+
+    _.mode = 'slideNavi'; // 'slideNavi' or 'slideTab' by switchBreakpoint
   }
 
   init(obj = null) {
     const _ = this;
 
+    _.mode = _.getMode(_.global.innerWidth);
+
     _.proxy.resizeEventHandler = $.proxy(_.resize, _);
 
     _.setInstance();
-
-
-    // TODO
-    return _;
-
-
-
 
     _.setResizeEventHandler(true);
 
@@ -103,7 +95,7 @@ class SlideTab {
     _.btnsWrap = $(opt.btnsWrap);
     _.btnListItems = $('li', _.btnsWrap);
 
-    if (_.wrap.length > 1) throw new Error('must set only one element to SlideTab\'s "wrap" option.');
+    if (notSingleEle(_.wrap)) throw new Error('must set only one element to SlideTab\'s "wrap" option.');
 
     if (isDefined(opt.responsiveBasedButtonWidth) && truthy(opt.responsiveBasedButtonWidth.isApply)) {
       // TODO - _.setResponsiveBasedButtonWidth();
@@ -113,68 +105,10 @@ class SlideTab {
     }
 
     _.setSlideNavi();
-
-    // TODO - remove
-    // _.slideNavi.activate(opt.activateIndex);
-    // _.activateIndex = opt.activateIndex;
-  }
-
-  setResponsiveBasedButtonWidth() {
-    const _ = this,
-      opt = _.option,
-      wrapWidth = _.wrap.outerWidth();
-
-    // back to original buttons.
-    const percentageTabClass = opt.responsiveBasedButtonWidth.classWhenPercentageTab;
-    _.wrap.removeClass(percentageTabClass);
-
-    _.setListItemsPercentageWidth(_.btnListItems, false);
-
-    // set percentage buttons or not. based expected average buttons width.
-    const btnWidthMax = _.getBtnWidthMax(_.btnListItems),
-      expectedAverageBtnWidth = ( wrapWidth / _.btnListItems.length );
-    // console.log('btnWidthMax, expectedAverageBtnWidth :', btnWidthMax, expectedAverageBtnWidth);
-
-    if (btnWidthMax <= expectedAverageBtnWidth) {
-      // console.log('can set percentage buttons.');
-
-      _.destroySlideNavi();
-      _.setListItemsPercentageWidth(_.btnListItems, true);
-      _.wrap.addClass(percentageTabClass);
-
-    } else {
-      // console.log('one button max width > percentage button width.');
-
-      if (not(isDefined)(_.slideNavi)) {
-        _.setSlideNavi();
-
-        // TODO - remove
-        // _.slideNavi.activate(_.activateIndex);
-      }
-
-      // recalculate based on positioned layout.
-      if (wrapWidth > $(_.slideNavi.getHandle()).outerWidth()) {
-        _.slideNavi.disable().setX(0);
-
-        // if (btnWidthMax <= expectedAverageBtnWidth) {
-        // console.log('slide exist. btnWidthMax <= expectedAverageBtnWidth');
-        // _.destroySlideNavi();
-        // _.setListItemsPercentageWidth(_.btnListItems, true);
-        // _.wrap.addClass(percentageTabClass);
-        //
-        // } else {
-        // console.log('slide exist. btnWidthMax > expectedAverageBtnWidth');
-        // _.slideNavi.disable().setX(0);
-        // }
-
-      } else {
-        _.slideNavi.enable();
-      }
-    }
   }
 
   setListItemsPercentageWidth(listItems, flag) {
-    if (!listItems || listItems.length <= 0) return;
+    if (not(isDefined)(listItems) || listItems.length <= 0) return;
 
     if (truthy(flag)) {
       const percentage = (100 / listItems.length).toFixed(4) + '%';
@@ -205,7 +139,6 @@ class SlideTab {
       // HorizontalSlideNavi.js option
       wrap: _.wrap,
       handleClass: opt.handleClass,
-      btnsWrap: _.btnsWrap, // TODO - remove
 
       disabled: navi.disabled,
       slide: navi.slide,
@@ -217,67 +150,7 @@ class SlideTab {
       dragStopCallback: navi.dragStopCallback,
       slideEndCallback: navi.slideEndCallback
 
-      // TODO - arrange
-      /*
-      clickCallback: function (obj) {
-        if (!obj || !obj.btn) return;
-
-        const btn = $(obj.btn),
-          href = btn.attr('href'),
-          target = btn.attr('target') || '_self';
-
-        if (!href || href === '#') {
-          obj.event.preventDefault();
-          return;
-        }
-
-        if (target === '_self') {
-          _.global.location.href = href;
-
-        } else {
-          _.global.open(href, target);
-        }
-      },
-
-      activateCallback: function (obj) {
-        console.log('activateCallback :', obj);
-
-        const btns = $(_.slideNavi.getBtns()),
-          btn = $(_.slideNavi.getBtn(obj.index));
-
-        btns.removeClass('on');
-        btn.addClass('on');
-
-        _.activateIndex = obj.index;
-      }
-      */
-
-
-
-
     }).init();
-  }
-
-  getBtnWidthMax(btns) {
-    if (not(isDefined)(btns) || btns.length <= 0) return 0;
-
-    btns = Array.prototype.slice.call(btns);
-
-    const maxBtnWidth = pipeline(btns, (btnArr) => {
-      let btnWidths = [];
-      for (let i = 0, max = btnArr.length; i < max; i++) {
-        btnWidths.push($(btnArr[i]).outerWidth());
-      }
-
-      return btnWidths;
-
-    }, (widths) => {
-      return best(function (x, y) {
-        return x > y;
-      }, widths);
-    });
-
-    return maxBtnWidth;
   }
 
   destroySlideNavi() {
@@ -289,14 +162,13 @@ class SlideTab {
   }
 
   setResizeEventHandler(flag) {
-    const _ = this,
-      global = $(_.global);
+    const _ = this;
 
     if (truthy(flag)) {
-      global.on(`resize.ui.slidetab.${_.uniqueId}`, _.proxy.resizeEventHandler);
+      $(_.global).on(`resize.ui.slidetab.${_.uniqueId}`, _.proxy.resizeEventHandler);
 
     } else {
-      global.off(`resize.ui.slidetab.${_.uniqueId}`, _.proxy.resizeEventHandler);
+      $(_.global).off(`resize.ui.slidetab.${_.uniqueId}`, _.proxy.resizeEventHandler);
     }
 
     return _;
@@ -304,54 +176,85 @@ class SlideTab {
 
   resize(evt) {
     const _ = this,
-      opt = _.option,
-      breakpoint = opt.breakpoint;
+      opt = _.option;
 
-    if (isDefined(opt.responsiveBasedButtonWidth) && truthy(opt.responsiveBasedButtonWidth.isApply)) {
-      _.setResponsiveBasedButtonWidth();
-      return;
-    }
+    // TODO
+    /*
+     if (isDefined(opt.responsiveBasedButtonWidth) && truthy(opt.responsiveBasedButtonWidth.isApply)) {
+     _.setResponsiveBasedButtonWidth();
+     return;
+     }
+     */
 
-    if (!breakpoint) return;
+    if (isNumber(opt.switchBreakpoint)) {
+      const mode = _.getMode(_.global.innerWidth);
 
-    if (isDefined(breakpoint.max) && _.global.innerWidth >= breakpoint.max) {
-      _.destroySlideNavi();
-      _.setListItemsPercentageWidth(_.btnListItems, true);
+      if (_.mode !== mode) {
+        switch (mode) {
+          case 'slideNavi' :
+            _.slideNavi.enable().setRatioX(0);
+            _.setListItemsPercentageWidth(_.btnListItems, false);
+            break;
 
-    } else if (isDefined(breakpoint.pc) && _.global.innerWidth >= breakpoint.pc) {
-      _.destroySlideNavi();
-      _.setListItemsPercentageWidth(_.btnListItems, true);
+          case 'slideTab' :
+            _.slideNavi.disable().setRatioX(0);
+            _.setListItemsPercentageWidth(_.btnListItems, true);
+            break;
+        }
 
-    } else if (isDefined(breakpoint.tablet) && _.global.innerWidth >= breakpoint.tablet) {
-      _.destroySlideNavi();
-      _.setListItemsPercentageWidth(_.btnListItems, true);
-
-    } else {
-      if (not(isDefined)(_.slideNavi)) {
-        _.setSlideNavi();
-
-        // TODO - remove
-        // _.slideNavi.activate(_.activateIndex);
+        _.mode = mode;
       }
-
-      _.setListItemsPercentageWidth(_.btnListItems, false);
     }
+
+    if (isFunction(opt.resize)) opt.resize.call(_, evt);
+
+    return _;
   }
 
+  getMode(width) {
+    const _ = this,
+      opt = _.option,
+      browserWidth = (isNumber(width)) ? width : _.global.innerWidth;
+
+    if (not(isNumber)(opt.switchBreakpoint)) throw new TypeError('switchBreakpoint option type must be Number.');
+
+    const mode = ( opt.switchBreakpoint <= browserWidth) ? 'slideTab' : 'slideNavi';
+    return mode;
+  }
+
+  /*
+   * public methods
+   */
   getBtns() {
-    return this.slideNavi.getBtns();
+    return (isDefined(this.slideNavi)) ? this.slideNavi.getBtns() : [];
   }
 
   getBtn(index) {
-    return this.slideNavi.getBtn(index);
+    return (isDefined(this.slideNavi)) ? this.slideNavi.getBtn(index) : null;
   }
 
   getActivatedIndex() {
-    return this.slideNavi.getActivatedIndex();
+    return (isDefined(this.slideNavi)) ? this.slideNavi.getActivatedIndex() : 0;
   }
 
   activate(index) {
-    this.slideNavi.activate(index);
+    if (isDefined(this.slideNavi)) this.slideNavi.activate(index);
+  }
+
+  setSlideNaviX(x) {
+    const _ = this;
+
+    if (allOf(isDefined(_.slideNavi), (_.mode === 'slideNavi'))) {
+      _.slideNavi.setX(x);
+    }
+  }
+
+  setSlideNaviRatioX(x) {
+    const _ = this;
+
+    if (allOf(isDefined(_.slideNavi), (_.mode === 'slideNavi'))) {
+      _.slideNavi.setRatioX(x);
+    }
   }
 
   destroy(obj = null) {
@@ -359,17 +262,92 @@ class SlideTab {
 
     _.setResizeEventHandler(false);
 
-    _.slideNavi.destroy();
-    _.slideNavi = null;
+    if (isDefined(_.slideNavi)) {
+      _.slideNavi.destroy();
+      _.slideNavi = null;
+    }
 
     _.wrap = null;
     _.btnsWrap = null;
     _.btnListItems = [];
 
-    // _.activateIndex = 0; // TODO - remove
-
     return _;
   }
+
+  /*
+   setResponsiveBasedButtonWidth() {
+   const _ = this,
+   opt = _.option,
+   wrapWidth = _.wrap.outerWidth();
+
+   // back to original buttons.
+   const percentageTabClass = opt.responsiveBasedButtonWidth.classWhenPercentageTab;
+   _.wrap.removeClass(percentageTabClass);
+
+   _.setListItemsPercentageWidth(_.btnListItems, false);
+
+   // set percentage buttons or not. based expected average buttons width.
+   const btnWidthMax = _.getBtnWidthMax(_.btnListItems),
+   expectedAverageBtnWidth = ( wrapWidth / _.btnListItems.length );
+   // console.log('btnWidthMax, expectedAverageBtnWidth :', btnWidthMax, expectedAverageBtnWidth);
+
+   if (btnWidthMax <= expectedAverageBtnWidth) {
+   // console.log('can set percentage buttons.');
+
+   _.destroySlideNavi();
+   _.setListItemsPercentageWidth(_.btnListItems, true);
+   _.wrap.addClass(percentageTabClass);
+
+   } else {
+   // console.log('one button max width > percentage button width.');
+
+   if (not(isDefined)(_.slideNavi)) {
+   _.setSlideNavi();
+   }
+
+   // recalculate based on positioned layout.
+   if (wrapWidth > $(_.slideNavi.getHandle()).outerWidth()) {
+   _.slideNavi.disable().setX(0);
+
+   // if (btnWidthMax <= expectedAverageBtnWidth) {
+   // console.log('slide exist. btnWidthMax <= expectedAverageBtnWidth');
+   // _.destroySlideNavi();
+   // _.setListItemsPercentageWidth(_.btnListItems, true);
+   // _.wrap.addClass(percentageTabClass);
+   //
+   // } else {
+   // console.log('slide exist. btnWidthMax > expectedAverageBtnWidth');
+   // _.slideNavi.disable().setX(0);
+   // }
+
+   } else {
+   _.slideNavi.enable();
+   }
+   }
+   }
+
+   getBtnWidthMax(btns) {
+   if (not(isDefined)(btns) || btns.length <= 0) return 0;
+
+   btns = Array.prototype.slice.call(btns);
+
+   const maxBtnWidth = pipeline(btns, (btnArr) => {
+   let btnWidths = [];
+   for (let i = 0, max = btnArr.length; i < max; i++) {
+   btnWidths.push($(btnArr[i]).outerWidth());
+   }
+
+   return btnWidths;
+
+   }, (widths) => {
+   return best(function (x, y) {
+   return x > y;
+   }, widths);
+   });
+
+   return maxBtnWidth;
+   }
+   */
 }
 
 export default SlideTab;

@@ -18,13 +18,16 @@
  */
 
 import SlideTab from './component/SlideTab';
+import { isDefined, not } from './utils/util';
 
 (function ($) {
-  "use strict";
+  'use strict';
 
   $(document).ready(init);
 
   function init() {
+    let isNotDefined = not(isDefined);
+
     let wrap = $('.slide-tab');
 
     let slideTab = new SlideTab({
@@ -34,18 +37,12 @@ import SlideTab from './component/SlideTab';
       handleClass: 'handle',
       btnsWrap: $('.btns', wrap),
 
-      activateIndex: 1,
-
       responsiveBasedButtonWidth: {
         isApply: false,
         classWhenPercentageTab: 'percentage'
       },
 
-      breakpoint: {
-        tablet: 640,
-        pc: 960,
-        max: 1260
-      },
+      switchBreakpoint: 640,
 
       // option. change between 'momentum scroll navi' and 'percentage navi' based on check button width.
       /*
@@ -53,32 +50,27 @@ import SlideTab from './component/SlideTab';
        isApply: true,
        classWhenPercentageTab: 'percentage'
        },
-
-       breakpoint: {
-       tablet: 640,
-       pc: 960,
-       max: 1260
-       }
        */
 
-      // TODO - arrange
       horizontalSlideNavi: {
         mouseoverCallback: function (obj) {
-          console.log('mouseoverCallback :', obj)
+          //console.log('mouseoverCallback :', obj);
         },
         mouseoutCallback: function (obj) {
-          console.log('mouseoutCallback :', obj)
+          //console.log('mouseoutCallback :', obj);
         },
         mousedownCallback: function (obj) {
-          console.log('mousedownCallback :', obj)
+          //console.log('mousedownCallback :', obj);
         },
         mouseupCallback: function (obj) {
-          console.log('mouseupCallback :', obj)
+          //console.log('mouseupCallback :', obj);
         },
         clickCallback: function (obj) {
-          console.log('clickCallback :', obj)
+          //console.log('clickCallback :', obj);
         },
         activateCallback: function (obj) {
+          if (isNotDefined(obj)) return;
+
           const btns = $(slideTab.getBtns()),
             btn = $(slideTab.getBtn(obj.index));
 
@@ -93,18 +85,45 @@ import SlideTab from './component/SlideTab';
         css3: true,
 
         dragStartCallback: function (x, y) {
-          console.log('dragStartCallback :', x, y)
+          //console.log('dragStartCallback :', x, y)
         },
         dragStopCallback: function (x, y) {
-          console.log('dragStopCallback :', x, y)
+          //console.log('dragStopCallback :', x, y)
         },
         slideEndCallback: function (x, y) {
-          console.log('slideEndCallback :', x, y)
+          //console.log('slideEndCallback :', x, y)
         }
+      },
+
+      resize: function(evt) {
+        var activatedIndex = this.getActivatedIndex();
+        setSlideNaviPos(activatedIndex);
       }
     }).init();
 
+    function setSlideNaviPos(index) {
+      if (index < 1 || index > slideTab.getBtns().length) return;
+
+      const prev = (index <= 1) ? 0 : index - 1,
+        next = (index > slideTab.getBtns().length) ? 0 : index + 1;
+
+      if (!prev) {
+        // go to left end.
+        slideTab.setSlideNaviRatioX(0);
+        return;
+      }
+
+      if (!next) {
+        // go go right end.
+        slideTab.setSlideNaviRatioX(1);
+        return;
+      }
+
+      const btn = $(slideTab.getBtn(prev));
+      if (btn.length) slideTab.setSlideNaviX(-btn.position().left);
+    }
+
     // activate 3rd btn
-    slideTab.activate(3);
+    //slideTab.activate(3);
   }
 }(jQuery));

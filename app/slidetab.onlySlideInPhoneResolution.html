@@ -72,6 +72,8 @@
             font-weight: bold;
             text-align: center;
             text-decoration: none;
+            text-overflow: ellipsis;
+            overflow: hidden;
 
             /*
              * percentage tab 모드가 아니라, slidetab 모드시 버튼의 padding-left, padding-right, min-width 를 지정하시면 됩니다.
@@ -92,16 +94,9 @@
             /*
              * tablet 모드로 전환시, 무조건 percentage navi 형태로 전환되므로 아래의 css 가 필요합니다.
              */
-            /*
             .slide-tab .handle, .slide-tab .btns {
                 width: 100%;
             }
-
-            .slide-tab .btns li a {
-                padding-left: 0;
-                padding-right: 0;
-            }
-            */
         }
 
         @media screen and (min-width: 960px) {

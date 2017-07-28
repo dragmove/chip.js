@@ -13,6 +13,13 @@ let isNumber = function isNumber(obj) {
   return (obj.constructor === Number);
 };
 
+let isInteger = function (obj) {
+  if (!isNumber(obj)) return false;
+
+  // https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger
+  return (isFinite(obj) && Math.floor(obj) === obj);
+};
+
 let isString = function isString(obj) {
   if (!isDefined(obj)) return false;
   return (obj.constructor === String);
@@ -48,8 +55,34 @@ let each = function each(dataCanLoop, func, context) {
   }
 };
 
+let allOf = function allOf(/*args*/) {
+  let args = Array.prototype.slice.call(arguments);
+
+  return args.every(function(val) {
+    return (val === true);
+  });
+};
+
+let anyOf = function anyOf(/*args*/) {
+  let args = Array.prototype.slice.call(arguments);
+
+  return args.some(function(val) {
+    return (val === true);
+  });
+};
+
 let truthy = function truthy(object) {
   return !!object;
+};
+
+let nth = function nth(dataCanLoop, index) {
+  if (!(Array.isArray(dataCanLoop) || isString(dataCanLoop))) {
+    throw new TypeError('dataCanLoop parameter type of nth() must be Array or String.');
+  }
+
+  if (!isInteger(index)) throw new TypeError('index parameter type of nth() must be Integer Number.');
+
+  return (index < 0 || index > dataCanLoop.length - 1) ? null : dataCanLoop[index];
 };
 
 let best = function best(conditionFunc, array) {
@@ -76,6 +109,34 @@ let pipeline = function pipeline(seed /* args */) {
   }, seed);
 };
 
+let lazyChain = function lazyChain(obj) {
+  var calls = [];
+
+  return {
+    invoke: function (methodName /*, args */) {
+      var args = rest(Array.prototype.slice.call(arguments));
+
+      calls.push(function (target) {
+        var method = target[methodName];
+
+        if (!isDefined(method)) {
+          throw Error(target.constructor.name + ' has not ' + methodName + ' method');
+        }
+
+        return method.apply(target, args);
+      });
+
+      return this;
+    },
+
+    force: function () {
+      return calls.reduce(function (ret, thunk) {
+        return thunk(ret);
+      }, obj);
+    }
+  };
+};
+
 let singleEle = function singleEle($ele) {
   return $ele.length === 1;
 };
@@ -92,10 +153,14 @@ export {
   isExistJQueryEle,
   not,
   each,
+  allOf,
+  anyOf,
   truthy,
+  nth,
   best,
   rest,
   pipeline,
+  lazyChain,
   singleEle,
   notSingleEle
 };
