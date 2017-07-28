@@ -1,3 +1,9 @@
+let not = function not(func) {
+  return function (object) {
+    return !func(object);
+  };
+};
+
 let existy = function existy(obj) {
   return obj != null;
 };
@@ -7,6 +13,8 @@ let isDefined = function isDefined(obj) {
   if (obj === null || typeof obj === 'undefined') return false;
   return flag;
 };
+
+let isNotDefined = not(isDefined);
 
 let isNumber = function isNumber(obj) {
   if (!isDefined(obj)) return false;
@@ -37,12 +45,6 @@ let isFunction = function isFunction(obj) {
 
 let isExistJQueryEle = function isExistJQueryEle($ele) {
   return !(!$ele || $ele.length <= 0);
-};
-
-let not = function not(func) {
-  return function (object) {
-    return !func(object);
-  };
 };
 
 let each = function each(dataCanLoop, func, context) {
@@ -144,14 +146,15 @@ let singleEle = function singleEle($ele) {
 let notSingleEle = not(singleEle);
 
 export {
+  not,
   existy,
   isDefined,
+  isNotDefined,
   isNumber,
   isString,
   isObject,
   isFunction,
   isExistJQueryEle,
-  not,
   each,
   allOf,
   anyOf,

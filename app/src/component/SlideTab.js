@@ -1,9 +1,9 @@
 import HorizontalSlideNavi from './HorizontalSlideNavi';
-import { isDefined, isNumber, isFunction, not, allOf, truthy, nth, best, notSingleEle } from '../utils/util';
+import { isDefined, isNotDefined, isNumber, isFunction, not, each, allOf, anyOf, truthy, best, pipeline, notSingleEle } from '../utils/util';
 
 class SlideTab {
   constructor(options) {
-    if (not(isDefined)(options)) {
+    if (isNotDefined(options)) {
       throw new Error('require option object when create SlideTab instance.');
     }
 
@@ -22,12 +22,12 @@ class SlideTab {
       switchBreakpoint: Number.MAX_VALUE,
 
       horizontalSlideNavi: {
-        mouseoverCallback: null, // function(obj) { console.log('mouseoverCallback :', obj) },
-        mouseoutCallback: null, // function(obj) { console.log('mouseoutCallback :', obj) },
-        mousedownCallback: null, // function(obj) { console.log('mousedownCallback :', obj) },
-        mouseupCallback: null, // function(obj) { console.log('mouseupCallback :', obj) },
-        clickCallback: null, // function(obj) { console.log('clickCallback :', obj) },
-        activateCallback: null, // function(obj) { console.log('activateCallback :', obj) },
+        mouseoverCallback: null, // function(obj) {}
+        mouseoutCallback: null, // function(obj) {}
+        mousedownCallback: null, // function(obj) {}
+        mouseupCallback: null, // function(obj) {}
+        clickCallback: null, // function(obj) {}
+        activateCallback: null, // function(obj) {}
 
         disabled: false,
         slide: true,
@@ -35,22 +35,27 @@ class SlideTab {
         speed: 0.25,
         css3: true,
 
-        dragStartCallback: null, // function(x, y) { console.log('dragStartCallback :', x, y) },
-        dragStopCallback: null, // function(x, y) { console.log('dragStopCallback :', x, y) },
-        slideEndCallback: null // function(x, y) { console.log('slideEndCallback :', x, y) }
+        dragStartCallback: null, // function(x, y) {}
+        dragStopCallback: null, // function(x, y) {}
+        slideEndCallback: null // function(x, y) {}
       },
 
-      resize: null,
+      resize: null, // function(evt) { scope }
 
       global: window
     }, options);
 
     opt.Dragdealer = (isDefined(opt.Dragdealer)) ? opt.Dragdealer : opt.global.Dragdealer;
-    if (not(isDefined)(opt.Dragdealer)) {
+    if (isNotDefined(opt.Dragdealer)) {
       throw new Error('SlideTab.js require Dragdealer Library - https://github.com/skidding/dragdealer.');
     }
 
     const _ = this;
+
+    _.const = {
+      SLIDE_NAVI: 'slideNavi',
+      SLIDE_TAP: 'slideTab'
+    };
 
     _.option = opt;
 
@@ -68,7 +73,7 @@ class SlideTab {
       resizeEventHandler: null
     };
 
-    _.mode = 'slideNavi'; // 'slideNavi' or 'slideTab' by switchBreakpoint
+    _.mode = ''; // 'slideNavi' or 'slideTab' by switchBreakpoint
   }
 
   init(obj = null) {
@@ -97,18 +102,69 @@ class SlideTab {
 
     if (notSingleEle(_.wrap)) throw new Error('must set only one element to SlideTab\'s "wrap" option.');
 
+    _.setSlideNavi();
+
     if (isDefined(opt.responsiveBasedButtonWidth) && truthy(opt.responsiveBasedButtonWidth.isApply)) {
-      // TODO - _.setResponsiveBasedButtonWidth();
+      _.setResponsiveBasedButtonWidth();
 
     } else {
-      _.setListItemsPercentageWidth(_.btnListItems, false);
+      _.switchMode(_.mode);
     }
+  }
 
-    _.setSlideNavi();
+  setResponsiveBasedButtonWidth() {
+    const _ = this,
+      opt = _.option,
+      tabClass = opt.responsiveBasedButtonWidth.classWhenPercentageTab,
+      wrapWidth = _.wrap.outerWidth()
+
+    // back to original buttons.
+    _.setListItemsPercentageWidth(_.btnListItems, false);
+    _.wrap.removeClass(tabClass);
+
+    // set percentage buttons or not. based expected average buttons width.
+    const btnWidthMax = _.getBtnWidthMax(_.btnListItems),
+      expectedAverageBtnWidth = ( wrapWidth / _.btnListItems.length );
+
+    if (btnWidthMax <= expectedAverageBtnWidth) {
+      // console.log('can set buttons same percentage width');
+
+      _.switchMode(_.const.SLIDE_TAP);
+      _.wrap.addClass(tabClass);
+
+    } else {
+      // console.log('one button max width > percentage button width. can not set buttons same percentage width');
+
+      _.switchMode(_.const.SLIDE_NAVI);
+
+      // recalculate based on positioned layout.
+      if (wrapWidth > $(_.slideNavi.getHandle()).outerWidth()) _.slideNavi.disable().setX(0);
+    }
+  }
+
+  getBtnWidthMax(btns) {
+    if (anyOf(isNotDefined(btns), btns.length <= 0)) return 0;
+
+    const buttons = Array.prototype.slice.call(btns);
+
+    const maxBtnWidth = pipeline(buttons, (btnArr) => {
+      let btnWidths = [];
+
+      each(btnArr, (btn) => {
+        btnWidths.push($(btn).outerWidth());
+      });
+
+      return btnWidths;
+
+    }, (widths) => {
+      return best((x, y) => x > y, widths);
+    });
+
+    return maxBtnWidth;
   }
 
   setListItemsPercentageWidth(listItems, flag) {
-    if (not(isDefined)(listItems) || listItems.length <= 0) return;
+    if (isNotDefined(listItems) || listItems.length <= 0) return;
 
     if (truthy(flag)) {
       const percentage = (100 / listItems.length).toFixed(4) + '%';
@@ -153,14 +209,6 @@ class SlideTab {
     }).init();
   }
 
-  destroySlideNavi() {
-    const _ = this;
-
-    if (isDefined(_.slideNavi)) _.slideNavi.destroy();
-
-    _.slideNavi = null;
-  }
-
   setResizeEventHandler(flag) {
     const _ = this;
 
@@ -174,41 +222,44 @@ class SlideTab {
     return _;
   }
 
-  resize(evt) {
+  resize(evt = null) {
     const _ = this,
-      opt = _.option;
+      opt = _.option,
+      breakpoint = opt.switchBreakpoint;
 
-    // TODO
-    /*
-     if (isDefined(opt.responsiveBasedButtonWidth) && truthy(opt.responsiveBasedButtonWidth.isApply)) {
-     _.setResponsiveBasedButtonWidth();
-     return;
-     }
-     */
+    if (isDefined(opt.responsiveBasedButtonWidth) && truthy(opt.responsiveBasedButtonWidth.isApply)) {
+      _.setResponsiveBasedButtonWidth();
 
-    if (isNumber(opt.switchBreakpoint)) {
-      const mode = _.getMode(_.global.innerWidth);
+    } else {
+      if (allOf(isNumber(breakpoint), (breakpoint >= 0), (breakpoint < Number.MAX_VALUE))) {
+        const mode = _.getMode(_.global.innerWidth);
 
-      if (_.mode !== mode) {
-        switch (mode) {
-          case 'slideNavi' :
-            _.slideNavi.enable().setRatioX(0);
-            _.setListItemsPercentageWidth(_.btnListItems, false);
-            break;
-
-          case 'slideTab' :
-            _.slideNavi.disable().setRatioX(0);
-            _.setListItemsPercentageWidth(_.btnListItems, true);
-            break;
+        if (_.mode !== mode) {
+          _.switchMode(mode);
+          _.mode = mode;
         }
-
-        _.mode = mode;
       }
     }
 
     if (isFunction(opt.resize)) opt.resize.call(_, evt);
 
     return _;
+  }
+
+  switchMode(modeName) {
+    const _ = this;
+
+    switch (modeName) {
+      case _.const.SLIDE_NAVI :
+        _.slideNavi.enable().setRatioX(0);
+        _.setListItemsPercentageWidth(_.btnListItems, false);
+        break;
+
+      case _.const.SLIDE_TAP :
+        _.slideNavi.disable().setRatioX(0);
+        _.setListItemsPercentageWidth(_.btnListItems, true);
+        break;
+    }
   }
 
   getMode(width) {
@@ -218,7 +269,7 @@ class SlideTab {
 
     if (not(isNumber)(opt.switchBreakpoint)) throw new TypeError('switchBreakpoint option type must be Number.');
 
-    const mode = ( opt.switchBreakpoint <= browserWidth) ? 'slideTab' : 'slideNavi';
+    const mode = ( opt.switchBreakpoint <= browserWidth) ? _.const.SLIDE_TAP : _.const.SLIDE_NAVI;
     return mode;
   }
 
@@ -244,7 +295,7 @@ class SlideTab {
   setSlideNaviX(x) {
     const _ = this;
 
-    if (allOf(isDefined(_.slideNavi), (_.mode === 'slideNavi'))) {
+    if (allOf(isDefined(_.slideNavi), (_.mode === _.const.SLIDE_NAVI))) {
       _.slideNavi.setX(x);
     }
   }
@@ -252,7 +303,7 @@ class SlideTab {
   setSlideNaviRatioX(x) {
     const _ = this;
 
-    if (allOf(isDefined(_.slideNavi), (_.mode === 'slideNavi'))) {
+    if (allOf(isDefined(_.slideNavi), (_.mode === _.const.SLIDE_NAVI))) {
       _.slideNavi.setRatioX(x);
     }
   }
@@ -273,81 +324,6 @@ class SlideTab {
 
     return _;
   }
-
-  /*
-   setResponsiveBasedButtonWidth() {
-   const _ = this,
-   opt = _.option,
-   wrapWidth = _.wrap.outerWidth();
-
-   // back to original buttons.
-   const percentageTabClass = opt.responsiveBasedButtonWidth.classWhenPercentageTab;
-   _.wrap.removeClass(percentageTabClass);
-
-   _.setListItemsPercentageWidth(_.btnListItems, false);
-
-   // set percentage buttons or not. based expected average buttons width.
-   const btnWidthMax = _.getBtnWidthMax(_.btnListItems),
-   expectedAverageBtnWidth = ( wrapWidth / _.btnListItems.length );
-   // console.log('btnWidthMax, expectedAverageBtnWidth :', btnWidthMax, expectedAverageBtnWidth);
-
-   if (btnWidthMax <= expectedAverageBtnWidth) {
-   // console.log('can set percentage buttons.');
-
-   _.destroySlideNavi();
-   _.setListItemsPercentageWidth(_.btnListItems, true);
-   _.wrap.addClass(percentageTabClass);
-
-   } else {
-   // console.log('one button max width > percentage button width.');
-
-   if (not(isDefined)(_.slideNavi)) {
-   _.setSlideNavi();
-   }
-
-   // recalculate based on positioned layout.
-   if (wrapWidth > $(_.slideNavi.getHandle()).outerWidth()) {
-   _.slideNavi.disable().setX(0);
-
-   // if (btnWidthMax <= expectedAverageBtnWidth) {
-   // console.log('slide exist. btnWidthMax <= expectedAverageBtnWidth');
-   // _.destroySlideNavi();
-   // _.setListItemsPercentageWidth(_.btnListItems, true);
-   // _.wrap.addClass(percentageTabClass);
-   //
-   // } else {
-   // console.log('slide exist. btnWidthMax > expectedAverageBtnWidth');
-   // _.slideNavi.disable().setX(0);
-   // }
-
-   } else {
-   _.slideNavi.enable();
-   }
-   }
-   }
-
-   getBtnWidthMax(btns) {
-   if (not(isDefined)(btns) || btns.length <= 0) return 0;
-
-   btns = Array.prototype.slice.call(btns);
-
-   const maxBtnWidth = pipeline(btns, (btnArr) => {
-   let btnWidths = [];
-   for (let i = 0, max = btnArr.length; i < max; i++) {
-   btnWidths.push($(btnArr[i]).outerWidth());
-   }
-
-   return btnWidths;
-
-   }, (widths) => {
-   return best(function (x, y) {
-   return x > y;
-   }, widths);
-   });
-
-   return maxBtnWidth;
-   }
-   */
 }
 
 export default SlideTab;
