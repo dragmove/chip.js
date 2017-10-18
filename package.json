@@ -1,7 +1,7 @@
 {
   "name": "chip.js",
   "version": "0.0.1",
-  "description": "",
+  "description": "Simple UI Components",
   "keywords": [
     "chip.js",
     "chipjs",
@@ -22,7 +22,11 @@
   "jest": {
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest"
   },
-  "author": "Hyun-Seok.Kim",
+  "author": {
+    "name": "Hyun-Seok.Kim",
+    "email": "dragmove@gmail.com",
+    "url": "http://dragmove.com"
+  },
   "license": {
     "type": "MIT",
     "url": "https://opensource.org/licenses/mit-license.php"

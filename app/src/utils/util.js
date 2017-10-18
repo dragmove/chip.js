@@ -1,53 +1,53 @@
-let not = function not(func) {
+export let not = function not(func) {
   return function (object) {
     return !func(object);
   };
 };
 
-let existy = function existy(obj) {
+export let existy = function existy(obj) {
   return obj != null;
 };
 
-let isDefined = function isDefined(obj) {
+export let isDefined = function isDefined(obj) {
   let flag = true;
   if (obj === null || typeof obj === 'undefined') return false;
   return flag;
 };
 
-let isNotDefined = not(isDefined);
+export let isNotDefined = not(isDefined);
 
-let isNumber = function isNumber(obj) {
+export let isNumber = function isNumber(obj) {
   if (!isDefined(obj)) return false;
   return (obj.constructor === Number);
 };
 
-let isInteger = function (obj) {
+export let isInteger = function (obj) {
   if (!isNumber(obj)) return false;
 
   // https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger
   return (isFinite(obj) && Math.floor(obj) === obj);
 };
 
-let isString = function isString(obj) {
+export let isString = function isString(obj) {
   if (!isDefined(obj)) return false;
   return (obj.constructor === String);
 };
 
-let isObject = function isObject(obj) {
+export let isObject = function isObject(obj) {
   if (!isDefined(obj)) return false;
   return (obj.constructor === Object);
 };
 
-let isFunction = function isFunction(obj) {
+export let isFunction = function isFunction(obj) {
   if (!isDefined(obj)) return false;
   return (obj.constructor === Function);
 };
 
-let isExistJQueryEle = function isExistJQueryEle($ele) {
+export let isExistJQueryEle = function isExistJQueryEle($ele) {
   return !(!$ele || $ele.length <= 0);
 };
 
-let each = function each(dataCanLoop, func, context) {
+export let each = function each(dataCanLoop, func, context) {
   if (!(Array.isArray(dataCanLoop) || isString(dataCanLoop))) throw new TypeError('dataCanLoop parameter type of each() must be Array or String.');
 
   var _context = (existy(context)) ? context : null;
@@ -57,7 +57,7 @@ let each = function each(dataCanLoop, func, context) {
   }
 };
 
-let allOf = function allOf(/*args*/) {
+export let allOf = function allOf(/*args*/) {
   let args = Array.prototype.slice.call(arguments);
 
   return args.every(function(val) {
@@ -65,7 +65,7 @@ let allOf = function allOf(/*args*/) {
   });
 };
 
-let anyOf = function anyOf(/*args*/) {
+export let anyOf = function anyOf(/*args*/) {
   let args = Array.prototype.slice.call(arguments);
 
   return args.some(function(val) {
@@ -73,11 +73,11 @@ let anyOf = function anyOf(/*args*/) {
   });
 };
 
-let truthy = function truthy(object) {
+export let truthy = function truthy(object) {
   return !!object;
 };
 
-let nth = function nth(dataCanLoop, index) {
+export let nth = function nth(dataCanLoop, index) {
   if (!(Array.isArray(dataCanLoop) || isString(dataCanLoop))) {
     throw new TypeError('dataCanLoop parameter type of nth() must be Array or String.');
   }
@@ -87,7 +87,7 @@ let nth = function nth(dataCanLoop, index) {
   return (index < 0 || index > dataCanLoop.length - 1) ? null : dataCanLoop[index];
 };
 
-let best = function best(conditionFunc, array) {
+export let best = function best(conditionFunc, array) {
   if (!isFunction(conditionFunc)) throw new TypeError('conditionFunc parameter type of best() must be Function.');
   if (!Array.isArray(array)) throw new TypeError('array parameter type of best() must be Array.');
 
@@ -96,14 +96,14 @@ let best = function best(conditionFunc, array) {
   });
 };
 
-let rest = function rest(array, beginIndex) {
+export let rest = function rest(array, beginIndex) {
   if (!Array.isArray(array)) throw new TypeError('array parameter type of rest() must be Array.');
 
   var begin = (!existy(beginIndex)) ? 1 : beginIndex;
   return Array.prototype.slice.call(array, begin);
 };
 
-let pipeline = function pipeline(seed /* args */) {
+export let pipeline = function pipeline(seed /* args */) {
   var restArgs = rest(Array.prototype.slice.call(arguments));
 
   return restArgs.reduce(function (prev, current) {
@@ -111,7 +111,7 @@ let pipeline = function pipeline(seed /* args */) {
   }, seed);
 };
 
-let lazyChain = function lazyChain(obj) {
+export let lazyChain = function lazyChain(obj) {
   var calls = [];
 
   return {
@@ -139,31 +139,26 @@ let lazyChain = function lazyChain(obj) {
   };
 };
 
-let singleEle = function singleEle($ele) {
+export let singleEle = function singleEle($ele) {
   return $ele.length === 1;
 };
 
-let notSingleEle = not(singleEle);
+export let notSingleEle = not(singleEle);
 
-export {
-  not,
-  existy,
-  isDefined,
-  isNotDefined,
-  isNumber,
-  isString,
-  isObject,
-  isFunction,
-  isExistJQueryEle,
-  each,
-  allOf,
-  anyOf,
-  truthy,
-  nth,
-  best,
-  rest,
-  pipeline,
-  lazyChain,
-  singleEle,
-  notSingleEle
+export let getUriCombinedParams = (uri, params) => {
+  if (!uri) return '';
+  if (!params) return uri;
+
+  let str = '';
+  for (let key in params) {
+    str += '&' + key + '=' + String(params[key]);
+  }
+  if (str === '') return uri;
+
+  var tmpArr = uri.split('#'),
+    uri = tmpArr[0],
+    hashStr = (isDefined(tmpArr[1])) ? '#' + tmpArr[1] : '';
+
+  uri = ((uri.indexOf('?') >= 0) ? (uri + str) : (uri + '?' + str.substr(1))) + hashStr;
+  return uri;
 };

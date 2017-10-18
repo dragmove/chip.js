@@ -14,25 +14,23 @@ module.exports = {
   context: __dirname,
 
   entry: {
-    dropdown: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/dropdown.js'],
-    fullSizeBg: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/fullSizeBg.js'],
-    fullSizeVideo: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/fullSizeVideo.js'],
-    imageLoader: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/imageLoader.js'],
-    modal: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/modal.js'],
-    modalHasOverlay: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/modalHasOverlay.js'],
-    navi: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/navi.js'],
-    naviHasTimer: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/naviHasTimer.js'],
-    overlay: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/overlay.js'],
-    youtubeModal: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/youtubeModal.js'],
-    horizontalSlideNavi: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/horizontalSlideNavi.js'],
-    slideTab: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/slideTab.js'],
-
-    // TODO
-    fullSizeCanvasVideo: [/*'webpack/hot/dev-server',*/ 'babel-polyfill', './app/src/fullSizeCanvasVideo.js']
+    dropdown: [/*'webpack/hot/dev-server', 'babel-polyfill',*/ './app/src/dropdown.js'],
+    fullSizeBg: [/*'webpack/hot/dev-server', 'babel-polyfill',*/ './app/src/fullSizeBg.js'],
+    fullSizeCanvasVideo: [/*'webpack/hot/dev-server', 'babel-polyfill',*/ './app/src/fullSizeCanvasVideo.js'], // TODO
+    fullSizeVideo: [/*'webpack/hot/dev-server', 'babel-polyfill',*/ './app/src/fullSizeVideo.js'],
+    horizontalSlideNavi: [/*'webpack/hot/dev-server', 'babel-polyfill',*/ './app/src/horizontalSlideNavi.js'],
+    imageLoader: [/*'webpack/hot/dev-server', 'babel-polyfill',*/ './app/src/imageLoader.js'],
+    modal: [/*'webpack/hot/dev-server', 'babel-polyfill',*/ './app/src/modal.js'],
+    modalHasOverlay: [/*'webpack/hot/dev-server', 'babel-polyfill',*/ './app/src/modalHasOverlay.js'],
+    navi: [/*'webpack/hot/dev-server', 'babel-polyfill',*/ './app/src/navi.js'],
+    naviHasTimer: [/*'webpack/hot/dev-server', 'babel-polyfill',*/ './app/src/naviHasTimer.js'],
+    overlay: [/*'webpack/hot/dev-server', 'babel-polyfill',*/ './app/src/overlay.js'],
+    slideTab: [/*'webpack/hot/dev-server', 'babel-polyfill',*/ './app/src/slideTab.js'],
+    youtubeModal: [/*'webpack/hot/dev-server', 'babel-polyfill',*/ './app/src/youtubeModal.js']
   },
 
   output: {
-    filename: "[name].js",
+    filename: '[name].js',
     path: path.resolve(__dirname, 'app/build')
   },
 

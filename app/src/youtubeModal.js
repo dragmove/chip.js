@@ -37,7 +37,13 @@ import YoutubeModal from './component/YoutubeModal';
       youtube: {
         id: 'YzKLbB5B0tg',
         width: '',
-        height: ''
+        height: '',
+
+        playerVars: {
+          // https://developers.google.com/youtube/player_parameters?playerVersion=HTML5&hl=ko#Parameters
+          autoplay: 1,
+          rel: 0
+        }
       }
     });
 
@@ -57,6 +63,9 @@ import YoutubeModal from './component/YoutubeModal';
 
     // hide
     // youtubeModal.hide();
+
+    // change youtube iframe
+    // youtubeModal.changeYoutubeIFrame('mJEZFTbxm4o'); or youtubeModal.changeYoutubeIFrame({id: 'mJEZFTbxm4o', width: 0, height: 0, playerVars: {autoplay: 1, rel: 0}});
 
     // destroy
     // youtubeModal.destroy();

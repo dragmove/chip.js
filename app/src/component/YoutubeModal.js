@@ -1,5 +1,5 @@
 import Modal from './ModalHasOverlay';
-import {isString, isObject, not} from '../utils/util';
+import {isDefined, isString, isObject, not, getUriCombinedParams} from '../utils/util';
 
 class YoutubeModal extends Modal {
   constructor(options) {
@@ -35,10 +35,17 @@ class YoutubeModal extends Modal {
 
     let opt = _.option;
 
-    const width = (opt.youtube.width) ? opt.youtube.width : '100%',
-      height = (opt.youtube.height) ? opt.youtube.height : '100%';
+    const w = (opt.youtube.width) ? opt.youtube.width : '100%',
+      h = (opt.youtube.height) ? opt.youtube.height : '100%';
 
-    _.youtubeIFrame = $(`<iframe width="${width}" height="${height}" src="https://www.youtube.com/embed/${opt.youtube.id}" frameborder="0" allowfullscreen></iframe>`);
+    let url = `https://www.youtube.com/embed/${opt.youtube.id}`;
+
+    if (isObject(opt.youtube.playerVars)) {
+      // https://developers.google.com/youtube/player_parameters?playerVersion=HTML5&hl=ko#Parameters
+      url = getUriCombinedParams(url, opt.youtube.playerVars);
+    }
+
+    _.youtubeIFrame = $(`<iframe width="${w}" height="${h}" src="${url}" frameborder="0" allowfullscreen></iframe>`);
     _.youtubeSrc = _.youtubeIFrame.attr('src');
 
     _.iFrameWrap = $(opt.iFrameWrapSelector, _.wrap);
@@ -85,8 +92,53 @@ class YoutubeModal extends Modal {
   /*
    * public methods
    */
+  changeYoutubeIFrame(youtube = {id: '', width: 0, height: 0, playerVars: {}}) {
+    const _ = this;
+
+    if (not(isDefined)(youtube)) return _;
+
+    let opt = _.option;
+
+    if (isString(youtube)) {
+      // user input only youtubeId
+      opt.youtube.id = youtube;
+
+    } else if (isObject(youtube)) {
+      // user input youtube options
+      opt.youtube = $.extend(true, opt.youtube, youtube);
+    }
+
+    if (_.youtubeIFrame) _.youtubeIFrame.remove();
+
+    const w = (opt.youtube.width) ? opt.youtube.width : '100%',
+      h = (opt.youtube.height) ? opt.youtube.height : '100%';
+
+    let url = `https://www.youtube.com/embed/${opt.youtube.id}`;
+
+    if (isObject(opt.youtube.playerVars)) {
+      // https://developers.google.com/youtube/player_parameters?playerVersion=HTML5&hl=ko#Parameters
+      url = getUriCombinedParams(url, opt.youtube.playerVars);
+    }
+
+    _.youtubeIFrame = $(`<iframe width="${w}" height="${h}" src="${url}" frameborder="0" allowfullscreen></iframe>`);
+    _.youtubeSrc = _.youtubeIFrame.attr('src');
+
+    _.iFrameWrap = $(opt.iFrameWrapSelector, _.wrap);
+    _.iFrameWrap.append(_.youtubeIFrame);
+
+    return _;
+  }
+
   getYoutubeIFrame() {
     return this.youtubeIFrame.get(0);
+  }
+
+  getYoutubeId() {
+    const _ = this,
+      opt = _.option;
+
+    if (!opt.youtube || !opt.youtube.id) return '';
+    return opt.youtube.id;
   }
 }
 

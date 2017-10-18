@@ -2,7 +2,7 @@
 
 
 ## About
-* UI Components
+* Simple UI Components
 * Dependency to jQuery 3.x.
 
 
@@ -18,7 +18,8 @@ ModalHasOverlay
 Navi  
 NaviHasTimer  
 Overlay  
-youtubeModal
+SlideTab  
+YoutubeModal
 
 
 ## Contact

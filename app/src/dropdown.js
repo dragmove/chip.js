@@ -10,7 +10,7 @@ import Dropdown from './component/Dropdown';
       isMobileDevice = ( $('body').hasClass('phone') || $('body').hasClass('tablet') ) ? true : false;
 
     let dropdown = new Dropdown({
-      wrap: $('.ui-dropdown')
+      wrap: $('.dropdown')
 
       // options
       /*
