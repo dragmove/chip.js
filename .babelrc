@@ -1,6 +1,7 @@
 {
-  "presets": ["es2015"]
-
-  /* if you want to use babel runtime, uncomment the following line */
-  // "plugins": ["transform-runtime"]
+  "presets": [
+    ["env", {
+        "modules": false
+    }]
+  ]
 }
